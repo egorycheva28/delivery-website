@@ -1,8 +1,19 @@
+import {NavLink} from "react-router-dom";
+
 const Header = () => {
     return (
-        <>
-
-        </>
+        <div className="flex justify-between items-center w-full h-[100px] border-b p-12">
+            <p className="underline">HITS Delivery service</p>
+            <div className="flex items-center gap-12">
+                <NavLink to="#menu">{"Меню"}</NavLink>
+                <NavLink to="#deliveryAndPayment">{"Доставка и оплата"}</NavLink>
+                <NavLink to="#basket">{"Корзина"}</NavLink>
+                <NavLink to="#about">{"О нас"}</NavLink>
+                <button className="py-3 px-4 rounded-lg bg-gray-800 text-white hover:bg-gray-900">
+                    {"Войти"}
+                </button>
+            </div>
+        </div>
     )
 }
 
