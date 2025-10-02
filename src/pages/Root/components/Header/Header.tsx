@@ -1,4 +1,5 @@
 import {NavLink} from "react-router-dom";
+import {Button} from "@/components/ui/button.tsx";
 
 const Header = () => {
     return (
@@ -9,9 +10,7 @@ const Header = () => {
                 <NavLink to="#deliveryAndPayment">{"Доставка и оплата"}</NavLink>
                 <NavLink to="#basket">{"Корзина"}</NavLink>
                 <NavLink to="#about">{"О нас"}</NavLink>
-                <button className="py-3 px-4 rounded-lg bg-gray-800 text-white hover:bg-gray-900">
-                    {"Войти"}
-                </button>
+                <Button className="cursor-pointer">{"Войти"}</Button>
             </div>
         </div>
     )
