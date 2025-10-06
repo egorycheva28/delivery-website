@@ -50,7 +50,9 @@ export const useFilterDialog = (filters: DishListFilters,
 
     const filterForm = useForm<GetFilterSchema>({
         defaultValues: {
-            ingredients: []
+            ingredients: filters.ingredients || [],
+            min_price: filters.min_price || undefined,
+            max_price: filters.max_price || undefined
         }
     })
 
