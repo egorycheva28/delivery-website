@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button.tsx";
 import FilterDialog from "@/pages/Menu/components/FilterDialog/FilterDialog.tsx";
 import DishCard from "@/components/DishCard/DishCard.tsx";
 import CustomPagination from "@/components/Pagination/CustomPagination.tsx";
+import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBasketBtn.tsx";
 
 const Menu = () => {
     const { state, functions } = useMenu()
@@ -78,9 +79,7 @@ const Menu = () => {
             <div className="flex items-center justify-around flex-wrap gap-10">
                 {state.dishes.map(dish => (
                     <DishCard key={dish.id} {...dish}>
-                        <Button className="h-10 w-full">
-                            {"Добавить в корзину"}
-                        </Button>
+                        <AddBasketBtn className="w-full" idDish={dish.id}/>
                     </DishCard>
                 ))}
             </div>
