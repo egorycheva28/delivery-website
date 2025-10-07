@@ -1,0 +1,129 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { useEditAboutDialog } from "./hooks/useEditAboutDialog";
+
+
+interface NewOperatorDialogProps extends EditAboutDTO {
+    abouts: EditAboutDTO;
+    setAbouts: (abouts: EditAboutDTO) => void;
+    setIsOpen: (isOpen: boolean) => void;
+    isOpen: boolean;
+}
+
+const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDialogProps) => {
+    const { state,
+        form,
+        functions } = useEditAboutDialog(abouts, setAbouts, setIsOpen, isOpen);
+
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Редактирование информации "О нас"</DialogTitle>
+                </DialogHeader>
+                <Form {...form}>
+                    <form onSubmit={functions.editAbout} className='w-full space-y-4'>
+                        <div className="flex flex-col gap-4 items-center">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Наименование компании"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Наименование компании" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="phoneOperator"
+                                render={({ field }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Телефон оператора"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Телефон оператора" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="phoneManager"
+                                render={({ field }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Телефон менеджера"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Телефон менеджера" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Email для связи"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Email для связи" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Почтовый адрес"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Почтовый адрес" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="information"
+                                render={({ field }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Доп. инфа"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Доп. инфа" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="flex flex-row gap-10">
+                            <Button type='button' onClick={() => setIsOpen(false)} className='h-10 w-[45%] cursor-pointer'>
+                                {"Отмена"}
+                            </Button>
+                            <Button type='submit' className='h-10 w-[45%] cursor-pointer'>
+                                {"Сохранить"}
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
+export default EditAboutDialog;
