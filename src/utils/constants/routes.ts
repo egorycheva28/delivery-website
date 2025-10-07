@@ -1,4 +1,5 @@
 export const ROUTES = {
     ROOT: '/',
-    DISH_DETAILS: '/dish/:id'
+    DISH_DETAILS: '/dish/:id',
+    OPERATORS: '/operators'
 }
