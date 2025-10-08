@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form"
 import { useEffect } from "react"
-import type { EditAboutSchema } from "../constants/EditAboutShema"
+import { editAboutSchema } from "../constants/EditAboutShema"
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useEditAboutDialog = (abouts: EditAboutDTO,
     setAbouts: (abouts: EditAboutDTO) => void,
     setIsOpen: (isOpen: boolean) => void, isOpen: boolean) => {
 
-    const aboutForm = useForm<EditAboutSchema>({
+    const aboutForm = useForm<EditAboutDTO>({
+        resolver: zodResolver(editAboutSchema),
         defaultValues: {
             name: abouts.name || '',
             phoneOperator: abouts.phoneOperator || '',
@@ -15,7 +17,7 @@ export const useEditAboutDialog = (abouts: EditAboutDTO,
             address: abouts.address || '',
             information: abouts.information || ''
         }
-    })
+    });
 
     const editAbout = aboutForm.handleSubmit(
         (data) => {

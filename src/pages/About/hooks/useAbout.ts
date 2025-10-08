@@ -8,8 +8,8 @@ export const useAbout = () => {
     const [abouts, setAbouts] = useState<EditAboutDTO>(
         {
             name: "HITs Delivery service",
-            phoneOperator: "8 (999) 999-99-99",
-            phoneManager: "8 (999) 999-99-88",
+            phoneOperator: "89999999999",
+            phoneManager: "89999999888",
             email: "string@mail.com",
             address: "string",
             information: "Доставим быстро и качественно!"

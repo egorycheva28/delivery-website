@@ -29,7 +29,7 @@ const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDi
                             <FormField
                                 control={form.control}
                                 name="name"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Наименование компании"}
@@ -37,13 +37,16 @@ const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDi
                                         <FormControl>
                                             <Input placeholder="Наименование компании" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="phoneOperator"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Телефон оператора"}
@@ -51,13 +54,16 @@ const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDi
                                         <FormControl>
                                             <Input placeholder="Телефон оператора" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="phoneManager"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Телефон менеджера"}
@@ -65,13 +71,16 @@ const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDi
                                         <FormControl>
                                             <Input placeholder="Телефон менеджера" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="email"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Email для связи"}
@@ -79,13 +88,16 @@ const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDi
                                         <FormControl>
                                             <Input placeholder="Email для связи" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="address"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Почтовый адрес"}
@@ -93,13 +105,16 @@ const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDi
                                         <FormControl>
                                             <Input placeholder="Почтовый адрес" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="information"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Доп. инфа"}
@@ -107,6 +122,9 @@ const EditAboutDialog = ({ abouts, setAbouts, setIsOpen, isOpen }: NewOperatorDi
                                         <FormControl>
                                             <Input placeholder="Доп. инфа" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />

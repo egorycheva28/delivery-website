@@ -26,7 +26,7 @@ const About = () => {
             <span className="flex text-left text-3xl font-normal">{state.abouts.information}</span>
             <div className="flex flex-col border border-black rounded-lg py-6 px-10 gap-6 w-full">
                 <span className="text-2xl font-medium">Доступные средства связи:</span>
-                <div className="flex flex-row justify-between w-full">
+                <div className="flex flex-col lg:flex-row justify-between w-full gap-4">
                     <AboutItem icon={<Phone className="w-[40px] h-[40px]" />} title={"Телефон оператора:"} aboutItem={state.abouts.phoneOperator} />
                     <AboutItem icon={<Phone className="w-[40px] h-[40px]" />} title={"Телефон менеджера:"} aboutItem={state.abouts.phoneManager} />
                     <AboutItem icon={<Mail className="w-[40px] h-[40px]" />} title={"Email для связи:"} aboutItem={state.abouts.email} />
