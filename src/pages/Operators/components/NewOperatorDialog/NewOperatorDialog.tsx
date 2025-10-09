@@ -3,9 +3,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useNewOperatorDialog } from "./hooks/useNewOperatorDialog";
-import type { NewOperatorDTO } from "@/utils/types/NewOperatorDTO";
 
-interface NewOperatorDialogProps {
+interface NewOperatorDialogProps extends NewOperatorDTO {
     newOperator: NewOperatorDTO;
     setNewOperator: (newOperator: NewOperatorDTO) => void;
     setIsOpen: (isOpen: boolean) => void;
@@ -29,7 +28,7 @@ const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: N
                             <FormField
                                 control={form.control}
                                 name="name"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"ФИО"}
@@ -37,13 +36,16 @@ const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: N
                                         <FormControl>
                                             <Input placeholder="ФИО" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="phone"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Номер телефона"}
@@ -51,13 +53,16 @@ const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: N
                                         <FormControl>
                                             <Input placeholder="Номер телефона" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="password"
-                                render={({ field }) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
                                             {"Пароль"}
@@ -65,6 +70,9 @@ const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: N
                                         <FormControl>
                                             <Input placeholder="Пароль" {...field} />
                                         </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
                                     </FormItem>
                                 )}
                             />
