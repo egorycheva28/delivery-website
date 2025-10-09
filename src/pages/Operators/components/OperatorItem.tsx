@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import type { OperatorDTO } from "@/utils/types/OperatorDTO";
 import { Phone } from "lucide-react";
 
 interface OperatorItemProps {

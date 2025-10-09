@@ -1,14 +1,14 @@
-import type { NewOperatorDTO } from "@/utils/types/NewOperatorDTO"
 import { useForm } from "react-hook-form"
-import type { NewOperatorSchema } from "../constants/NewOperatorShema"
+import { newOperatorSchema, type NewOperatorSchema } from "../constants/NewOperatorShema"
 import { useEffect } from "react"
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useNewOperatorDialog = (newOperator: NewOperatorDTO,
     setNewOperator: (newOperator: NewOperatorDTO) => void,
     setIsOpen: (isOpen: boolean) => void, isOpen: boolean) => {
 
-
-    const newOperatorForm = useForm<NewOperatorSchema>({
+    const newOperatorForm = useForm<NewOperatorDTO>({
+        resolver: zodResolver(newOperatorSchema),
         defaultValues: {
             name: newOperator.name || '',
             phone: newOperator.phone || '',
