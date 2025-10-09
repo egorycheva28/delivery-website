@@ -4,23 +4,28 @@ import Root from "./pages/Root/Root";
 import Menu from "@/pages/Menu/Menu.tsx";
 import DishDetail from "@/pages/DishDetail/DishDetail.tsx";
 import Operators from "./pages/Operators/Operators";
+import DishManagement from "./pages/DishManagement/DishManagement";
 
 export const router = createBrowserRouter([
     {
         path: ROUTES.ROOT,
-        element: <Root/>,
+        element: <Root />,
         children: [
             {
                 path: ROUTES.ROOT,
-                element: <Menu/>
+                element: <Menu />
             },
             {
                 path: ROUTES.DISH_DETAILS,
-                element: <DishDetail/>
+                element: <DishDetail />
             },
             {
                 path: ROUTES.OPERATORS,
                 element: <Operators />
+            },
+            {
+                path: ROUTES.DISHMANAGEMENT,
+                element: <DishManagement />
             }
         ]
     }
