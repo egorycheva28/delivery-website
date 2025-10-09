@@ -1,3 +1,14 @@
+interface NewOperatorDTO {
+    name: string;
+    phone: string;
+    password: string;
+}
+
+interface OperatorDTO {
+    name: string;
+    phone: string;
+}
+
 interface Dish {
     id: string;
     name: string;
