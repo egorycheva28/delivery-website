@@ -3,6 +3,7 @@ import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/
 import {Input} from "@/components/ui/input.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {Textarea} from "@/components/ui/textarea.tsx";
 
 const BasketForm = () => {
     const { state,
@@ -78,6 +79,21 @@ const BasketForm = () => {
                         )}
                     />
                 )}
+                <FormField
+                    control={form.control}
+                    name='comment'
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Введите комментарий"
+                                    className="resize-none min-h-[160px]"
+                                    {...field}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
                 <div>
                     <Select onValueChange={functions.handleSelectPayment}>
                         <SelectTrigger className="!h-10 max-w-64">

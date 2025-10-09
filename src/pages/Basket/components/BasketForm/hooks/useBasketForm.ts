@@ -11,7 +11,8 @@ export const useBasketForm = () => {
             deliveryAddress: '',
             email: '',
             password: isRegistered ? '' : undefined,
-            paymentMethod: ''
+            paymentMethod: '',
+            comment: undefined
         }
     });
 
