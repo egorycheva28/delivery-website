@@ -12,11 +12,6 @@ export const router = createBrowserRouter([
         element: <Root />,
         children: [
             {
-                path: ROUTES.ABOUT,
-                element: <About />
-        element: <Root/>,
-        children: [
-            {
                 path: ROUTES.ROOT,
                 element: <Menu/>
             },
@@ -27,6 +22,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.OPERATORS,
                 element: <Operators />
+            },
+            {
+                path: ROUTES.ABOUT,
+                element: <About/>
             }
         ]
     }
