@@ -5,6 +5,7 @@ import About from "./pages/About/About";
 import Menu from "@/pages/Menu/Menu.tsx";
 import DishDetail from "@/pages/DishDetail/DishDetail.tsx";
 import Operators from "./pages/Operators/Operators";
+import Basket from "@/pages/Basket/Basket.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.DISH_DETAILS,
                 element: <DishDetail/>
+            },
+            {
+                path: ROUTES.BASKET,
+                element: <Basket/>
             },
             {
                 path: ROUTES.OPERATORS,
