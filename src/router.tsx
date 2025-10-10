@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import { ROUTES } from "./utils/constants/routes";
 import Root from "./pages/Root/Root";
+import About from "./pages/About/About";
 import Menu from "@/pages/Menu/Menu.tsx";
 import DishDetail from "@/pages/DishDetail/DishDetail.tsx";
 import Operators from "./pages/Operators/Operators";
 import DishManagement from "./pages/DishManagement/DishManagement";
+import Basket from "@/pages/Basket/Basket.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -20,12 +22,19 @@ export const router = createBrowserRouter([
                 element: <DishDetail />
             },
             {
+                path: ROUTES.BASKET,
+                element: <Basket/>
+            },
+            {
                 path: ROUTES.OPERATORS,
                 element: <Operators />
             },
             {
                 path: ROUTES.DISHMANAGEMENT,
                 element: <DishManagement />
+            },
+                path: ROUTES.ABOUT,
+                element: <About/>
             }
         ]
     }

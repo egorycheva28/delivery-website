@@ -1,5 +1,6 @@
 import {NavLink} from "react-router-dom";
 import {Button} from "@/components/ui/button.tsx";
+import {ROUTES} from "@/utils/constants/routes.ts";
 
 const Header = () => {
     return (
@@ -8,8 +9,8 @@ const Header = () => {
             <div className="flex items-center gap-12">
                 <NavLink to="/">{"Меню"}</NavLink>
                 <NavLink to="#deliveryAndPayment">{"Доставка и оплата"}</NavLink>
-                <NavLink to="#basket">{"Корзина"}</NavLink>
-                <NavLink to="#about">{"О нас"}</NavLink>
+                <NavLink to={ROUTES.BASKET}>{"Корзина"}</NavLink>
+                <NavLink to={ROUTES.ABOUT}>{"О нас"}</NavLink>
                 <Button className="cursor-pointer">{"Войти"}</Button>
             </div>
         </div>
