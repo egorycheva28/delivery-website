@@ -27,3 +27,12 @@ interface Dish {
     rating: number;
     photos: string[];
 }
+
+interface NewDishDTO {
+    name: string,
+    category: string,
+    price: number,
+    description: string,
+    ingredients: string,
+    photo: string
+}
