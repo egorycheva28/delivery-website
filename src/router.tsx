@@ -30,9 +30,10 @@ export const router = createBrowserRouter([
                 element: <Operators />
             },
             {
-                path: ROUTES.DISHMANAGEMENT,
+                path: ROUTES.DISH_MANAGEMENT,
                 element: <DishManagement />
             },
+            {
                 path: ROUTES.ABOUT,
                 element: <About/>
             }
