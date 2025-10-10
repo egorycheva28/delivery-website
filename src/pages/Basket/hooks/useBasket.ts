@@ -1,4 +1,4 @@
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 
 export const useBasket = () => {
     const dishes = [
@@ -25,6 +25,8 @@ export const useBasket = () => {
         }
     ]
 
+    const [isOpen, setIsOpen] = useState(false);
+
     const totalAmount = useMemo((): number => {
         return dishes.reduce((sum, dish) => {
             return sum + (dish.price * dish.dishNum);
@@ -36,7 +38,7 @@ export const useBasket = () => {
     }
 
     return {
-        state: { dishes, totalAmount },
-        functions: { handleDeleteAll }
+        state: { dishes, totalAmount, isOpen },
+        functions: { handleDeleteAll, setIsOpen }
     }
 }

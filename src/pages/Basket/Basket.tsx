@@ -3,6 +3,7 @@ import DishBasketCard from "@/pages/Basket/components/DishBasketCard/DishBasketC
 import {Button} from "@/components/ui/button.tsx";
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import BasketForm from "@/pages/Basket/components/BasketForm/BasketForm.tsx";
+import SuccessBasketDesign from "@/pages/Basket/components/SuccessBasketDesign/SuccessBasketDesign.tsx";
 
 const Basket = () => {
     const { state, functions } = useBasket()
@@ -28,7 +29,8 @@ const Basket = () => {
                         <p>{"Итоговая сумма:"}</p>
                         <p>{`${state.totalAmount} ₽`}</p>
                     </div>
-                    <BasketForm/>
+                    <BasketForm openSuccessBasketDesign={() => functions.setIsOpen(true)}/>
+                    <SuccessBasketDesign isOpen={state.isOpen} setIsOpen={functions.setIsOpen}/>
                 </>
             ) : (
                 <p className="text-center text-xl font-bold">{"Корзина пуста"}</p>
