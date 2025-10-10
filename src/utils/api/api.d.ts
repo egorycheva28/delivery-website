@@ -27,3 +27,12 @@ interface Dish {
     rating: number;
     photos: string[];
 }
+
+interface Order {
+    number: number;
+    date: string;
+    address: string;
+    price: number;
+    status: string;
+    payment: string;
+}

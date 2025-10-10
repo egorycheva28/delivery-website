@@ -3,5 +3,6 @@ export const ROUTES = {
     ABOUT: '/about',
     DISH_DETAILS: '/dish/:id',
     OPERATORS: '/operators',
-    BASKET: '/basket'
+    BASKET: '/basket',
+    ORDERS: '/orders'
 }
