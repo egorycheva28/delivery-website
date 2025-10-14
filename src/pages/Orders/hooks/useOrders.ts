@@ -3,7 +3,8 @@ import { useSearchParams } from "react-router-dom";
 
 export interface OrderListFilters {
     statuses?: string[],
-    operators?: string[]
+    operators?: string[],
+    amOperator: boolean
 }
 
 export const useOrders = () => {
@@ -55,13 +56,18 @@ export const useOrders = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const initialFilters = useMemo((): OrderListFilters => {
-        const params: OrderListFilters = {};
+        const params: OrderListFilters = {
+            amOperator: false
+        };
 
         const statuses = searchParams.get('statuses');
         if (statuses) params.statuses = statuses.split(',');
 
         const operators = searchParams.get('operators');
         if (operators) params.operators = operators.split(',');
+
+        const amOperator = searchParams.get('amOperator');
+        if (amOperator) params.amOperator = amOperator === 'true';
 
         return params;
     }, []);
@@ -81,12 +87,23 @@ export const useOrders = () => {
         } else {
             params.delete('operators');
         }
+        if (role == 'admin') {
+            params.delete('amOperator');
+        } else if (filters.amOperator === true) {
+            params.set('amOperator', 'true');
+
+        } else {
+            params.set('amOperator', 'false');
+        }
 
         setSearchParams(params, { replace: true });
     }, [filters])
 
     return {
         state: { isOpen, orders, role, isStatus, isOperator, filters, myOrders, isComment, comment },
-        functions: { setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters, setMyOrders, appointOperator, setIsComment, setComment }
+        functions: {
+            setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters,
+            setMyOrders, appointOperator, setIsComment, setComment
+        }
     }
 };
