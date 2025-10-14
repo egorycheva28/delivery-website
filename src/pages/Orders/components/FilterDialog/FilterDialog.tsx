@@ -2,20 +2,25 @@ import { useFilterDialog } from "./hooks/useFilterDialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
-import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { Minus, Plus } from "lucide-react";
+import type { OrderListFilters } from "../../hooks/useOrders";
 
 interface FilterDialogProps {
-    // filters: DishListFilters;
-    //setFilters: (filters: DishListFilters) => void;
+    filters: OrderListFilters;
+    setFilters: (filters: OrderListFilters) => void;
     setIsOpen: (isOpen: boolean) => void;
     isOpen: boolean;
+    setIsStatus: (isOpen: boolean) => void;
+    isStatus: boolean;
+    setIsOperator: (isOpen: boolean) => void;
+    isOperator: boolean;
 }
 
-const FilterDialog = ({ setIsOpen, isOpen }: FilterDialogProps) => {
+const FilterDialog = ({ filters, setFilters, setIsOpen, isOpen, setIsStatus, isStatus, setIsOperator, isOperator }: FilterDialogProps) => {
     const { state,
         form,
-        functions } = useFilterDialog(setIsOpen, isOpen);
+        functions } = useFilterDialog(filters, setFilters, setIsOpen);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -24,67 +29,104 @@ const FilterDialog = ({ setIsOpen, isOpen }: FilterDialogProps) => {
                     <DialogTitle>Фильтры</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={functions.onSubmit} className='w-full space-y-4'>
-                        <FormField
-                            control={form.control}
-                            name="ingredients"
-                            render={() => (
-                                <FormItem>
-                                    {state.ingredients.map((ingredient) => (
-                                        <FormField
-                                            key={ingredient.id}
-                                            control={form.control}
-                                            name="ingredients"
-                                            render={({ field }) => (
-                                                <FormItem className="flex flex-row items-center gap-2">
-                                                    <FormControl>
-                                                        <Checkbox
-                                                            checked={field.value?.includes(ingredient.id)}
-                                                            onCheckedChange={(checked) => {
-                                                                checked
-                                                                    ? field.onChange([...field.value, ingredient.id])
-                                                                    : field.onChange(
-                                                                        field.value?.filter(
-                                                                            (value: string) => value !== ingredient.id
-                                                                        )
-                                                                    )
-                                                            }}
-                                                        />
-                                                    </FormControl>
-                                                    <FormLabel className="text-sm font-normal">
-                                                        {ingredient.label}
-                                                    </FormLabel>
-                                                </FormItem>
-                                            )}
-                                        />
-                                    ))}
-                                </FormItem>
+                    <form onSubmit={functions.onSubmit} className='w-full space-y-4 flex flex-col'>
+                        <div className="flex flex-row justify-between items-center cursor-pointer" onClick={() => setIsStatus(!isStatus)}>
+                            <span>Фильтры по статусам</span>
+                            {isStatus ? (
+                                <Minus />
+                            ) : (
+                                <Plus />
                             )}
-                        />
-                        <div className="flex justify-between items-center">
-                            <FormField
-                                control={form.control}
-                                name="min_price"
-                                render={({ field }) => (
-                                    <FormItem className="w-[190px]">
-                                        <FormControl>
-                                            <Input placeholder="MIN цена" {...field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="max_price"
-                                render={({ field }) => (
-                                    <FormItem className="w-[190px]">
-                                        <FormControl>
-                                            <Input placeholder="MAX цена" {...field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
                         </div>
+                        {isStatus ? (
+                            <FormField
+                                control={form.control}
+                                name="statuses"
+                                render={() => (
+                                    <FormItem>
+                                        {state.statuses.map((status) => (
+                                            <FormField
+                                                key={status.id}
+                                                control={form.control}
+                                                name="statuses"
+                                                render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-center gap-2">
+                                                        <FormControl>
+                                                            <Checkbox
+                                                                checked={field.value?.includes(status.id)}
+                                                                onCheckedChange={(checked) => {
+                                                                    checked
+                                                                        ? field.onChange([...field.value, status.id])
+                                                                        : field.onChange(
+                                                                            field.value?.filter(
+                                                                                (value: string) => value !== status.id
+                                                                            )
+                                                                        )
+                                                                }}
+                                                            />
+                                                        </FormControl>
+                                                        <FormLabel className="text-sm font-normal">
+                                                            {status.label}
+                                                        </FormLabel>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        ))}
+                                    </FormItem>
+                                )}
+                            />
+                        ) : (
+                            null
+                        )}
+                        <hr className="border-t border-gray-300" />
+                        <div className="flex flex-row justify-between items-center cursor-pointer " onClick={() => setIsOperator(!isOperator)}>
+                            <span>Фильтры по операторам</span>
+                            {isOperator ? (
+                                <Minus />
+                            ) : (
+                                <Plus />
+                            )}
+                        </div>
+                        {isOperator ? (
+                            <FormField
+                                control={form.control}
+                                name="operators"
+                                render={() => (
+                                    <FormItem>
+                                        {state.operators.map((operator) => (
+                                            <FormField
+                                                key={operator.id}
+                                                control={form.control}
+                                                name="operators"
+                                                render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-center gap-2">
+                                                        <FormControl>
+                                                            <Checkbox
+                                                                checked={field.value?.includes(operator.id)}
+                                                                onCheckedChange={(checked) => {
+                                                                    checked
+                                                                        ? field.onChange([...field.value, operator.id])
+                                                                        : field.onChange(
+                                                                            field.value?.filter(
+                                                                                (value: string) => value !== operator.id
+                                                                            )
+                                                                        )
+                                                                }}
+                                                            />
+                                                        </FormControl>
+                                                        <FormLabel className="text-sm font-normal">
+                                                            {operator.label}
+                                                        </FormLabel>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        ))}
+                                    </FormItem>
+                                )}
+                            />
+                        ) : (
+                            null
+                        )}
                         <Button type='submit' className='h-10 w-full'>
                             {"Применить"}
                         </Button>

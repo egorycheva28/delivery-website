@@ -1,76 +1,86 @@
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import type { GetFilterSchema } from "../constants/FilterSchema"
+import type { OrderListFilters } from "@/pages/Orders/hooks/useOrders"
 
 export const useFilterDialog = (
-    setIsOpen: (isOpen: boolean) => void, isOpen: boolean) => {
+    filters: OrderListFilters,
+    setFilters: (filters: OrderListFilters) => void,
+    setIsOpen: (isOpen: boolean) => void) => {
 
-    const ingredients = [
+    const statuses = [
         {
-            id: "onion",
-            label: "Лук",
+            id: "new",
+            label: "Новый",
         },
         {
-            id: "meat",
-            label: "Мясо",
+            id: "confirmed",
+            label: "Подтвержден",
         },
         {
-            id: "bird",
-            label: "Птица",
+            id: "inPreparation",
+            label: "Готовится",
         },
         {
-            id: "fish",
-            label: "Рыба",
+            id: "awaiting",
+            label: "Ожидает курьера",
         },
         {
-            id: "eggs",
-            label: "Яйца",
+            id: "handed",
+            label: "Передан курьеру",
         },
         {
-            id: "nuts",
-            label: "Орехи",
+            id: "delievered",
+            label: "Доставлен",
         },
         {
-            id: "dairyProducts",
-            label: "Молочные продукты",
+            id: "cancelled",
+            label: "Отменен",
+        }
+    ] as const
+
+    const operators = [
+        {
+            id: "1",
+            label: "Оператор 1",
         },
         {
-            id: "berries",
-            label: "Ягоды",
+            id: "2",
+            label: "Оператор 2",
         },
         {
-            id: "greens",
-            label: "Зелень",
+            id: "3",
+            label: "Оператор 3",
         },
         {
-            id: "sharp",
-            label: "Острое",
+            id: "4",
+            label: "Оператор 4",
+        },
+        {
+            id: "5",
+            label: "Оператор 5",
         }
     ] as const
 
     const filterForm = useForm<GetFilterSchema>({
         defaultValues: {
-
+            statuses: filters.statuses || [],
+            operators: filters.operators || []
         }
     })
 
     const onSubmit = filterForm.handleSubmit(
         (data) => {
-
+            setFilters({
+                ...filters,
+                statuses: data.statuses,
+                operators: data.operators
+            })
             setIsOpen(false)
         }
     )
 
-    useEffect(() => {
-        if (!isOpen) {
-            filterForm.reset({
-
-            })
-        }
-    }, [isOpen])
-
     return {
-        state: { ingredients },
+        state: { statuses, operators },
         form: filterForm,
         functions: { onSubmit }
     }

@@ -1,9 +1,8 @@
 import * as z from 'zod';
 
 const filterSchema = z.object({
-    ingredients: z.array(z.string()).default([]),
-    min_price: z.number().optional(),
-    max_price: z.number().optional()
+    statuses: z.array(z.string()).default([]),
+    operators: z.array(z.string()).default([])
 })
 
 export type GetFilterSchema = z.infer<typeof filterSchema>;
