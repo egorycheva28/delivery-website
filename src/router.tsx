@@ -8,6 +8,7 @@ import Operators from "./pages/Operators/Operators";
 import DishManagement from "./pages/DishManagement/DishManagement";
 import Basket from "@/pages/Basket/Basket.tsx";
 import Statistics from "@/pages/Statistics/Statistics.tsx";
+import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.STATISTICS,
                 element: <Statistics/>
+            },
+            {
+                path: ROUTES.DISH_CATEGORY,
+                element: <DishCategory/>
             }
         ]
     }
