@@ -7,6 +7,7 @@ import DishDetail from "@/pages/DishDetail/DishDetail.tsx";
 import Operators from "./pages/Operators/Operators";
 import DishManagement from "./pages/DishManagement/DishManagement";
 import Basket from "@/pages/Basket/Basket.tsx";
+import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.ABOUT,
                 element: <About/>
+            },
+            {
+                path: ROUTES.DISH_CATEGORY,
+                element: <DishCategory/>
             }
         ]
     }
