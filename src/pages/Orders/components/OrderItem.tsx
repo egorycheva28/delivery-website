@@ -1,15 +1,30 @@
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, RussianRuble } from "lucide-react";
+import { Calendar, MapPin, MessageSquare, RussianRuble } from "lucide-react";
+import CommentDialog from "./CommentDialog/CommentDialog";
 
 interface OrderItemProps {
     order: Order;
+    role: string;
+    appointOperator: () => void;
+    isComment: boolean;
+    setIsComment: (isComment: boolean) => void;
+    comment: NewComment;
+    setComment: (newComment: NewComment) => void;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isComment, setIsComment, comment, setComment }) => {
     return (
         <div className="flex flex-col w-[100%] p-10 gap-6">
             <div className="flex flex-row justify-between">
-                <span className="text-2xl font-medium underline">Заказ №{order.number}</span>
+                <div className="flex flex-row gap-4 ">
+                    <span className="text-2xl font-medium underline">Заказ №{order.number}</span>
+                    {role == 'operator' ? (
+                        <MessageSquare className=" flex items-end h-[60%] cursor-pointer" onClick={() => setIsComment(true)} />
+                    ) : (
+                        null
+                    )}
+                    <CommentDialog isComment={isComment} setIsComment={setIsComment} order={order} comment={comment} setComment={setComment} />
+                </div>
                 <div className="flex flex-col items-center">
                     <div className="flex flex-row items-center">
                         <span className="text-3xl font-medium">{order.price}</span>
@@ -35,8 +50,13 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
                         </div>
                     </div>
                 </div>
-                <div>
+                <div className="flex flex-col gap-4">
                     <Button className="cursor-pointer">{order.status}</Button>
+                    {role == 'operator' && order.status == 'new' ? (
+                        <Button className="cursor-pointer" onClick={appointOperator}>Назначить себя оператором</Button>
+                    ) : (
+                        null
+                    )}
                 </div>
             </div>
         </div>

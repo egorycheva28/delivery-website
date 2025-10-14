@@ -35,4 +35,9 @@ interface Order {
     price: number;
     status: string;
     payment: string;
+    comment: string;
+}
+
+interface NewComment {
+    newComment: string;
 }

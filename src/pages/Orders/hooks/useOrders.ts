@@ -7,18 +7,27 @@ export interface OrderListFilters {
 }
 
 export const useOrders = () => {
-    const [role, setRole] = useState<string>('admin');
+    const [role, setRole] = useState<string>('operator');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isStatus, setIsStatus] = useState<boolean>(false);
     const [isOperator, setIsOperator] = useState<boolean>(false);
+    const [myOrders, setMyOrders] = useState<boolean>(false);
+    const [isComment, setIsComment] = useState<boolean>(false);
+    const [comment, setComment] = useState<NewComment>(
+        {
+            newComment: ''
+        }
+    );
+
     const [orders, setOrders] = useState<Order[]>([
         {
             number: 1,
             date: 'string',
             address: 'string',
             price: 500,
-            status: 'string',
-            payment: 'наличными'
+            status: 'new',
+            payment: 'наличными',
+            comment: ''
         },
         {
             number: 2,
@@ -26,7 +35,8 @@ export const useOrders = () => {
             address: 'string',
             price: 500,
             status: 'string',
-            payment: 'картой'
+            payment: 'картой',
+            comment: ''
         },
         {
             number: 3,
@@ -34,9 +44,14 @@ export const useOrders = () => {
             address: 'string',
             price: 500,
             status: 'string',
-            payment: 'QR-код'
+            payment: 'QR-код',
+            comment: ''
         }
     ])
+
+    const appointOperator = () => {
+        //логика назначения себя оператором
+    }
 
     const [searchParams, setSearchParams] = useSearchParams();
     const initialFilters = useMemo((): OrderListFilters => {
@@ -71,7 +86,7 @@ export const useOrders = () => {
     }, [filters])
 
     return {
-        state: { isOpen, orders, role, isStatus, isOperator, filters },
-        functions: { setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters }
+        state: { isOpen, orders, role, isStatus, isOperator, filters, myOrders, isComment, comment },
+        functions: { setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters, setMyOrders, appointOperator, setIsComment, setComment }
     }
 };
