@@ -35,7 +35,7 @@ export const useOrders = () => {
             date: 'string',
             address: 'string',
             price: 500,
-            status: 'string',
+            status: 'cancelled',
             payment: 'картой',
             comment: ''
         },
@@ -44,7 +44,7 @@ export const useOrders = () => {
             date: 'string',
             address: 'string',
             price: 500,
-            status: 'string',
+            status: 'confirmed',
             payment: 'QR-код',
             comment: ''
         }
@@ -52,6 +52,10 @@ export const useOrders = () => {
 
     const appointOperator = () => {
         //логика назначения себя оператором
+    }
+
+    const changeStatus = () => {
+        //логика изменения статуса
     }
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -103,7 +107,7 @@ export const useOrders = () => {
         state: { isOpen, orders, role, isStatus, isOperator, filters, myOrders, isComment, comment },
         functions: {
             setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters,
-            setMyOrders, appointOperator, setIsComment, setComment
+            setMyOrders, appointOperator, setIsComment, setComment, changeStatus
         }
     }
 };

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, MessageSquare, RussianRuble } from "lucide-react";
 import CommentDialog from "./CommentDialog/CommentDialog";
+import { SelectStatus } from "@/components/SelectStatus/SelectStatus";
 
 interface OrderItemProps {
     order: Order;
@@ -10,9 +11,11 @@ interface OrderItemProps {
     setIsComment: (isComment: boolean) => void;
     comment: NewComment;
     setComment: (newComment: NewComment) => void;
+    changeStatus: () => void;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isComment, setIsComment, comment, setComment }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isComment, setIsComment, comment, setComment, changeStatus }) => {
+
     return (
         <div className="flex flex-col w-[100%] p-10 gap-6">
             <div className="flex flex-row justify-between">
@@ -34,7 +37,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                 </div>
             </div>
             <div className="flex flex-row gap-8 justify-between items-center">
-                <div className="flex flex-row gap-8">
+                <div className="flex flex-col lg:flex-row  gap-8">
                     <div className="flex flex-row items-center gap-4">
                         <Calendar className="w-[32px] h-[32px]" />
                         <div className="flex flex-col gap-1.5">
@@ -51,7 +54,32 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
-                    <Button className="cursor-pointer">{order.status}</Button>
+                    {role == 'admin' ? (
+                        <SelectStatus
+                            selected={{ id: order.status, name: order.status }}
+                            statuses={[
+                                { id: "new", name: "Новый" },
+                                { id: "confirmed", name: "Подвтержден" },
+                                { id: "inPreparation", name: "Готовится" },
+                                { id: "awaiting", name: "Ожидает курьера" },
+                                { id: "handed", name: "Передан курьеру" },
+                                { id: "delievered", name: "Доставлен" },
+                                { id: "cancelled", name: "Отменен" }
+                            ]}
+                            onChange={changeStatus}
+                        />
+                    ) : (
+                        <SelectStatus
+                            selected={{ id: order.status, name: order.status }}
+                            statuses={[
+                                { id: "new", name: "Новый" },
+                                { id: "confirmed", name: "Подвтержден" },
+                                { id: "cancelled", name: "Отменен" }
+                            ]}
+                            onChange={changeStatus}
+                        />
+                    )}
+
                     {role == 'operator' && order.status == 'new' ? (
                         <Button className="cursor-pointer" onClick={appointOperator}>Назначить себя оператором</Button>
                     ) : (

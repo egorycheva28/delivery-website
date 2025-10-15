@@ -41,3 +41,8 @@ interface Order {
 interface NewComment {
     newComment: string;
 }
+
+interface Status {
+    id: string;
+    name: string;
+}
