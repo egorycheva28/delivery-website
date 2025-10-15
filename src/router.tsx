@@ -5,8 +5,11 @@ import About from "./pages/About/About";
 import Menu from "@/pages/Menu/Menu.tsx";
 import DishDetail from "@/pages/DishDetail/DishDetail.tsx";
 import Operators from "./pages/Operators/Operators";
+import DishManagement from "./pages/DishManagement/DishManagement";
 import Basket from "@/pages/Basket/Basket.tsx";
 import Orders from "./pages/Orders/Orders";
+import Statistics from "@/pages/Statistics/Statistics.tsx";
+import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -30,12 +33,24 @@ export const router = createBrowserRouter([
                 element: <Operators />
             },
             {
+                path: ROUTES.DISH_MANAGEMENT,
+                element: <DishManagement />
+            },
+            {
                 path: ROUTES.ABOUT,
                 element: <About />
             },
             {
                 path: ROUTES.ORDERS,
                 element: <Orders />
+            },
+            {
+                path: ROUTES.STATISTICS,
+                element: <Statistics/>
+            },
+            {
+                path: ROUTES.DISH_CATEGORY,
+                element: <DishCategory/>
             }
         ]
     }

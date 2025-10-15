@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form";
 import {basketSchema, type BasketSchema} from "@/pages/Basket/components/BasketForm/constants/BasketSchema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 
-export const useBasketForm = () => {
+export const useBasketForm = (openSuccessBasketDesign: () => void) => {
     const isRegistered = false;
 
     const basketSubmitForm = useForm<BasketSchema>({
@@ -24,6 +24,7 @@ export const useBasketForm = () => {
 
     const onSubmit = basketSubmitForm.handleSubmit(async (values) => {
         console.log(values)
+        openSuccessBasketDesign();
     });
 
     return {

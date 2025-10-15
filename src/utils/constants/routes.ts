@@ -5,4 +5,7 @@ export const ROUTES = {
     OPERATORS: '/operators',
     BASKET: '/basket',
     ORDERS: '/orders'
+    DISH_MANAGEMENT: '/dishManagement',
+    STATISTICS: '/statics',
+    DISH_CATEGORY: '/dish_category'
 }
