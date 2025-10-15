@@ -36,8 +36,8 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                     <span className="font-medium">{order.payment}</span>
                 </div>
             </div>
-            <div className="flex flex-row gap-8 justify-between items-center">
-                <div className="flex flex-col lg:flex-row  gap-8">
+            <div className="flex flex-col sm:flex-row  gap-8 justify-between items-start sm:items-center">
+                <div className="flex flex-col lg:flex-row gap-8">
                     <div className="flex flex-row items-center gap-4">
                         <Calendar className="w-[32px] h-[32px]" />
                         <div className="flex flex-col gap-1.5">
