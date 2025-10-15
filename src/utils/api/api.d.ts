@@ -46,3 +46,7 @@ interface Status {
     id: string;
     name: string;
 }
+
+interface Reason {
+    reason: string;
+}

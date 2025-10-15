@@ -79,7 +79,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                             onChange={changeStatus}
                         />
                     )}
-
+                    <CommentDialog isComment={isComment} setIsComment={setIsComment} order={order} comment={comment} setComment={setComment} />
                     {role == 'operator' && order.status == 'new' ? (
                         <Button className="cursor-pointer" onClick={appointOperator}>Назначить себя оператором</Button>
                     ) : (
