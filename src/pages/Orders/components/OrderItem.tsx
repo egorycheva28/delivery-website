@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, MessageSquare, RussianRuble } from "lucide-react";
 import CommentDialog from "./CommentDialog/CommentDialog";
 import { SelectStatus } from "@/components/SelectStatus/SelectStatus";
+import { NavLink } from "react-router-dom";
 
 interface OrderItemProps {
     order: Order;
@@ -20,7 +21,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
         <div className="flex flex-col w-[100%] p-10 gap-6">
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-4 ">
-                    <span className="text-2xl font-medium underline">Заказ №{order.number}</span>
+                    <NavLink to={`/order/${order.id}`} className="cursor-pointer">
+                        <span className="text-2xl font-medium underline">Заказ №{order.number}</span>
+                    </NavLink>
                     {role == 'operator' ? (
                         <MessageSquare className=" flex items-end h-[60%] cursor-pointer" onClick={() => setIsComment(true)} />
                     ) : (
