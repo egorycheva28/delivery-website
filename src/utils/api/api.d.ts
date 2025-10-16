@@ -28,6 +28,29 @@ interface Dish {
     photos: string[];
 }
 
+interface Order {
+    number: number;
+    date: string;
+    address: string;
+    price: number;
+    status: string;
+    payment: string;
+    comment: string;
+}
+
+interface NewComment {
+    newComment: string;
+}
+
+interface Status {
+    id: string;
+    name: string;
+}
+
+interface Reason {
+    reason: string;
+}
+
 interface NewDishDTO {
     name: string,
     category: string,

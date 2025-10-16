@@ -3,8 +3,9 @@ export const ROUTES = {
     ABOUT: '/about',
     DISH_DETAILS: '/dish/:id',
     OPERATORS: '/operators',
-    DISH_MANAGEMENT: '/dishManagement',
     BASKET: '/basket',
+    ORDERS: '/orders'
+    DISH_MANAGEMENT: '/dishManagement',
     STATISTICS: '/statics',
     DISH_CATEGORY: '/dish_category'
 }
