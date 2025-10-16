@@ -27,6 +27,7 @@ export const useChangeOperatorDialog = (isChangeOperator: boolean,
 
     const changeOperator = () => {
         //логика смены оператора
+        setIsChangeOperator(false);
     }
 
     useEffect(() => {

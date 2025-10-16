@@ -1,29 +1,31 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
 import { useChangeOperatorDialog } from "./hooks/useChangeOperatorDialog";
-import OperatorItem from "@/pages/Operators/components/OperatorItem";
+import CustomPagination from "@/components/Pagination/CustomPagination";
+import ChangeOperatorItem from "./components/ChangeOperatorItem";
 
-interface HistoryDialogProps {
-    isHistory: boolean;
-    setIsHistory: (isHistory: boolean) => void;
+interface ChangeOperatorDialogProps {
+    isChangeOperator: boolean;
+    setIsChangeOperator: (isChangeOperator: boolean) => void;
 }
 
-const HistoryDialog = ({ isHistory, setIsHistory }: HistoryDialogProps) => {
-    const { state, functions } = useChangeOperatorDialog(isHistory, setIsHistory);
+const ChangeOperatorDialog = ({ isChangeOperator, setIsChangeOperator }: ChangeOperatorDialogProps) => {
+    const { state, functions } = useChangeOperatorDialog(isChangeOperator, setIsChangeOperator);
 
     return (
-        <Dialog open={isHistory} onOpenChange={setIsHistory}>
-            <DialogContent className="sm:max-w-md">
+        <Dialog open={isChangeOperator} onOpenChange={setIsChangeOperator}>
+            <DialogContent className="mx-auto max-w-md h-[700px] overflow-hidden w-auto">
                 <DialogHeader>
-                    <DialogTitle>История статусов</DialogTitle>
+                    <DialogTitle>Операторы</DialogTitle>
                 </DialogHeader>
-                <div>
+                <div className="flex-1 overflow-y-auto p-4 flex flex-col ">
                     {state.listOperators.map(operator => (
-                        <OperatorItem  operator={operator} /*changeOperator={functions.changeOperator}*/ />
+                        <ChangeOperatorItem operator={operator} changeOperator={functions.changeOperator} />
                     ))}
                 </div>
+                <CustomPagination totalPages={10} />
             </DialogContent>
         </Dialog>
     )
 }
 
-export default HistoryDialog;
+export default ChangeOperatorDialog;

@@ -9,7 +9,7 @@ interface DishCardProps extends Dish {
 }
 
 const DishCard = ({ id, photos, name, category, price, rating, description, children }: DishCardProps) => (
-    <Card className="w-[300px] h-[560px] flex flex-col overflow-hidden relative pt-0">
+    <Card className="w-[300px] h-[560px] min-h-[560px] flex flex-col overflow-hidden relative pt-0">
         <CardContent className="p-0 flex-grow">
             <Badge className="absolute top-0 right-0">
                 {`${price} ₽`}

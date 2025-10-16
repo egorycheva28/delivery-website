@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export const useOrderDetail = () => {
@@ -58,6 +58,10 @@ export const useOrderDetail = () => {
     const changeOperator = () => {
         //логика смены оператора
     }
+
+    useEffect(() => {
+        //логика получения новой инфы о заказе
+    }, [isChangeOperator, isAddDish]);
 
     return {
         state: { order, role, isComment, comment, user, isChangeOperator, isAddDish, isHistory },

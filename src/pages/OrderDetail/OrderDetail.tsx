@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/button";
 import DishItem from "./components/DishItem";
 import CustomPagination from "@/components/Pagination/CustomPagination";
 import HistoryDialog from "./components/HistoryDialog/HistoryDialog";
+import AddDishDialog from "./components/AddDichDialog/AddDishDialog";
+import ChangeOperatorDialog from "./components/ChangeOperatorDialog/ChangeOperatorDialog";
 
 const OrderDetail = () => {
     const { state, functions } = useOrderDetail();
 
     return (
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
-            {state.role == 'operator' ? (
+            {state.role == 'operator' && state.order.status == 'new' ? (
                 <div className="flex justify-end w-[90%]">
                     <Button className="cursor-pointer" onClick={functions.makeOperator}>Назначить себя оператором</Button>
                 </div>
@@ -56,13 +58,17 @@ const OrderDetail = () => {
                         <Headphones className="w-[36px] h-[36px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Ответсвенный оператор:</span>
-                            <span className="">{state.user.name}, {state.user.phone}</span>
+                            {state.user ? (
+                                <span>{state.user.name}, {state.user.phone}</span>
+                            ) : (
+                                <span>Оператор не назначен</span>
+                            )}
                         </div>
                     </div>
                     {state.role == 'admin' ? (
                         <div>
                             <Button className="cursor-pointer" onClick={() => functions.setIsChangeOperator(true)}>Сменить оператора</Button>
-
+                            <ChangeOperatorDialog isChangeOperator={state.isChangeOperator} setIsChangeOperator={functions.setIsChangeOperator} />
                         </div>
                     ) : (
                         null
@@ -74,7 +80,7 @@ const OrderDetail = () => {
                         {state.role == 'operator' ? (
                             <div>
                                 <Button className="cursor-pointer" onClick={() => functions.setIsAddDish(true)}>Добавить блюдо</Button>
-
+                                <AddDishDialog isAddDish={state.isAddDish} setIsAddDish={functions.setIsAddDish} />
                             </div>
                         ) : (
                             null
