@@ -50,7 +50,7 @@ const OrderDetail = () => {
                     </div>
                     <div>
                         <Button className="cursor-pointer" onClick={() => functions.setIsHistory(true)}>{state.order.status}</Button>
-                        <HistoryDialog isHistory={state.isHistory} setIsHistory={functions.setIsHistory} />
+                        <HistoryDialog isHistory={state.isHistory} setIsHistory={functions.setIsHistory} order={state.order} />
                     </div>
                 </div>
                 <div className="flex flex-row justify-between items-center p-8">
