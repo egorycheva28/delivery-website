@@ -88,7 +88,7 @@ const OrderDetail = () => {
                     </div>
                     <div className="flex flex-col w-full border border-black  divide-y divide-black">
                         {state.order.dishes.map(dish => (
-                            <DishItem key={dish.id} dish={dish} deleteDish={functions.deleteDish} />
+                            <DishItem key={dish.id} dish={dish} deleteDish={functions.deleteDish} role={state.role} />
                         ))}
                     </div>
                     <CustomPagination totalPages={10} />

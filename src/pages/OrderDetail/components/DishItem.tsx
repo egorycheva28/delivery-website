@@ -5,11 +5,12 @@ import { RussianRuble } from "lucide-react";
 interface DishItemProps {
     dish: Dish;
     deleteDish: () => void;
+    role: string;
 }
 
-const DishItem: React.FC<DishItemProps> = ({ dish, deleteDish }) => {
+const DishItem: React.FC<DishItemProps> = ({ dish, deleteDish, role }) => {
     return (
-        <div className="flex flex-row justify-between items-center w-full p-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full p-8 gap-8">
             <div className="flex flex-row items-center gap-4">
                 <img
                     src={dish.photos.length > 0 ? dish.photos[0] : "https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
@@ -24,10 +25,14 @@ const DishItem: React.FC<DishItemProps> = ({ dish, deleteDish }) => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col gap-4">
-                <AddBasketBtn className="w-full" idDish={dish.id} initialNum={2} />
-                <Button className="cursor-pointer" onClick={deleteDish}>Удалить из заказа</Button>
-            </div>
+            {role == 'operator' ? (
+                <div className="flex flex-col gap-4">
+                    <AddBasketBtn className="w-full" idDish={dish.id} initialNum={2} />
+                    <Button className="cursor-pointer" onClick={deleteDish}>Удалить из заказа</Button>
+                </div>
+            ) : (
+                null
+            )}
         </div>
     )
 }
