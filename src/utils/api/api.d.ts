@@ -39,6 +39,12 @@ interface Categories {
     description: string
 }
 
+interface Stat {
+    id: string,
+    operatorName: string,
+    orderAmount: number
+}
+
 interface Order {
     id: string;
     number: number;

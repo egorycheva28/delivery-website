@@ -32,17 +32,17 @@ const Statistics = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div>
                             <span className="font-semibold">Лидер: </span>
-                            {state.displayedData[0].name} ({state.displayedData[0].orderCount} заказов)
+                            {state.displayedData[0].operatorName} ({state.displayedData[0].orderAmount} заказов)
                         </div>
                         <div>
                             <span className="font-semibold">Среднее: </span>
                             {Math.round(state.displayedData.reduce((sum, op) =>
-                                sum + op.orderCount, 0) / state.displayedData.length)} заказов
+                                sum + op.orderAmount, 0) / state.displayedData.length)} заказов
                         </div>
                         <div>
                             <span className="font-semibold">Всего заказов: </span>
                             {state.displayedData.reduce((sum, op) =>
-                                sum + op.orderCount, 0)}
+                                sum + op.orderAmount, 0)}
                         </div>
                     </div>
                 </div>

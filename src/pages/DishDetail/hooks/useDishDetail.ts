@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {useGetDishByIdQuery} from "@/utils/api/hooks/useGetDishById.ts";
+import {useGetDishByIdQuery} from "@/utils/api/hooks/useGetDishByIdQuery.ts";
 
 export const useDishDetail = () => {
     const { id } = useParams<{ id: string }>();
