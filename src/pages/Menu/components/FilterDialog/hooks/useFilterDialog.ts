@@ -1,67 +1,67 @@
 import type {GetFilterSchema} from "@/pages/Menu/components/FilterDialog/constants/FilterSchema.ts";
 import {useForm} from "react-hook-form";
-import type {DishListFilters} from "@/pages/Menu/hooks/useMenu.ts";
+import type {GetFoodsWithFilterParams} from "@/utils/api/requests/foods/filter";
 
-export const useFilterDialog = (filters: DishListFilters,
-    setFilters: (filters: DishListFilters) => void,
+export const useFilterDialog = (filters: GetFoodsWithFilterParams,
+    setFilters: (filters: GetFoodsWithFilterParams) => void,
     setIsOpen: (isOpen: boolean) => void) => {
     const ingredients = [
         {
-            id: "onion",
+            id: "ONION",
             label: "Лук",
         },
         {
-            id: "meat",
+            id: "MEAT",
             label: "Мясо",
         },
         {
-            id: "bird",
+            id: "BIRD",
             label: "Птица",
         },
         {
-            id: "fish",
+            id: "FISH",
             label: "Рыба",
         },
         {
-            id: "eggs",
+            id: "EGGS",
             label: "Яйца",
         },
         {
-            id: "nuts",
+            id: "NUTS",
             label: "Орехи",
         },
         {
-            id: "dairyProducts",
+            id: "MILKY_PRODUCTS",
             label: "Молочные продукты",
         },
         {
-            id: "berries",
+            id: "BERRIES",
             label: "Ягоды",
         },
         {
-            id: "greens",
+            id: "GRASS",
             label: "Зелень",
         },
         {
-            id: "sharp",
+            id: "SPICY",
             label: "Острое",
         }
     ] as const
 
     const filterForm = useForm<GetFilterSchema>({
         defaultValues: {
-            ingredients: filters.ingredients || [],
-            min_price: filters.min_price || undefined,
-            max_price: filters.max_price || undefined
+            ingredients: filters.includeIngredients || [],
+            min_price: filters.minPrice || undefined,
+            max_price: filters.maxPrice || undefined
         }
     })
 
     const onSubmit = filterForm.handleSubmit(
         (data) => {
             setFilters({ ...filters,
-                ingredients: data.ingredients,
-                min_price: data.min_price,
-                max_price: data.max_price
+                includeIngredients: data.ingredients,
+                minPrice: data.min_price,
+                maxPrice: data.max_price
             })
             setIsOpen(false)
         }

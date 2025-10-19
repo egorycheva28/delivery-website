@@ -14,4 +14,4 @@ export interface GetFoodsWithFilterParams {
 export type GetFoodsWithFilterConfig = RequestConfig<GetFoodsWithFilterParams>;
 
 export const getFoodsWithFilter = ({ params, config }: GetFoodsWithFilterConfig) =>
-    instance.post<Dish[]>('localhost:8911/api/foods/filter', params, config);
+    instance.post<Dish[]>('http://localhost:8080/api/foods/filter', params, config);

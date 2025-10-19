@@ -15,7 +15,7 @@ interface PaginationProps {
 const CustomPagination = ({ totalPages, isGoToStart }: PaginationProps) => {
     const { state, functions } = useCustomPagination(totalPages, isGoToStart);
 
-    return (
+    return totalPages > 1 && (
         <Pagination>
             <PaginationContent>
                 <PaginationItem>

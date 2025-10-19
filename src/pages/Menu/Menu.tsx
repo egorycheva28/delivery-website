@@ -7,6 +7,7 @@ import FilterDialog from "@/pages/Menu/components/FilterDialog/FilterDialog.tsx"
 import DishCard from "@/components/DishCard/DishCard.tsx";
 import CustomPagination from "@/components/Pagination/CustomPagination.tsx";
 import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBasketBtn.tsx";
+import {getSortingForUrl} from "@/pages/Menu/helpers/getSortingForUrl.ts";
 
 const Menu = () => {
     const { state, functions } = useMenu()
@@ -29,15 +30,15 @@ const Menu = () => {
                         <SelectContent>
                             <SelectGroup>
                                 <SelectItem value="all">Все категории</SelectItem>
-                                <SelectItem value="breakfast">Завтрак</SelectItem>
-                                <SelectItem value="hotter">Горячее</SelectItem>
-                                <SelectItem value="salads">Салаты</SelectItem>
-                                <SelectItem value="drinks">Напитки</SelectItem>
-                                <SelectItem value="desserts">Десерты</SelectItem>
+                                {state.categories.data?.data.map(category => (
+                                    <SelectItem value={category.id}>{category.name}</SelectItem>
+                                ))}
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    <Select value={state.filters.sortBy || "without"} onValueChange={functions.handleSelectSorting}>
+                    <Select value={state.filters.sortBy && state.filters.sortDirection
+                        ? getSortingForUrl(state.filters.sortBy, state.filters.sortDirection)
+                        : "without"} onValueChange={functions.handleSelectSorting}>
                         <SelectTrigger className="!h-10 max-w-64">
                             <SelectValue placeholder="Тип сортировки" />
                         </SelectTrigger>
@@ -76,14 +77,18 @@ const Menu = () => {
                                   filters={state.filters} setFilters={functions.setFilters}/>
                 </div>
             </div>
-            <div className="flex items-center justify-around flex-wrap gap-10">
-                {state.dishes.data?.data.map(dish => (
-                    <DishCard key={dish.id} {...dish}>
-                        <AddBasketBtn className="w-full" idDish={dish.id}/>
-                    </DishCard>
-                ))}
-            </div>
-            <CustomPagination totalPages={10}/>
+            {state.displayedData && state.displayedData.length > 0 && (
+                <>
+                    <div className="flex items-center justify-around flex-wrap gap-10">
+                        {state.displayedData.map(dish => (
+                            <DishCard key={dish.id} {...dish}>
+                                <AddBasketBtn className="w-full" idDish={dish.id}/>
+                            </DishCard>
+                        ))}
+                    </div>
+                    <CustomPagination totalPages={state.totalPage} isGoToStart={state.goToStart}/>
+                </>
+            )}
         </div>
     )
 }

@@ -3,23 +3,16 @@ import {useDebounceCallback} from "@/utils/hooks/useDebounceCallback/useDebounce
 import {useSearchParams} from "react-router-dom";
 import type {GetFoodsWithFilterParams} from "@/utils/api/requests/foods/filter";
 import {useGetFoodsWithFiltersQuery} from "@/utils/api/hooks/useGetFoodsWithFiltersQuery.ts";
+import {getSortingForRequest} from "@/pages/Menu/helpers/getSortingForRequest.ts";
+import {getSortingForUrl} from "@/pages/Menu/helpers/getSortingForUrl.ts";
+import {useGetCategoriesQuery} from "@/utils/api/hooks/useGetCategoriesQuery.ts";
 
 const SEARCH_TIMEOUT = 500;
+const ITEMS_PER_PAGE = 8;
 export const useMenu = () => {
-    /*const dish = [
-        {
-            id: "string1",
-            name: "string",
-            category: "string",
-            description: "Проснись вместе со вкусом лета! Наш фруктовый завтрак — это взрыв свежести и витаминов в первой половине дня. Сочные дольки манго, хрустящие яблоки, спелые ягоды клубники и сладкий виноград — идеально сбалансированное сочетание для лёгкого старта.",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        }
-    ]*/
-
     const [searchParams, setSearchParams] = useSearchParams();
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [goToStart, setGoToStart] = useState(false);
 
     const initialFilters = useMemo((): GetFoodsWithFilterParams => {
         const params: GetFoodsWithFilterParams = {};
@@ -31,7 +24,11 @@ export const useMenu = () => {
         if (dish_category) params.categoryId = dish_category;
 
         const sorting = searchParams.get('sort');
-        if (sorting) params.sortBy = sorting;
+        if (sorting) {
+            const [sortBy, sortDirection] = getSortingForRequest(sorting)
+            params.sortBy = sortBy;
+            params.sortDirection = sortDirection;
+        }
 
         const min_price = searchParams.get('min_price');
         if (min_price) params.minPrice = parseInt(min_price);
@@ -75,19 +72,22 @@ export const useMenu = () => {
         } else {
             params.delete('category');
         }
-        if (filters.sortBy) {
-            params.set('sort', filters.sortBy);
+        if (filters.sortBy && filters.sortDirection) {
+            params.set('sort', getSortingForUrl(filters.sortBy, filters.sortDirection));
         } else {
             params.delete('sort');
         }
 
         setSearchParams(params, { replace: true });
+        setGoToStart(prev => !prev)
     }, [filters])
 
     const handleSelectSorting = (sorting: string) => {
+        const [sortBy, sortDirection] = getSortingForRequest(sorting)
         setFilters((prev: GetFoodsWithFilterParams) => ({
             ...prev,
-            sortBy: sorting === "without" ? undefined : sorting
+            sortBy: sorting === "without" ? undefined : sortBy,
+            sortDirection: sorting === "without" ? undefined : sortDirection,
         }));
     }
 
@@ -102,17 +102,33 @@ export const useMenu = () => {
         setFilters({ ...filters, search: name });
     }, SEARCH_TIMEOUT);
 
+    const categories = useGetCategoriesQuery();
     const dishes = useGetFoodsWithFiltersQuery({
         search: filters.search,
         minPrice: filters.minPrice,
         maxPrice: filters.maxPrice,
         categoryId: filters.categoryId,
         sortBy: filters.sortBy,
+        sortDirection: filters.sortDirection,
         includeIngredients: filters.includeIngredients
     })
 
+    const displayedData = useMemo(() => {
+        if (!dishes.data) return []
+
+        const currentPage = parseInt(searchParams.get('page') || "1", 10) - 1;
+        const startItem = ITEMS_PER_PAGE * currentPage;
+        return dishes.data.data.slice(startItem, startItem + ITEMS_PER_PAGE) || [];
+    }, [dishes.data, searchParams]);
+
+    const totalPage = useMemo(() => {
+        if (!dishes.data) return 0
+
+        return Math.ceil(dishes.data.data.length / ITEMS_PER_PAGE);
+    }, [dishes.data]);
+
     return {
-        state: { isOpen, filters, dishes },
+        state: { isOpen, filters, categories, totalPage, displayedData, goToStart },
         functions: {
             debouncedSearchByName,
             handleSelectCategory,

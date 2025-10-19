@@ -25,7 +25,13 @@ interface Dish {
     description: string;
     price: number;
     rate: number;
-    photos: string[];
+    photos?: string;
+}
+
+interface Categories {
+    id: string,
+    name: string,
+    description: string
 }
 
 interface Order {
