@@ -16,21 +16,21 @@ const DishCategory = () => {
                     {"Добавить категорию"}
                 </Button>
             </div>
-            {state.categories.length > 0 ? (
+            {state.displayedData.length && state.displayedData.length > 0 ? (
                 <>
                     <div className="flex items-center justify-around flex-wrap gap-10">
-                        {state.categories.map(category => (
+                        {state.displayedData.map(category => (
                             <DishCategoryCard {...category} key={category.id}
                                               setDishCategory={functions.openEditCategory}
                                               openCancelDelete={() => functions.setCanselDeleteOpen(true)} />
                         ))}
                     </div>
-                    <CustomPagination totalPages={10}/>
+                    <CustomPagination totalPages={state.totalPage}/>
                 </>
             ) : (
                 <p className="text-xl font-bold">{"Нет категорий блюд"}</p>
             )}
-            <DishCategoryDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen}
+            <DishCategoryDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen} reloadCategories={state.categories.refetch}
                                 initialData={state.categoryData} categoryId={state.categoryId}/>
             <CancelDeleteDialog isOpen={state.canselDeleteOpen} setIsOpen={functions.setCanselDeleteOpen}/>
         </div>

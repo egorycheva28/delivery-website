@@ -12,10 +12,11 @@ interface DishCategoryDialogProps {
     setIsOpen: (isOpen: boolean) => void;
     initialData?: DishCategorySchema;
     categoryId?: string;
+    reloadCategories: () => void;
 }
 
-const DishCategoryDialog = ({ isOpen, setIsOpen, initialData, categoryId }: DishCategoryDialogProps) => {
-    const { form,functions } = useDishCategoryDialog(setIsOpen, initialData, categoryId)
+const DishCategoryDialog = ({ isOpen, setIsOpen, initialData, categoryId, reloadCategories }: DishCategoryDialogProps) => {
+    const { form,functions } = useDishCategoryDialog(setIsOpen, reloadCategories, initialData, categoryId)
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
