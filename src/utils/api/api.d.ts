@@ -25,7 +25,12 @@ interface Dish {
     description: string;
     price: number;
     rate: number;
-    photos?: string;
+    photo?: string;
+    isAvailable: boolean;
+}
+
+interface DetailDish extends Dish {
+    ingredients: string[]
 }
 
 interface Categories {
