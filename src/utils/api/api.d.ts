@@ -29,6 +29,7 @@ interface Dish {
 }
 
 interface Order {
+    id: string;
     number: number;
     date: string;
     address: string;

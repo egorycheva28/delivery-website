@@ -10,6 +10,7 @@ import Basket from "@/pages/Basket/Basket.tsx";
 import Orders from "./pages/Orders/Orders";
 import Statistics from "@/pages/Statistics/Statistics.tsx";
 import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
+import OrderDetail from "./pages/OrderDetail/OrderDetail";
 
 export const router = createBrowserRouter([
     {
@@ -46,11 +47,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: ROUTES.STATISTICS,
-                element: <Statistics/>
+                element: <Statistics />
             },
             {
                 path: ROUTES.DISH_CATEGORY,
-                element: <DishCategory/>
+                element: <DishCategory />
+            },
+            {
+                path: ROUTES.ORDER_DETAILS,
+                element: <OrderDetail />
             }
         ]
     }

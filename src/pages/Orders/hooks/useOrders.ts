@@ -8,7 +8,7 @@ export interface OrderListFilters {
 }
 
 export const useOrders = () => {
-    const [role, setRole] = useState<string>('operator');
+    const [role, setRole] = useState<string>('admin');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isStatus, setIsStatus] = useState<boolean>(false);
     const [isOperator, setIsOperator] = useState<boolean>(false);
@@ -22,6 +22,7 @@ export const useOrders = () => {
 
     const [orders, setOrders] = useState<Order[]>([
         {
+            id: '1',
             number: 1,
             date: 'string',
             address: 'string',
@@ -31,6 +32,7 @@ export const useOrders = () => {
             comment: ''
         },
         {
+            id: '2',
             number: 2,
             date: 'string',
             address: 'string',
@@ -40,6 +42,7 @@ export const useOrders = () => {
             comment: ''
         },
         {
+            id: '3',
             number: 3,
             date: 'string',
             address: 'string',
