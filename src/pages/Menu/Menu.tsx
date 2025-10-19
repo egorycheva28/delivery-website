@@ -16,13 +16,13 @@ const Menu = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <Input
-                        defaultValue={state.filters.name}
+                        defaultValue={state.filters.search}
                         leftIcon={<SearchIcon className='h-5 w-5' />}
                         placeholder="Поиск..."
                         onChange={(e) => functions.debouncedSearchByName(e.target.value)}
                         className='h-10 max-w-64'
                     />
-                    <Select value={state.filters.dish_category || "all"} onValueChange={functions.handleSelectCategory}>
+                    <Select value={state.filters.categoryId || "all"} onValueChange={functions.handleSelectCategory}>
                         <SelectTrigger className="!h-10 max-w-64">
                             <SelectValue placeholder="Категория блюда" />
                         </SelectTrigger>
@@ -37,7 +37,7 @@ const Menu = () => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    <Select value={state.filters.sorting || "without"} onValueChange={functions.handleSelectSorting}>
+                    <Select value={state.filters.sortBy || "without"} onValueChange={functions.handleSelectSorting}>
                         <SelectTrigger className="!h-10 max-w-64">
                             <SelectValue placeholder="Тип сортировки" />
                         </SelectTrigger>
@@ -77,7 +77,7 @@ const Menu = () => {
                 </div>
             </div>
             <div className="flex items-center justify-around flex-wrap gap-10">
-                {state.dishes.map(dish => (
+                {state.dishes.data?.data.map(dish => (
                     <DishCard key={dish.id} {...dish}>
                         <AddBasketBtn className="w-full" idDish={dish.id}/>
                     </DishCard>

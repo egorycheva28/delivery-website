@@ -1,20 +1,12 @@
 import {useEffect, useMemo, useState} from "react";
 import {useDebounceCallback} from "@/utils/hooks/useDebounceCallback/useDebounceCallback.ts";
 import {useSearchParams} from "react-router-dom";
-
-//Потом перенести этот интерфейс в запросы
-export interface DishListFilters {
-    name?: string;
-    dish_category?: string,
-    sorting?: string,
-    min_price?: number,
-    max_price?: number,
-    ingredients?: string[]
-}
+import type {GetFoodsWithFilterParams} from "@/utils/api/requests/foods/filter";
+import {useGetFoodsWithFiltersQuery} from "@/utils/api/hooks/useGetFoodsWithFiltersQuery.ts";
 
 const SEARCH_TIMEOUT = 500;
 export const useMenu = () => {
-    const dishes = [
+    /*const dish = [
         {
             id: "string1",
             name: "string",
@@ -23,122 +15,68 @@ export const useMenu = () => {
             price: 500,
             rating: 3.5,
             photos: []
-        },
-        {
-            id: "string2",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string3",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string4",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string5",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string6",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string7",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
         }
-    ]
+    ]*/
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const initialFilters = useMemo((): DishListFilters => {
-        const params: DishListFilters = {};
+    const initialFilters = useMemo((): GetFoodsWithFilterParams => {
+        const params: GetFoodsWithFilterParams = {};
 
         const name = searchParams.get('name');
-        if (name) params.name = name;
+        if (name) params.search = name;
 
         const dish_category = searchParams.get('category');
-        if (dish_category) params.dish_category = dish_category;
+        if (dish_category) params.categoryId = dish_category;
 
         const sorting = searchParams.get('sort');
-        if (sorting) params.sorting = sorting;
+        if (sorting) params.sortBy = sorting;
 
         const min_price = searchParams.get('min_price');
-        if (min_price) params.min_price = parseInt(min_price);
+        if (min_price) params.minPrice = parseInt(min_price);
 
         const max_price = searchParams.get('max_price');
-        if (max_price) params.max_price = parseInt(max_price);
+        if (max_price) params.maxPrice = parseInt(max_price);
 
         const ingredients = searchParams.get('ingredients');
-        if (ingredients) params.ingredients = ingredients.split(',');
+        if (ingredients) params.includeIngredients = ingredients.split(',');
 
         return params;
     }, []);
 
-    const [filters, setFilters] = useState<DishListFilters>(initialFilters);
+    const [filters, setFilters] = useState<GetFoodsWithFilterParams>(initialFilters);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        if (filters.name) {
-            params.set('name', filters.name);
+        if (filters.search) {
+            params.set('name', filters.search);
         } else {
             params.delete('name');
         }
-        if (filters.min_price) {
-            params.set('min_price', filters.min_price.toString());
+        if (filters.minPrice) {
+            params.set('min_price', filters.minPrice.toString());
         } else {
             params.delete('min_price');
         }
-        if (filters.max_price) {
-            params.set('max_price', filters.max_price.toString());
+        if (filters.maxPrice) {
+            params.set('max_price', filters.maxPrice.toString());
         } else {
             params.delete('max_price');
         }
-        if (filters.ingredients && filters.ingredients.length > 0) {
-            params.set('ingredients', filters.ingredients.join(','));
+        if (filters.includeIngredients && filters.includeIngredients.length > 0) {
+            params.set('ingredients', filters.includeIngredients.join(','));
         } else {
             params.delete('ingredients');
         }
-        if (filters.dish_category) {
-            params.set('category', filters.dish_category);
+        if (filters.categoryId) {
+            params.set('category', filters.categoryId);
         } else {
             params.delete('category');
         }
-        if (filters.sorting) {
-            params.set('sort', filters.sorting);
+        if (filters.sortBy) {
+            params.set('sort', filters.sortBy);
         } else {
             params.delete('sort');
         }
@@ -147,22 +85,31 @@ export const useMenu = () => {
     }, [filters])
 
     const handleSelectSorting = (sorting: string) => {
-        setFilters(prev => ({
+        setFilters((prev: GetFoodsWithFilterParams) => ({
             ...prev,
-            sorting: sorting === "without" ? undefined : sorting
+            sortBy: sorting === "without" ? undefined : sorting
         }));
     }
 
     const handleSelectCategory = (dish_category: string) => {
-        setFilters(prev => ({
+        setFilters((prev: GetFoodsWithFilterParams) => ({
             ...prev,
-            dish_category: dish_category === "all" ? undefined : dish_category
+            categoryId: dish_category === "all" ? undefined : dish_category
         }));
     }
 
     const debouncedSearchByName = useDebounceCallback((name: string) => {
-        setFilters({ ...filters, name });
+        setFilters({ ...filters, search: name });
     }, SEARCH_TIMEOUT);
+
+    const dishes = useGetFoodsWithFiltersQuery({
+        search: filters.search,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice,
+        categoryId: filters.categoryId,
+        sortBy: filters.sortBy,
+        includeIngredients: filters.includeIngredients
+    })
 
     return {
         state: { isOpen, filters, dishes },
