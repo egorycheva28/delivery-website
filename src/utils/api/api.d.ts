@@ -1,10 +1,10 @@
-interface EditAboutDTO {
+interface About {
     name: string,
     phoneOperator: string,
     phoneManager: string,
     email: string,
     address: string,
-    information: string
+    //information: string
 }
 
 interface NewOperatorDTO {
