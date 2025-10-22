@@ -4,17 +4,15 @@ import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useNewOperatorDialog } from "./hooks/useNewOperatorDialog";
 
-interface NewOperatorDialogProps extends NewOperatorDTO {
+interface NewOperatorDialogProps {
     newOperator: NewOperatorDTO;
-    setNewOperator: (newOperator: NewOperatorDTO) => void;
+    reloadOperators: () => void;
     setIsOpen: (isOpen: boolean) => void;
     isOpen: boolean;
 }
 
-const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: NewOperatorDialogProps) => {
-    const { state,
-        form,
-        functions } = useNewOperatorDialog(newOperator, setNewOperator, setIsOpen, isOpen);
+const NewOperatorDialog = ({ newOperator, reloadOperators, setIsOpen, isOpen }: NewOperatorDialogProps) => {
+    const { form, functions } = useNewOperatorDialog(newOperator, reloadOperators, setIsOpen, isOpen);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -23,11 +21,11 @@ const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: N
                     <DialogTitle>Создание нового оператора</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={functions.addNewOperator} className='w-full space-y-4'>
+                    <form onSubmit={functions.onSubmit} className='w-full space-y-4'>
                         <div className="flex flex-col gap-4 items-center">
                             <FormField
                                 control={form.control}
-                                name="name"
+                                name="fullName"
                                 render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
@@ -35,6 +33,23 @@ const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: N
                                         </FormLabel>
                                         <FormControl>
                                             <Input placeholder="ФИО" {...field} />
+                                        </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field, fieldState }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Пароль"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Пароль" {...field} />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
@@ -61,14 +76,14 @@ const NewOperatorDialog = ({ newOperator, setNewOperator, setIsOpen, isOpen }: N
                             />
                             <FormField
                                 control={form.control}
-                                name="password"
+                                name="username"
                                 render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
-                                            {"Пароль"}
+                                            {"Имя пользователя"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Пароль" {...field} />
+                                            <Input placeholder="Имя пользователя" {...field} />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>

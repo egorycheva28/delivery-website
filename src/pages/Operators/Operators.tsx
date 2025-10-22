@@ -13,12 +13,11 @@ const Operators = () => {
                 <span className='text-4xl font-medium text-center flex-1'>Управление операторами</span>
                 <SquarePlus className='w-[36px] h-[36px] cursor-pointer' onClick={() => functions.setIsOpen(true)}></SquarePlus>
                 <NewOperatorDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen} newOperator={state.newOperator}
-                    setNewOperator={functions.setNewOperator} name={state.newOperator.name} phone={state.newOperator.phone}
-                    password={state.newOperator.password} />
+                    reloadOperators={state.operators.refetch} />
             </div>
             <div className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
                 {
-                    state.operators.map(operator => (
+                    state.displayedData.map(operator => (
                         <OperatorItem operator={operator} />
                     ))
                 }
