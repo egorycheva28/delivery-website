@@ -3,6 +3,7 @@ import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel.
 import {Card, CardContent, CardTitle} from "@/components/ui/card.tsx";
 import {Star} from "lucide-react";
 import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBasketBtn.tsx";
+import {getIngredientRus} from "@/pages/DishDetail/helpers/GetIngredientRus.ts";
 
 const DishDetail = () => {
     const { state } = useDishDetail()
@@ -13,7 +14,7 @@ const DishDetail = () => {
                 <CarouselContent>
                     <CarouselItem>
                         <img
-                            src={state.dish.data?.data.photo
+                            src={state.dish.data?.data.foodDetails.photo
                                 || "https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
                             alt="dish photo"
                             className="h-[300px] object-cover object-center border"
@@ -24,13 +25,13 @@ const DishDetail = () => {
             <Card className="pb-3">
                 <CardContent className="p-0">
                     <CardTitle className="text-center text-xl">
-                        {state.dish.data?.data.name}
+                        {state.dish.data?.data.foodDetails.name}
                     </CardTitle>
                     <div className="w-full h-[40] p-2 flex items-center justify-between border-y my-3">
-                        {state.dish.data?.data.rate && (
+                        {state.dish.data?.data.foodDetails.rate || state.dish.data?.data.foodDetails.rate === 0 && (
                             <div className="flex items-center gap-2">
                                 {[1, 2, 3, 4, 5].map((position) => {
-                                    const fillPercentage = Math.max(0, Math.min(1, state.dish.data?.data.rate! - position + 1)) * 100;
+                                    const fillPercentage = Math.max(0, Math.min(1, state.dish.data?.data.foodDetails.rate! - position + 1)) * 100;
 
                                     return (
                                         <div key={position} className="relative">
@@ -46,24 +47,24 @@ const DishDetail = () => {
                             </div>
                         )}
                         <p className="font-bold">
-                            {`${state.dish.data?.data.price} ₽`}
+                            {`${state.dish.data?.data.foodDetails.price} ₽`}
                         </p>
                     </div>
                     <p className="px-5">
-                        {state.dish.data?.data.description}
+                        {state.dish.data?.data.foodDetails.description}
                     </p>
                     <div className="w-full p-2 flex flex-col items-center justify-center border-y my-3 gap-3">
                         <p className="text-center text-xl">
                             {"Ингридиенты"}
                         </p>
-                        {state.dish.data?.data.ingredients.map(ingredient => (
+                        {state.dish.data?.data.foodDetails.ingredients.map(ingredient => (
                             <p className="text-center">
-                                {ingredient}
+                                {getIngredientRus(ingredient)}
                             </p>
                         ))}
                     </div>
-                    {state.dish.data?.data.id && (
-                        <AddBasketBtn className="w-[calc(100%-24px)] mx-3" idDish={state.dish.data?.data.id}/>
+                    {state.dish.data?.data.foodDetails.id && (
+                        <AddBasketBtn className="w-[calc(100%-24px)] mx-3" idDish={state.dish.data?.data.foodDetails.id}/>
                     )}
                 </CardContent>
             </Card>

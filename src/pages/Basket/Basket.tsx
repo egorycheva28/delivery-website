@@ -10,7 +10,7 @@ const Basket = () => {
 
     return(
         <div className="mx-auto mt-4 flex flex-col gap-10 p-8">
-            {state.dishes.length > 0 ? (
+            {state.cart.data && state.cart.data.data.items.length > 0 ? (
                 <>
                     <div className="flex items-center justify-between">
                         <p className="text-xl font-bold">{"Корзина"}</p>
@@ -20,14 +20,14 @@ const Basket = () => {
                     </div>
                     <Card className="w-full overflow-hidden p-0">
                         <CardContent className="p-0">
-                            {state.dishes.map(dishBasket => (
-                                <DishBasketCard key={dishBasket.id} {...dishBasket} />
+                            {state.cart.data?.data.items.map(dishBasket => (
+                                <DishBasketCard key={dishBasket.dishId} {...dishBasket} />
                             ))}
                         </CardContent>
                     </Card>
                     <div className="flex items-center justify-between border-b-2 border-black font-bold text-xl">
                         <p>{"Итоговая сумма:"}</p>
-                        <p>{`${state.totalAmount} ₽`}</p>
+                        <p>{`${state.cart.data?.data.total} ₽`}</p>
                     </div>
                     <BasketForm openSuccessBasketDesign={() => functions.setIsOpen(true)}/>
                     <SuccessBasketDesign isOpen={state.isOpen} setIsOpen={functions.setIsOpen}/>

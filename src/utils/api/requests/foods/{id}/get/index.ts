@@ -7,4 +7,4 @@ export interface GetDishByIdParams {
 export type GetDishByIdConfig = RequestConfig<GetDishByIdParams>;
 
 export const getDishById = async ({ config, params }: GetDishByIdConfig) =>
-    instance.get<DetailDish>(`http://localhost:8080/api/foods/${params.id}`, config);
+    instance.get<GetDetailDish>(`http://localhost:8080/api/foods/${params.id}`, config);
