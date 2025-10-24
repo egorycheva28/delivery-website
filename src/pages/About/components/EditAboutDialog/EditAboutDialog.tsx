@@ -25,7 +25,7 @@ const EditAboutDialog = ({ abouts, setIsOpen, isOpen, reloadAbout }: NewOperator
                         <div className="flex flex-col gap-4 items-center">
                             <FormField
                                 control={form.control}
-                                name="name"
+                                name="companyName"
                                 render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
@@ -42,14 +42,14 @@ const EditAboutDialog = ({ abouts, setIsOpen, isOpen, reloadAbout }: NewOperator
                             />
                             <FormField
                                 control={form.control}
-                                name="phoneOperator"
+                                name="mailAddress"
                                 render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
-                                            {"Телефон оператора"}
+                                            {"Почтовый адрес"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Телефон оператора" {...field} />
+                                            <Input placeholder="Почтовый адрес" {...field} />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
@@ -59,24 +59,7 @@ const EditAboutDialog = ({ abouts, setIsOpen, isOpen, reloadAbout }: NewOperator
                             />
                             <FormField
                                 control={form.control}
-                                name="phoneManager"
-                                render={({ field, fieldState }) => (
-                                    <FormItem className="w-[100%]">
-                                        <FormLabel className="text-sm font-normal">
-                                            {"Телефон менеджера"}
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Телефон менеджера" {...field} />
-                                        </FormControl>
-                                        {fieldState.error && (
-                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
-                                        )}
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="email"
+                                name="contactEmail"
                                 render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
@@ -93,14 +76,31 @@ const EditAboutDialog = ({ abouts, setIsOpen, isOpen, reloadAbout }: NewOperator
                             />
                             <FormField
                                 control={form.control}
-                                name="address"
+                                name="managerPhone"
                                 render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
-                                            {"Почтовый адрес"}
+                                            {"Телефон менеджера"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Почтовый адрес" {...field} />
+                                            <Input placeholder="Телефон менеджера" {...field} />
+                                        </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="operatorPhone"
+                                render={({ field, fieldState }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Телефон оператора"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Телефон оператора" {...field} />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
