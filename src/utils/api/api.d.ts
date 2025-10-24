@@ -70,12 +70,13 @@ interface Reason {
 }
 
 interface NewDishDTO {
-    name: string,
-    category: string,
-    price: number,
-    description: string,
-    ingredients: string,
-    photo: string
+    name: string;
+    categoryId: string;
+    photo?: string;
+    rate: number;
+    price: number;
+    description: string;
+    ingredients: string[];
 }
 
 interface MutationSettings<Params = void, Func = unknown> {

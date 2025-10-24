@@ -14,22 +14,23 @@ const DishManagement = () => {
             <div className='flex flex-row justify-between items-center'>
                 <span className='text-4xl font-medium text-center flex-1'>Управление блюдами</span>
                 <Button className="cursor-pointer" onClick={() => functions.setIsOpen(true)}>{"Добавить блюдо"}</Button>
-                <NewDishDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen} newDish={state.newDish} setNewDish={functions.setNewDish} />
+                <NewDishDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen} newDish={state.newDish} setNewDish={functions.setNewDish}
+                    reloadDishes={state.dishes.refetch} />
             </div>
             <div className="flex items-center justify-around flex-wrap gap-16">
-                {state.dishes.map(dish => (
+                {state.displayedData.map(dish => (
                     <DishCard key={dish.id} {...dish}>
                         <div className="flex flex-row justify-between items-center w-full">
-                            {state.available ? (
-                                <Button className="cursor-pointer" onClick={functions.doAvailable}><Lock /></Button>
+                            {dish.isAvailable ? (
+                                <Button className="cursor-pointer" onClick={() => functions.handleDoAvailable(dish.id, false)}><Lock /></Button>
                             ) : (
-                                <Button className="cursor-pointer" onClick={functions.doAvailable}><LockOpen /></Button>
+                                <Button className="cursor-pointer" onClick={() => functions.handleDoAvailable(dish.id, true)}><LockOpen /></Button>
                             )}
                             <div className="flex flex-row gap-1">
                                 <Button className="cursor-pointer" onClick={() => functions.setEditDishId(dish.id)}><PencilLine /></Button>
                                 <EditDishDialog isOpen={state.editDishId === dish.id} setIsOpen={(open) => !open && functions.setEditDishId(null)}
                                     newDish={state.newDish} setNewDish={functions.setNewDish} />
-                                <Button className="cursor-pointer" onClick={functions.deleteDish}><Trash2 /></Button>
+                                <Button className="cursor-pointer" onClick={() => functions.handleDeleteDish(dish.id)}><Trash2 /></Button>
                             </div>
                         </div>
                     </DishCard>
