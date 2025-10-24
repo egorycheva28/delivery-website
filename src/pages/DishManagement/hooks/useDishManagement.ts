@@ -32,6 +32,16 @@ export const useDishManagement = () => {
         description: '',
         ingredients: []
     });
+    const [editDish, setEditDish] = useState<EditDishDTO>({
+        name: '',
+        categoryId: '',
+        price: 0,
+        rate: 0,
+        photo: '',
+        description: '',
+        ingredients: [],
+        isAvailable: true
+    });
     /*const dishes = [
         {
             id: "string1",
@@ -141,7 +151,7 @@ export const useDishManagement = () => {
     }
 
     return {
-        state: { isOpen, dishes, editDishId, newDish, displayedData },
+        state: { isOpen, dishes, editDishId, newDish, displayedData, editDish },
         functions: {
             setIsOpen,
             handleDeleteDish,

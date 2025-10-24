@@ -5,28 +5,29 @@ import { Button } from "@/components/ui/button.tsx";
 import { useEditDishDialog } from "./hooks/useEditDishDialog";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
 import { Image } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface NewOperatorDialogProps {
-
     setIsOpen: (isOpen: boolean) => void;
     isOpen: boolean;
-    newDish: NewDishDTO;
-    setNewDish: (NewDish: NewDishDTO) => void;
+    editDish: EditDishDTO;
+    reloadDishes: () => void;
+    dish: Dish;
 }
 
-const EditDishDialog = ({ setIsOpen, isOpen, newDish, setNewDish }: NewOperatorDialogProps) => {
+const EditDishDialog = ({ setIsOpen, isOpen, editDish, reloadDishes, dish }: NewOperatorDialogProps) => {
     const { state,
         form,
-        functions } = useEditDishDialog(setIsOpen, isOpen, newDish, setNewDish);
+        functions } = useEditDishDialog(setIsOpen, isOpen, editDish, reloadDishes, dish);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="mx-auto sm:max-w-md h-[800px] overflow-hidden">
                 <DialogHeader>
                     <DialogTitle>Редактирование блюда</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={functions.editDish} className='w-full space-y-4'>
+                    <form onSubmit={functions.onSubmit} className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
                         <div className="flex flex-col gap-4 items-center">
                             <FormField
                                 control={form.control}
@@ -63,10 +64,55 @@ const EditDishDialog = ({ setIsOpen, isOpen, newDish, setNewDish }: NewOperatorD
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
-                                {form.formState.errors.category && (
-                                    <p className="text-red-600 text-sm">{form.formState.errors.category.message}</p>
+                                {form.formState.errors.categoryId && (
+                                    <p className="text-red-600 text-sm">{form.formState.errors.categoryId.message}</p>
                                 )}
                             </div>
+                            <FormField
+                                control={form.control}
+                                name="photo"
+                                render={({ field, fieldState }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">{"Фотография блюда"}</FormLabel>
+                                        <FormControl>
+                                            <div className="flex items-center gap-2">
+                                                <Image />
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={functions.handleFileChange}
+                                                    className="absolute opacity-0 w-full cursor-pointer"
+                                                />
+                                                {!state.selectedFile ? (
+                                                    <span className="text-sm font-normal">Выберите файл</span>
+                                                ) : (
+                                                    null
+                                                )}
+                                            </div>
+                                        </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="rate"
+                                render={({ field, fieldState }) => (
+                                    <FormItem className="w-[100%]">
+                                        <FormLabel className="text-sm font-normal">
+                                            {"Рейтинг блюда"}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Рейтинг блюда" {...field} />
+                                        </FormControl>
+                                        {fieldState.error && (
+                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
+                                        )}
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="price"
@@ -104,45 +150,39 @@ const EditDishDialog = ({ setIsOpen, isOpen, newDish, setNewDish }: NewOperatorD
                             <FormField
                                 control={form.control}
                                 name="ingredients"
-                                render={({ field, fieldState }) => (
+                                render={() => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
-                                            {"Список ингредиентов"}
+                                            {"Ингредиенты блюда"}
                                         </FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Список ингредиентов" {...field} />
-                                        </FormControl>
-                                        {fieldState.error && (
-                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
-                                        )}
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="photo"
-                                render={({ field, fieldState }) => (
-                                    <FormItem className="w-[100%]">
-                                        <FormLabel className="text-sm font-normal">{"Фотография блюда"}</FormLabel>
-                                        <FormControl>
-                                            <div className="flex items-center gap-2">
-                                                <Image />
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    onChange={functions.handleFileChange}
-                                                    className="absolute opacity-0 w-full cursor-pointer"
-                                                />
-                                                {!state.selectedFile ? (
-                                                    <span className="text-sm font-normal">Выберите файл</span>
-                                                ) : (
-                                                    null
+                                        {state.ingredients.map((ingredient) => (
+                                            <FormField
+                                                key={ingredient.id}
+                                                control={form.control}
+                                                name="ingredients"
+                                                render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-center gap-2">
+                                                        <FormControl>
+                                                            <Checkbox
+                                                                checked={field.value?.includes(ingredient.id)}
+                                                                onCheckedChange={(checked) => {
+                                                                    checked
+                                                                        ? field.onChange([...field.value, ingredient.id])
+                                                                        : field.onChange(
+                                                                            field.value?.filter(
+                                                                                (value) => value !== ingredient.id
+                                                                            )
+                                                                        )
+                                                                }}
+                                                            />
+                                                        </FormControl>
+                                                        <FormLabel className="text-sm font-normal">
+                                                            {ingredient.label}
+                                                        </FormLabel>
+                                                    </FormItem>
                                                 )}
-                                            </div>
-                                        </FormControl>
-                                        {fieldState.error && (
-                                            <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
-                                        )}
+                                            />
+                                        ))}
                                     </FormItem>
                                 )}
                             />

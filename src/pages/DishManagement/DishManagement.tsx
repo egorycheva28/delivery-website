@@ -29,7 +29,7 @@ const DishManagement = () => {
                             <div className="flex flex-row gap-1">
                                 <Button className="cursor-pointer" onClick={() => functions.setEditDishId(dish.id)}><PencilLine /></Button>
                                 <EditDishDialog isOpen={state.editDishId === dish.id} setIsOpen={(open) => !open && functions.setEditDishId(null)}
-                                    newDish={state.newDish} setNewDish={functions.setNewDish} />
+                                    editDish={state.editDish} reloadDishes={state.dishes.refetch} dish={dish} />
                                 <Button className="cursor-pointer" onClick={() => functions.handleDeleteDish(dish.id)}><Trash2 /></Button>
                             </div>
                         </div>

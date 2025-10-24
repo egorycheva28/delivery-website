@@ -79,6 +79,17 @@ interface NewDishDTO {
     ingredients: string[];
 }
 
+interface EditDishDTO {
+    name: string;
+    categoryId: string;
+    photo?: string;
+    rate: number;
+    price: number;
+    description: string;
+    ingredients: string[];
+    isAvailable: boolean;
+}
+
 interface MutationSettings<Params = void, Func = unknown> {
     config?: ApiRequestConfig;
     options?: import('@tanstack/react-query').UseMutationOptions<
