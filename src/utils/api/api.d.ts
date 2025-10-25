@@ -98,6 +98,10 @@ interface NewDishDTO {
     photo: string
 }
 
+interface Token {
+    accessToken: string;
+}
+
 interface MutationSettings<Params = void, Func = unknown> {
     config?: ApiRequestConfig;
     options?: import('@tanstack/react-query').UseMutationOptions<
