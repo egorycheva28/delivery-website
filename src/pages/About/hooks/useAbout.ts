@@ -1,10 +1,10 @@
 import { useState } from "react";
+import {useAuth} from "@/utils/contexts/auth";
 
 export const useAbout = () => {
-
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [editAbout, setEditAbout] = useState<EditAboutDTO>();
-    const [role] = useState<string>("admin");
+    const { authenticated, roles } = useAuth()
     const [abouts, setAbouts] = useState<EditAboutDTO>(
         {
             name: "HITs Delivery service",
@@ -17,7 +17,7 @@ export const useAbout = () => {
     );
 
     return {
-        state: { isOpen, editAbout, role, abouts },
+        state: { isOpen, editAbout, roles, authenticated, abouts },
         functions: {
             setIsOpen,
             setEditAbout,

@@ -5,10 +5,11 @@ import {
     type LoginSchema
 } from "@/pages/Root/components/Header/components/LoginDialog/constants/LoginSchema.ts";
 import {usePostLoginMutation} from "@/utils/api/hooks/usePostLoginMutation.ts";
-import {USER_TOKEN} from "@/utils/constants/token.ts";
+import {useAuth} from "@/utils/contexts/auth";
 
 export const useLoginDialog = (setIsOpen: (isOpen: boolean) => void) => {
     const login = usePostLoginMutation()
+    const { login: handleLogin } = useAuth()
 
     const loginForm = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
@@ -27,7 +28,7 @@ export const useLoginDialog = (setIsOpen: (isOpen: boolean) => void) => {
                 }
             });
 
-            localStorage.setItem(USER_TOKEN, token.data.accessToken)
+            handleLogin(token.data.accessToken)
             loginForm.reset();
             setIsOpen(false);
         } catch (error) {

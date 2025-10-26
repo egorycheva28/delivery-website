@@ -5,10 +5,11 @@ import {
     type RegisterSchema
 } from "@/pages/Root/components/Header/components/RegisterDialog/constants/RegisterSchema.ts";
 import {usePostRegisterMutation} from "@/utils/api/hooks/usePostRegisterMutation.ts";
-import {USER_TOKEN} from "@/utils/constants/token.ts";
+import {useAuth} from "@/utils/contexts/auth";
 
 export const useRegisterDialog = (setIsOpen: (isOpen: boolean) => void) => {
     const register = usePostRegisterMutation()
+    const { login } = useAuth()
 
     const registerForm = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
@@ -29,7 +30,7 @@ export const useRegisterDialog = (setIsOpen: (isOpen: boolean) => void) => {
                 }
             })
 
-            localStorage.setItem(USER_TOKEN, token.data.accessToken)
+            login(token.data.accessToken)
             registerForm.reset()
             setIsOpen(false)
         } catch (error) {
