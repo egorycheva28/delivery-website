@@ -11,15 +11,13 @@ const About = () => {
         <div className="flex flex-col mt-8 mb-8 gap-12 w-full px-16">
             <div className='flex flex-row justify-between items-center'>
                 <span className='text-4xl font-medium text-center flex-1'>О нас</span>
-                {state.role == 'admin' ? (
+                {state.authenticated && state.roles.includes('ADMIN') && (
                     <div>
                         <Button className="cursor-pointer" onClick={() => functions.setIsOpen(true)}>{"Редактировать"}</Button>
                         <EditAboutDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen} abouts={state.abouts} setAbouts={functions.setAbouts}
                             name={state.abouts.name} phoneOperator={state.abouts.phoneOperator} phoneManager={state.abouts.phoneManager}
                             email={state.abouts.email} address={state.abouts.address} information={state.abouts.information} />
                     </div>
-                ) : (
-                    null
                 )}
             </div>
             <span className="text-4xl font-medium text-left">{state.abouts.name}</span>

@@ -43,6 +43,6 @@ export const useDishCategory = () => {
 
     return {
         state: { categories, categoryId, isOpen, categoryData, canselDeleteOpen, displayedData, totalPage },
-        functions: { setIsOpen, openEditCategory, openCreateCategory, setCanselDeleteOpen }
+        functions: { setIsOpen, openEditCategory, openCreateCategory, setCanselDeleteOpen, refetch: categories.refetch }
     }
 }

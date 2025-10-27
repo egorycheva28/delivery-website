@@ -12,10 +12,11 @@ interface DishCategoryCardProps {
     description: string;
     setDishCategory: (dishCategory: DishCategorySchema, id: string) => void;
     openCancelDelete: () => void;
+    refetchCategories: () => void;
 }
 
-const DishCategoryCard = ({ id, name, description, setDishCategory, openCancelDelete }: DishCategoryCardProps) => {
-    const { functions } = useDishCategoryCard(setDishCategory, openCancelDelete)
+const DishCategoryCard = ({ id, name, description, setDishCategory, openCancelDelete, refetchCategories }: DishCategoryCardProps) => {
+    const { functions } = useDishCategoryCard(setDishCategory, openCancelDelete, refetchCategories)
 
     return (
         <Card className="w-[300px] h-[320px] flex flex-col overflow-hidden">

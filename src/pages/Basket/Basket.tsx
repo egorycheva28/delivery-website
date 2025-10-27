@@ -13,7 +13,7 @@ const Basket = () => {
             {state.cart.data && state.cart.data.data.items.length > 0 ? (
                 <>
                     <div className="flex items-center justify-between">
-                        <p className="text-xl font-bold">{"Корзина"}</p>
+                        <p className="text-4xl font-medium">{"Корзина"}</p>
                         <Button className="h-10" onClick={functions.handleDeleteAll}>
                             {"Удалить все"}
                         </Button>
