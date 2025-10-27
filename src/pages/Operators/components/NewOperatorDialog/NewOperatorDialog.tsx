@@ -80,10 +80,10 @@ const NewOperatorDialog = ({ newOperator, reloadOperators, setIsOpen, isOpen }: 
                                 render={({ field, fieldState }) => (
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">
-                                            {"Имя пользователя"}
+                                            {"Логин"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Имя пользователя" {...field} />
+                                            <Input placeholder="Логин" {...field} />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
