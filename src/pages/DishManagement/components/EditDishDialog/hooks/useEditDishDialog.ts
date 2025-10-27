@@ -1,60 +1,128 @@
 import { useForm } from "react-hook-form"
-import { editDishSchema } from "../constants/EditDishShema"
+import {type EditDishSchema, editDishSchema} from "../constants/EditDishShema"
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { usePutUpdateDishMutation } from "@/utils/api/hooks/usePutUpdateDishMutation"
+import {useGetDishByIdQuery} from "@/utils/api/hooks/useGetDishByIdQuery.ts";
+import {useGetCategoriesQuery} from "@/utils/api/hooks/useGetCategoriesQuery.ts";
 
 export const useEditDishDialog = (
-    setIsOpen: (isOpen: boolean) => void, isOpen: boolean,
-    newDish: NewDishDTO,
-    setNewDish: (NewDish: NewDishDTO) => void) => {
+    setIsOpen: (isOpen: boolean) => void,
+    reloadDishes: () => void,
+    dishId?: string) => {
+    const editDish = usePutUpdateDishMutation()
+    const dish = useGetDishByIdQuery({ id: dishId || "" })
+    const categories = useGetCategoriesQuery();
 
     const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
+    const ingredients = [
+        {
+            id: "ONION",
+            label: "Лук",
+        },
+        {
+            id: "MEAT",
+            label: "Мясо",
+        },
+        {
+            id: "BIRD",
+            label: "Птица",
+        },
+        {
+            id: "FISH",
+            label: "Рыба",
+        },
+        {
+            id: "EGGS",
+            label: "Яйца",
+        },
+        {
+            id: "NUTS",
+            label: "Орехи",
+        },
+        {
+            id: "MILKY_PRODUCTS",
+            label: "Молочные продукты",
+        },
+        {
+            id: "BERRIES",
+            label: "Ягоды",
+        },
+        {
+            id: "GRASS",
+            label: "Зелень",
+        },
+        {
+            id: "SPICY",
+            label: "Острое",
+        }
+    ] as const
 
     const handleFileChange = (e: any) => {
         const file = e.target.files?.[0] || null;
         setSelectedFile(file);
-        //setNewDish(); потом поправить
     };
 
-    const editDishForm = useForm<NewDishDTO>({
+    const editDishForm = useForm<EditDishSchema>({
         resolver: zodResolver(editDishSchema),
         defaultValues: {
             name: '',
-            category: '',
+            categoryId: '',
             price: 0,
+            rate: 0,
+            photo: '',
             description: '',
-            ingredients: '',
-            photo: ''
+            ingredients: [],
+            isAvailable: true
         }
     })
 
-    const editDish = editDishForm.handleSubmit(
-        (data) => {
-            setNewDish(data)
-            setIsOpen(false)
-        }
-    )
+    const onSubmit = editDishForm.handleSubmit(async (value) => {
+        if (!dishId) return
+        await editDish.mutateAsync({
+            params: {
+                id: dishId, name: value.name, categoryId: value.categoryId,
+                photo: value.photo, rate: value.rate,
+                price: value.price, description: value.description,
+                ingredients: value.ingredients, isAvailable: value.isAvailable
+            }
+        })
+
+        reloadDishes()
+        editDishForm.reset()
+        setIsOpen(false)
+    })
 
     useEffect(() => {
-        if (!isOpen) {
-            editDishForm.reset({
-                name: '',
-                category: '',
-                price: 0,
-                description: '',
-                ingredients: '',
-                photo: ''
-            })
-        }
-    }, [isOpen])
+        if (!dish.data) return
+
+        editDishForm.reset({
+            name: dish.data.data.foodDetails.name,
+            categoryId: dish.data.data.foodDetails.categoryId,
+            price: dish.data.data.foodDetails.price,
+            rate: dish.data.data.foodDetails.rate,
+            photo: dish.data.data.foodDetails.photo,
+            description: dish.data.data.foodDetails.description,
+            ingredients: dish.data.data.foodDetails.ingredients,
+            isAvailable: dish.data.data.foodDetails.isAvailable
+        })
+        setSelectedCategory(dish.data.data.foodDetails.categoryId)
+    }, [dish.data]);
+
+    const handleSetCategory = (categoryId: string) => {
+        setSelectedCategory(categoryId);
+        editDishForm.setValue("categoryId", categoryId);
+    }
 
     return {
-        state: { selectedFile },
+        state: { selectedFile, selectedCategory, ingredients, categories },
         form: editDishForm,
         functions: {
-            editDish,
+            onSubmit,
             setSelectedFile,
-            handleFileChange
+            handleFileChange,
+            handleSetCategory
         }
     }
 }
