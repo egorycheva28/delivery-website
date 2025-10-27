@@ -23,6 +23,12 @@ export const useDishManagement = () => {
         return dishes.data.data.slice(startItem, startItem + ITEMS_PER_PAGE) || [];
     }, [dishes.data, searchParams]);
 
+    const totalPage = useMemo(() => {
+        if (!dishes.data) return 0
+
+        return Math.ceil(dishes.data.data.length / ITEMS_PER_PAGE);
+    }, [dishes.data]);
+
     const handleOpenEdit = (id: string) => {
         setEditDishId(id);
         setIsOpenEdit(true);
@@ -43,7 +49,7 @@ export const useDishManagement = () => {
     }
 
     return {
-        state: { isOpen, isOpenEdit, dishes, editDishId, displayedData },
+        state: { isOpen, isOpenEdit, dishes, editDishId, displayedData, totalPage },
         functions: {
             setIsOpen,
             setIsOpenEdit,

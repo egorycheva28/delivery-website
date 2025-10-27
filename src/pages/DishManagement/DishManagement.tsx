@@ -47,7 +47,7 @@ const DishManagement = () => {
                 <EditDishDialog isOpen={state.isOpenEdit} setIsOpen={functions.setIsOpenEdit}
                                 reloadDishes={state.dishes.refetch} dishId={state.editDishId} />
             </div>
-            <CustomPagination totalPages={10} />
+            <CustomPagination totalPages={state.totalPage} />
         </div>
     )
 }
