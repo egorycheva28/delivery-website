@@ -1,41 +1,49 @@
 import { useForm } from "react-hook-form"
-import { newOperatorSchema, type NewOperatorSchema } from "../constants/NewOperatorShema"
+import { newOperatorSchema } from "../constants/NewOperatorShema"
 import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePostCreateOperatorMutation } from "@/utils/api/hooks/usePostCreateOperatotMutation";
 
-export const useNewOperatorDialog = (newOperator: NewOperatorDTO,
-    setNewOperator: (newOperator: NewOperatorDTO) => void,
+export const useNewOperatorDialog = (newOperator: NewOperatorDTO, reloadOperators: () => void,
     setIsOpen: (isOpen: boolean) => void, isOpen: boolean) => {
+    const createOperator = usePostCreateOperatorMutation()
 
     const newOperatorForm = useForm<NewOperatorDTO>({
         resolver: zodResolver(newOperatorSchema),
         defaultValues: {
-            name: newOperator.name || '',
+            fullName: newOperator.fullName || '',
+            password: newOperator.password || '',
             phone: newOperator.phone || '',
-            password: newOperator.password || ''
+            username: newOperator.username || ''
         }
     })
 
-    const addNewOperator = newOperatorForm.handleSubmit(
-        (data) => {
-            setNewOperator(data)
-            setIsOpen(false)
-        }
-    )
+    const onSubmit = newOperatorForm.handleSubmit(async (value) => {
+        await createOperator.mutateAsync({
+            params: {
+                fullName: value.fullName, password: value.password,
+                phone: value.phone, username: value.username
+            }
+        })
+
+        reloadOperators()
+        newOperatorForm.reset()
+        setIsOpen(false)
+    })
 
     useEffect(() => {
         if (!isOpen) {
             newOperatorForm.reset({
-                name: '',
+                fullName: '',
+                password: '',
                 phone: '',
-                password: ''
+                username: ''
             })
         }
     }, [isOpen])
 
     return {
-        state: {},
         form: newOperatorForm,
-        functions: { addNewOperator }
+        functions: { onSubmit }
     }
 }

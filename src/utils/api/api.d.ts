@@ -10,15 +10,20 @@ interface DetailAbout extends About {
     id: string
 }
 
-interface NewOperatorDTO {
-    name: string;
+interface Operator {
+    id: string;
+    role: string;
+    createTime: string;
+    fullName: string;
     phone: string;
-    password: string;
+    username: string;
 }
 
-interface OperatorDTO {
-    name: string;
+interface NewOperatorDTO {
+    fullName: string;
+    password: string;
     phone: string;
+    username: string;
 }
 
 interface Dish {
