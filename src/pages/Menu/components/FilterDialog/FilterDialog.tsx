@@ -69,7 +69,7 @@ const FilterDialog = ({filters, setFilters, setIsOpen, isOpen}: FilterDialogProp
                                 render={({field}) => (
                                     <FormItem className="w-[190px]">
                                         <FormControl>
-                                            <Input placeholder="MIN цена" {...field} />
+                                            <Input placeholder="MIN цена" {...field} type="number" />
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -80,7 +80,7 @@ const FilterDialog = ({filters, setFilters, setIsOpen, isOpen}: FilterDialogProp
                                 render={({field}) => (
                                     <FormItem className="w-[190px]">
                                         <FormControl>
-                                            <Input placeholder="MAX цена" {...field} />
+                                            <Input placeholder="MAX цена" {...field} type="number" />
                                         </FormControl>
                                     </FormItem>
                                 )}

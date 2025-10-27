@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form"
-import { newDishSchema } from "../constants/NewDishShema"
+import {type NewDishSchema, newDishSchema} from "../constants/NewDishShema"
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePostCreateDishMutation } from "@/utils/api/hooks/usePostCreateDishMutation";
+import {useGetCategoriesQuery} from "@/utils/api/hooks/useGetCategoriesQuery.ts";
 
-export const useNewDishDialog = (
-    setIsOpen: (isOpen: boolean) => void, isOpen: boolean,
-    newDish: NewDishDTO,
-    setNewDish: (NewDish: NewDishDTO) => void, reloadDishes: () => void) => {
+export const useNewDishDialog = (setIsOpen: (isOpen: boolean) => void, isOpen: boolean, reloadDishes: () => void) => {
     const createDish = usePostCreateDishMutation()
+    const categories = useGetCategoriesQuery();
 
+    const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
     const [selectedFile, setSelectedFile] = useState(null);
     const ingredients = [
         {
@@ -57,19 +57,18 @@ export const useNewDishDialog = (
     const handleFileChange = (e: any) => {
         const file = e.target.files?.[0] || null;
         setSelectedFile(file);
-        //setNewDish(); потом поправить
     };
 
-    const newDishForm = useForm<NewDishDTO>({
+    const newDishForm = useForm<NewDishSchema>({
         resolver: zodResolver(newDishSchema),
         defaultValues: {
-            name: newDish.name || '',
-            categoryId: newDish.categoryId || '',
-            price: newDish.price || 0,
-            rate: newDish.rate || 0,
-            photo: newDish.photo || '',
-            description: newDish.description || '',
-            ingredients: newDish.ingredients || []
+            name: '',
+            categoryId: '',
+            price: 0,
+            rate: 0,
+            photo: '',
+            description: '',
+            ingredients: []
         }
     })
 
@@ -102,13 +101,19 @@ export const useNewDishDialog = (
         }
     }, [isOpen])
 
+    const handleSetCategory = (categoryId: string) => {
+        setSelectedCategory(categoryId);
+        newDishForm.setValue("categoryId", categoryId);
+    }
+
     return {
-        state: { selectedFile, ingredients },
+        state: { selectedFile, ingredients, categories, selectedCategory },
         form: newDishForm,
         functions: {
             onSubmit,
             setSelectedFile,
-            handleFileChange
+            handleFileChange,
+            handleSetCategory
         }
     }
 }

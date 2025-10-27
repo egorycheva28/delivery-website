@@ -7,4 +7,4 @@ export interface DeleteDishByIdParams {
 export type DeleteDishByIdConfig = RequestConfig<DeleteDishByIdParams>;
 
 export const deleteDishById = async ({ config, params }: DeleteDishByIdConfig) =>
-    instance.delete(`http://localhost:8910/api/foods/${params.id}`, config);
+    instance.delete(`http://localhost:8080/api/foods/${params.id}`, config);

@@ -15,4 +15,4 @@ export type PutUpdateDishParams = {
 export type PutUpdateDishConfig = RequestConfig<PutUpdateDishParams>;
 
 export const putUpdateDish = async ({ config, params }: PutUpdateDishConfig) =>
-    instance.put<DetailDish>(`http://localhost:8910/api/foods/${params.id}`, params, config);
+    instance.put<DetailDish>(`http://localhost:8080/api/foods/${params.id}`, params, config);

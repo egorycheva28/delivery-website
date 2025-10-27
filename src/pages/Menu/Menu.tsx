@@ -82,7 +82,13 @@ const Menu = () => {
                     <div className="flex items-center justify-around flex-wrap gap-10">
                         {state.displayedData.map(dish => (
                             <DishCard key={dish.id} {...dish}>
-                                <AddBasketBtn className="w-full" idDish={dish.id}/>
+                                {dish.isAvailable ? (
+                                    <AddBasketBtn className="w-full" idDish={dish.id}/>
+                                ) : (
+                                    <Button disabled={true} className="h-10 w-full">
+                                        {"Блюдо не доступно"}
+                                    </Button>
+                                )}
                             </DishCard>
                         ))}
                     </div>

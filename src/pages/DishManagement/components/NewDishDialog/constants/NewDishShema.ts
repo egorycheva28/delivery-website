@@ -10,4 +10,4 @@ export const newDishSchema = z.object({
     ingredients: z.array(z.string()).nonempty("Это поле обязательно")
 })
 
-export type NewOperatorSchema = z.infer<typeof newDishSchema>;
+export type NewDishSchema = z.infer<typeof newDishSchema>;

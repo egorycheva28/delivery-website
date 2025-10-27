@@ -4,21 +4,21 @@ import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useEditDishDialog } from "./hooks/useEditDishDialog";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
-import { Image } from "lucide-react";
+//import {Image} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+//import ImageUploader from "@/components/ImageUploader/ImageUploader.tsx";
 
 interface NewOperatorDialogProps {
     setIsOpen: (isOpen: boolean) => void;
     isOpen: boolean;
-    editDish: EditDishDTO;
     reloadDishes: () => void;
-    dish: Dish;
+    dishId?: string;
 }
 
-const EditDishDialog = ({ setIsOpen, isOpen, editDish, reloadDishes, dish }: NewOperatorDialogProps) => {
+const EditDishDialog = ({ setIsOpen, isOpen, reloadDishes, dishId }: NewOperatorDialogProps) => {
     const { state,
         form,
-        functions } = useEditDishDialog(setIsOpen, isOpen, editDish, reloadDishes, dish);
+        functions } = useEditDishDialog(setIsOpen, reloadDishes, dishId);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -50,17 +50,15 @@ const EditDishDialog = ({ setIsOpen, isOpen, editDish, reloadDishes, dish }: New
                                 <FormLabel className="text-sm font-normal">
                                     {"Категория блюда"}
                                 </FormLabel>
-                                <Select /*value={newDish.category} onValueChange={functions.handleSelectCategory}*/>
-                                    <SelectTrigger className="!h-10 w-[100%]">
+                                <Select value={state.selectedCategory} onValueChange={functions.handleSetCategory}>
+                                    <SelectTrigger className="!h-10 w-full">
                                         <SelectValue placeholder="Категория блюда" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectItem value="breakfast">Завтрак</SelectItem>
-                                            <SelectItem value="hotter">Горячее</SelectItem>
-                                            <SelectItem value="salads">Салаты</SelectItem>
-                                            <SelectItem value="drinks">Напитки</SelectItem>
-                                            <SelectItem value="desserts">Десерты</SelectItem>
+                                            {state.categories.data?.data.map(category => (
+                                                <SelectItem value={category.id}>{category.name}</SelectItem>
+                                            ))}
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
@@ -75,20 +73,18 @@ const EditDishDialog = ({ setIsOpen, isOpen, editDish, reloadDishes, dish }: New
                                     <FormItem className="w-[100%]">
                                         <FormLabel className="text-sm font-normal">{"Фотография блюда"}</FormLabel>
                                         <FormControl>
-                                            <div className="flex items-center gap-2">
-                                                <Image />
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    onChange={functions.handleFileChange}
-                                                    className="absolute opacity-0 w-full cursor-pointer"
-                                                />
-                                                {!state.selectedFile ? (
-                                                    <span className="text-sm font-normal">Выберите файл</span>
-                                                ) : (
-                                                    null
-                                                )}
-                                            </div>
+                                            {/*В дальнейшем вернуть, если добавят загрузку по файлу
+                                            <ImageUploader onFileSelected={handleFile} files={files}>
+                                                <div className='flex w-full items-center gap-2 rounded-xl border'>
+                                                    <Image className='h-6 w-6 text-gray-500' />
+                                                    <p className='mt-2 text-gray-500'>
+                                                        {"Выберите изображение"}
+                                                    </p>
+                                                </div>
+                                            </ImageUploader>*/}
+                                            <FormControl>
+                                                <Input placeholder="Введите url картинки" {...field} />
+                                            </FormControl>
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
@@ -105,7 +101,7 @@ const EditDishDialog = ({ setIsOpen, isOpen, editDish, reloadDishes, dish }: New
                                             {"Рейтинг блюда"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Рейтинг блюда" {...field} />
+                                            <Input placeholder="Рейтинг блюда" {...field} type="number" />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
@@ -122,7 +118,7 @@ const EditDishDialog = ({ setIsOpen, isOpen, editDish, reloadDishes, dish }: New
                                             {"Цена блюда"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Цена блюда" {...field} />
+                                            <Input placeholder="Цена блюда" {...field} type="number" />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>

@@ -13,4 +13,4 @@ export type PostCreateDishParams = {
 export type PostCreateDishConfig = RequestConfig<PostCreateDishParams>;
 
 export const postCreateDish = async ({ config, params }: PostCreateDishConfig) =>
-    instance.post<DetailDish>(`http://localhost:8910/api/foods`, params, config);
+    instance.post<DetailDish>(`http://localhost:8080/api/foods`, params, config);

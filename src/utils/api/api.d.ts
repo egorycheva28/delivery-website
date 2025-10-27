@@ -30,7 +30,14 @@ interface Dish {
 }
 
 interface DetailDish extends Dish {
-    ingredients: string[]
+    ingredients: string[];
+}
+
+interface GetDetailDish {
+    foodDetails: DetailDish;
+    couldRate: boolean;
+    hasRate: boolean;
+    userRating: number;
 }
 
 interface Categories {
