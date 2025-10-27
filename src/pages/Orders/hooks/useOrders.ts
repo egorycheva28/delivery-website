@@ -1,3 +1,4 @@
+import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -8,7 +9,10 @@ export interface OrderListFilters {
 }
 
 export const useOrders = () => {
+    const changeOperator = usePutChangeOperatorMutation()
+
     const [role, setRole] = useState<string>('admin');
+    const [myId, setMyId] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isStatus, setIsStatus] = useState<boolean>(false);
     const [isOperator, setIsOperator] = useState<boolean>(false);
@@ -16,11 +20,11 @@ export const useOrders = () => {
     const [isComment, setIsComment] = useState<boolean>(false);
     const [comment, setComment] = useState<NewComment>(
         {
-            newComment: ''
+            comment: ''
         }
     );
-
-    const [orders, setOrders] = useState<Order[]>([
+    const [orders, setOrders] = useState<Order[]>([])
+    /*const [orders, setOrders] = useState<Order[]>([
         {
             id: '1',
             number: 1,
@@ -51,11 +55,17 @@ export const useOrders = () => {
             payment: 'QR-код',
             comment: ''
         }
-    ])
+    ])*/
 
-    const appointOperator = () => {
-        //логика назначения себя оператором
-    }
+    const appointOperator = (async (value: any) => {
+        await changeOperator.mutateAsync({
+            params: {
+                orderId: value.id, operatorId: myId
+            }
+        })
+
+        // reloadOComments()
+    })
 
     const changeStatus = () => {
         //логика изменения статуса

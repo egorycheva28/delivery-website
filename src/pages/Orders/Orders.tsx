@@ -36,7 +36,7 @@ const Orders = () => {
                 {state.orders.map(order => (
                     <OrderItem order={order} role={state.role} appointOperator={functions.appointOperator}
                         isComment={state.isComment} setIsComment={functions.setIsComment}
-                        comment={state.comment} setComment={functions.setComment} changeStatus={functions.changeStatus} />
+                        comment={state.comment} changeStatus={functions.changeStatus} />
                 ))}
             </div>
             <div className='mb-6'>

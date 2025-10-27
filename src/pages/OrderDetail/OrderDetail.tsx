@@ -13,7 +13,7 @@ const OrderDetail = () => {
 
     return (
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
-            {state.role == 'operator' && state.order.status == 'new' ? (
+            {state.authenticated && state.roles.includes('OPERATOR') && state.order.data?.data.status == OrderStatus.NEW ? (
                 <div className="flex justify-end w-[90%]">
                     <Button className="cursor-pointer" onClick={functions.makeOperator}>Назначить себя оператором</Button>
                 </div>
@@ -23,21 +23,23 @@ const OrderDetail = () => {
             <div className="flex flex-col w-[90%] border border-black rounded-lg divide-y divide-black mb-8">
                 <div className="flex flex-row justify-between p-8 items-center">
                     <div className="flex flex-row gap-4">
-                        <span className="text-2xl font-medium underline">Заказ №{state.order.number}</span>
-                        {state.role == 'operator' ? (
+                        <span className="text-2xl font-medium underline">Заказ </span>
+                        {state.authenticated && state.roles.includes('OPERATOR') ? (
                             <MessageSquare className=" flex items-end h-[60%] cursor-pointer" onClick={() => functions.setIsComment(true)} />
                         ) : (
                             null
                         )}
-                        <CommentDialog isComment={state.isComment} setIsComment={functions.setIsComment} order={state.order}
-                            comment={state.comment} setComment={functions.setComment} />
+                        {state.order.data?.data && (
+                            <CommentDialog isComment={state.isComment} setIsComment={functions.setIsComment}
+                                order={state.order.data?.data} comment={state.comment} />
+                        )}
                     </div>
                     <div className="flex flex-col items-center">
                         <div className="flex flex-row items-center">
-                            <span className="text-3xl font-medium">{state.order.price}</span>
+                            <span className="text-3xl font-medium">{state.order.data?.data.price}</span>
                             <RussianRuble className="w-[22px] h-[22px]" />
                         </div>
-                        <span className="font-medium">{state.order.payment}</span>
+                        <span className="font-medium">{state.order.data?.data.payWay}</span>
                     </div>
                 </div>
                 <div className="flex flex-row justify-between items-center p-8">
@@ -50,7 +52,10 @@ const OrderDetail = () => {
                     </div>
                     <div>
                         <Button className="cursor-pointer" onClick={() => functions.setIsHistory(true)}>{state.order.status}</Button>
-                        <HistoryDialog isHistory={state.isHistory} setIsHistory={functions.setIsHistory} order={state.order} />
+                        {state.order.data?.data && (
+                            <HistoryDialog isHistory={state.isHistory} setIsHistory={functions.setIsHistory}
+                                order={state.order.data?.data} />
+                        )}
                     </div>
                 </div>
                 <div className="flex flex-row justify-between items-center p-8">
@@ -65,7 +70,7 @@ const OrderDetail = () => {
                             )}
                         </div>
                     </div>
-                    {state.role == 'admin' ? (
+                    {state.authenticated && state.roles.includes('ADMIN') ? (
                         <div>
                             <Button className="cursor-pointer" onClick={() => functions.setIsChangeOperator(true)}>Сменить оператора</Button>
                             <ChangeOperatorDialog isChangeOperator={state.isChangeOperator} setIsChangeOperator={functions.setIsChangeOperator} />
@@ -77,7 +82,7 @@ const OrderDetail = () => {
                 <div className="flex flex-col p-8 gap-8">
                     <div className="flex flex-row justify-between items-center w-full">
                         <span className="text-2xl font-medium">Состав заказа:</span>
-                        {state.role == 'operator' ? (
+                        {state.authenticated && state.roles.includes('OPERATOR') ? (
                             <div>
                                 <Button className="cursor-pointer" onClick={() => functions.setIsAddDish(true)}>Добавить блюдо</Button>
                                 <AddDishDialog isAddDish={state.isAddDish} setIsAddDish={functions.setIsAddDish} />
@@ -87,11 +92,11 @@ const OrderDetail = () => {
                         )}
                     </div>
                     <div className="flex flex-col w-full border border-black  divide-y divide-black">
-                        {state.order.dishes.map(dish => (
-                            <DishItem key={dish.id} dish={dish} deleteDish={functions.deleteDish} role={state.role} />
+                        {state.order.data?.data.meals.map(meal => (
+                            <DishItem key={meal.id} meal={meal} deleteDish={functions.deleteDish} roles={state.roles} authenticated={state.authenticated} />
                         ))}
                     </div>
-                    <CustomPagination totalPages={10} />
+                    <CustomPagination totalPages={state.totalPage} />
                 </div>
             </div>
         </div>

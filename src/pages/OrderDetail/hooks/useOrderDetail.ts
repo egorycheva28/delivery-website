@@ -1,55 +1,76 @@
-import { useEffect, useState } from "react";
+import { useGetOrderByIdQuery } from "@/utils/api/hooks/useGetOrderByIdQuery";
+import { useAuth } from "@/utils/contexts/auth/useAuth";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
+const ITEMS_PER_PAGE = 8;
 export const useOrderDetail = () => {
     const { id } = useParams<{ id: string }>();
+    const order = useGetOrderByIdQuery({ orderId: id || "" })
+    //const client = useGetClientByIdQuery({ order.data?.data.id||""})
+    //const changeOperator = usePutChangeOperatorMutation()
+    //const operators= получение списка всех операторов
 
-    const [role, setRole] = useState<string>('admin');
+    const { authenticated, roles } = useAuth()
+    // const [role, setRole] = useState<string>('admin');
     const [isComment, setIsComment] = useState<boolean>(false);
     const [isChangeOperator, setIsChangeOperator] = useState<boolean>(false);
     const [isAddDish, setIsAddDish] = useState<boolean>(false);
     const [isHistory, setIsHistory] = useState<boolean>(false);
     const [comment, setComment] = useState<NewComment>(
         {
-            newComment: ''
+            comment: ''
         }
     );
-    const order = {
+
+    /*const [order] = useState<Order>({
         id: id || '',
-        number: 1,
-        date: 'string',
+        clientId: '',
         address: 'string',
+        phoneNumber: 'string',
+        comment: 'string',
         price: 500,
-        status: 'new',
-        payment: 'наличными',
-        comment: '',
-        dishes: [{
-            id: "string1",
-            name: "string1",
-            category: "string",
-            description: "Проснись вместе со вкусом лета! Наш фруктовый завтрак — это взрыв свежести и витаминов в первой половине дня. Сочные дольки манго, хрустящие яблоки, спелые ягоды клубники и сладкий виноград — идеально сбалансированное сочетание для лёгкого старта.",
-            price: 600,
-            rating: 3.5,
-            photos: []
+        declineReason: 'string',
+        operatorId: 'string',
+        status: OrderStatus.NEW,
+        payWay: OrderPayWay.CARD,
+        meals: [{
+            id: 'string',
+            name: 'string',
+            price: 600
         },
         {
-            id: "string2",
-            name: "string2",
-            category: "string",
-            description: "string",
-            price: 5000,
-            rating: 3.5,
-            photos: []
+            id: 'string',
+            name: 'string',
+            price: 500
         }]
-    }
+    });*/
+
+    //добавить client, это удалить потом
     const user = {
         name: 'Фамилия Имя Отчество',
         phone: '+79999999999'
     }
 
+    const totalPage = useMemo(() => {
+        if (!order.data?.data.meals) return 0
+
+        return Math.ceil(order.data.data.meals.length / ITEMS_PER_PAGE);
+    }, [order.data?.data.meals]);
+
     const makeOperator = () => {
         //логика назначения себя оператором
     }
+
+    /*    const appointOperator = (async (value: any) => {
+            await changeOperator.mutateAsync({
+                params: {
+                    orderId: value.id, operatorId: myId
+                }
+            })
+    
+            // reloadOComments()
+        }) */
 
     const deleteDish = () => {
         //логика удаления блюда из заказа
@@ -64,9 +85,16 @@ export const useOrderDetail = () => {
     }, [isChangeOperator, isAddDish]);
 
     return {
-        state: { order, role, isComment, comment, user, isChangeOperator, isAddDish, isHistory },
+        state: { order, isComment, comment, user, isChangeOperator, isAddDish, isHistory, authenticated, roles, totalPage },
         functions: {
-            setRole, setIsComment, setComment, makeOperator, deleteDish, changeOperator, setIsChangeOperator, setIsAddDish, setIsHistory
+            setIsComment,
+            setComment,
+            makeOperator,
+            deleteDish,
+            changeOperator,
+            setIsChangeOperator,
+            setIsAddDish,
+            setIsHistory
         }
     }
 }

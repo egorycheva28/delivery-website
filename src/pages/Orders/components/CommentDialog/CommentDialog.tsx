@@ -9,13 +9,10 @@ interface CommnetDialogProps {
     setIsComment: (isComment: boolean) => void;
     order: Order;
     comment: NewComment;
-    setComment: (newComment: NewComment) => void;
 }
 
-const CommentDialog = ({ isComment, setIsComment, order, comment, setComment }: CommnetDialogProps) => {
-    const { state,
-        form,
-        functions } = useCommentDialog(isComment, setIsComment, order, comment, setComment);
+const CommentDialog = ({ isComment, setIsComment, order, comment }: CommnetDialogProps) => {
+    const { form, functions } = useCommentDialog(isComment, setIsComment, order, comment);
 
     return (
         <Dialog open={isComment} onOpenChange={setIsComment}>
@@ -24,7 +21,7 @@ const CommentDialog = ({ isComment, setIsComment, order, comment, setComment }: 
                     <DialogTitle>Комментарий к заказу</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={functions.addComment} className='w-full space-y-4'>
+                    <form onSubmit={functions.onSubmit} className='w-full space-y-4'>
                         <div className="flex flex-col gap-4 items-center">
                             <FormField
                                 control={form.control}
