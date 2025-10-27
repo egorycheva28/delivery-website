@@ -10,16 +10,6 @@ export const useAbout = () => {
     const [editAbout, setEditAbout] = useState<About>();
     const { authenticated, roles } = useAuth()
     const [aboutData, setAboutData] = useState<EditAboutSchema | undefined>(undefined);
-    /*const [abouts, setAbouts] = useState<About>(
-        {
-            name: "HITs Delivery service",
-            phoneOperator: "89999999999",
-            phoneManager: "89999999888",
-            email: "string@mail.com",
-            address: "string"
-            //information: "Доставим быстро и качественно!"
-        }
-    );*/
 
     const openEditAbout = () => {
         setAboutData(undefined);
