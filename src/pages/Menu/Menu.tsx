@@ -14,17 +14,17 @@ const Menu = () => {
 
     return (
         <div className="mx-auto mt-4 flex flex-col gap-10 p-8">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+            <div className="flex gap-4 flex-col md:flex-row md:items-center md:justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 ">
                     <Input
                         defaultValue={state.filters.search}
                         leftIcon={<SearchIcon className='h-5 w-5' />}
                         placeholder="Поиск..."
                         onChange={(e) => functions.debouncedSearchByName(e.target.value)}
-                        className='h-10 max-w-64'
+                        className='h-10 sm:max-w-64 w-full'
                     />
                     <Select value={state.filters.categoryId || "all"} onValueChange={functions.handleSelectCategory}>
-                        <SelectTrigger className="!h-10 max-w-64">
+                        <SelectTrigger className="!h-10 sm:max-w-64 w-full">
                             <SelectValue placeholder="Категория блюда" />
                         </SelectTrigger>
                         <SelectContent>
@@ -39,7 +39,7 @@ const Menu = () => {
                     <Select value={state.filters.sortBy && state.filters.sortDirection
                         ? getSortingForUrl(state.filters.sortBy, state.filters.sortDirection)
                         : "without"} onValueChange={functions.handleSelectSorting}>
-                        <SelectTrigger className="!h-10 max-w-64">
+                        <SelectTrigger className="!h-10 sm:max-w-64 w-full">
                             <SelectValue placeholder="Тип сортировки" />
                         </SelectTrigger>
                         <SelectContent>
@@ -68,7 +68,7 @@ const Menu = () => {
                     </Select>
                 </div>
                 <div>
-                    <Button variant="outline" className="h-10 max-w-64 flex justify-between items-center"
+                    <Button variant="outline" className="h-10 md:max-w-64 w-full flex justify-between items-center"
                             onClick={() => functions.setIsOpen(true)}>
                         <p>{"Фильтры"}</p>
                         <SlidersHorizontal />
@@ -82,7 +82,13 @@ const Menu = () => {
                     <div className="flex items-center justify-around flex-wrap gap-10">
                         {state.displayedData.map(dish => (
                             <DishCard key={dish.id} {...dish}>
-                                <AddBasketBtn className="w-full" idDish={dish.id}/>
+                                {dish.isAvailable ? (
+                                    <AddBasketBtn className="w-full" idDish={dish.id}/>
+                                ) : (
+                                    <Button disabled={true} className="h-10 w-full">
+                                        {"Блюдо не доступно"}
+                                    </Button>
+                                )}
                             </DishCard>
                         ))}
                     </div>

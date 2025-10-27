@@ -1,21 +1,29 @@
-interface EditAboutDTO {
-    name: string,
-    phoneOperator: string,
-    phoneManager: string,
-    email: string,
-    address: string,
-    information: string
+interface About {
+    companyName: string,
+    contactEmail: string,
+    mailAddress: string,
+    managerPhone: string,
+    operatorPhone: string
+}
+
+interface DetailAbout extends About {
+    id: string
+}
+
+interface Operator {
+    id: string;
+    role: string;
+    createTime: string;
+    fullName: string;
+    phone: string;
+    username: string;
 }
 
 interface NewOperatorDTO {
-    name: string;
-    phone: string;
+    fullName: string;
     password: string;
-}
-
-interface OperatorDTO {
-    name: string;
     phone: string;
+    username: string;
 }
 
 interface Dish {
@@ -114,12 +122,28 @@ interface Reason {
 }
 
 interface NewDishDTO {
-    name: string,
-    category: string,
-    price: number,
-    description: string,
-    ingredients: string,
-    photo: string
+    name: string;
+    categoryId: string;
+    photo?: string;
+    rate: number;
+    price: number;
+    description: string;
+    ingredients: string[];
+}
+
+interface EditDishDTO {
+    name: string;
+    categoryId: string;
+    photo?: string;
+    rate: number;
+    price: number;
+    description: string;
+    ingredients: string[];
+    isAvailable: boolean;
+}
+
+interface Token {
+    accessToken: string;
 }
 
 interface MutationSettings<Params = void, Func = unknown> {

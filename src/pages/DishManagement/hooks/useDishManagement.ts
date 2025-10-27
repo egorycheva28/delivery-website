@@ -1,101 +1,62 @@
-import { useState } from "react";
+import { useDeleteDishByIdMutation } from "@/utils/api/hooks/useDeleteDishByIdMutation";
+import { useGetFoodsWithFiltersQuery } from "@/utils/api/hooks/useGetFoodsWithFiltersQuery";
+import { usePatchUpdateAvailabilityDishMutation } from "@/utils/api/hooks/usePatchUpdateAvailabilityDishMutation";
+import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
+const ITEMS_PER_PAGE = 8;
 export const useDishManagement = () => {
+    const deleteDish = useDeleteDishByIdMutation()
+    const doAvailable = usePatchUpdateAvailabilityDishMutation()
+    const dishes = useGetFoodsWithFiltersQuery({})
+
+    const [searchParams] = useSearchParams();
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [available, setAvailable] = useState<boolean>(false);
-    const [editDishId, setEditDishId] = useState<string | null>(null)
-    const [newDish, setNewDish] = useState<NewDishDTO>({
-        name: 'string',
-        category: 'string',
-        price: 500,
-        description: 'string',
-        ingredients: 'string',
-        photo: 'string'
-    });
-    const dishes = [
-        {
-            id: "string1",
-            name: "string",
-            category: "string",
-            description: "Проснись вместе со вкусом лета! Наш фруктовый завтрак — это взрыв свежести и витаминов в первой половине дня. Сочные дольки манго, хрустящие яблоки, спелые ягоды клубники и сладкий виноград — идеально сбалансированное сочетание для лёгкого старта.",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string2",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string3",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string4",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string5",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string6",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string7",
-            name: "string",
-            category: "string",
-            description: "string",
-            price: 500,
-            rating: 3.5,
-            photos: []
-        }
-    ]
+    const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
+    const [editDishId, setEditDishId] = useState<string | undefined>(undefined)
 
-    const deleteDish = () => {
+    const displayedData = useMemo(() => {
+        if (!dishes.data) return []
 
+        const currentPage = parseInt(searchParams.get('page') || "1", 10) - 1;
+        const startItem = ITEMS_PER_PAGE * currentPage;
+        return dishes.data.data.slice(startItem, startItem + ITEMS_PER_PAGE) || [];
+    }, [dishes.data, searchParams]);
+
+    const totalPage = useMemo(() => {
+        if (!dishes.data) return 0
+
+        return Math.ceil(dishes.data.data.length / ITEMS_PER_PAGE);
+    }, [dishes.data]);
+
+    const handleOpenEdit = (id: string) => {
+        setEditDishId(id);
+        setIsOpenEdit(true);
     }
 
-    const doAvailable = () => {
-        setAvailable(!available)
+    const handleDeleteDish = async (id: string) => {
+        await deleteDish.mutateAsync({ params: { id } },
+            {
+                onSuccess: () => dishes.refetch()
+            })
+    }
 
+    const handleDoAvailable = async (id: string, available: boolean) => {
+        await doAvailable.mutateAsync({ params: { id, available } },
+            {
+                onSuccess: () => dishes.refetch()
+            })
     }
 
     return {
-        state: { isOpen, dishes, available, editDishId, newDish },
+        state: { isOpen, isOpenEdit, dishes, editDishId, displayedData, totalPage },
         functions: {
             setIsOpen,
-            deleteDish,
-            setAvailable,
-            doAvailable,
+            setIsOpenEdit,
+            handleDeleteDish,
+            handleDoAvailable,
             setEditDishId,
-            setNewDish
+            handleOpenEdit
         }
     }
 }

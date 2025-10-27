@@ -1,20 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
+import { useOperators } from "../hooks/useOperators";
 
 interface OperatorItemProps {
-    operator: OperatorDTO;
+    operator: Operator;
 }
 
 const OperatorItem: React.FC<OperatorItemProps> = ({ operator }) => {
-    const deleteOperator = () => {
-        //логика удаления оператора
-    };
+    const { functions } = useOperators();
 
     return (
         <div className="flex flex-col w-[100%] p-10 gap-3">
             <div className="flex flex-row justify-between">
-                <span className="text-2xl font-medium">{operator.name}</span>
-                <Button className="cursor-pointer" onClick={deleteOperator}>Удалить аккаунт оператора</Button>
+                <span className="text-2xl font-medium">{operator.fullName}</span>
+                <Button className="cursor-pointer" onClick={() => functions.handleDeleteOperator(operator.id)}>Удалить аккаунт оператора</Button>
             </div>
             <div className="flex flex-row items-center gap-4">
                 <Phone className="w-[32px] h-[32px]" />
