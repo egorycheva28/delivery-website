@@ -3,7 +3,7 @@ import type {
 } from "@/pages/DishCategory/components/DishCategoryDialog/constants/DishCategorySchema.ts";
 import {useDeleteCategoryByIdMutation} from "@/utils/api/hooks/useDeleteCategoryByIdMutation.ts";
 
-export const useDishCategoryCard = (setDishCategory: (dishCategory: DishCategorySchema, id: string) => void, openCancelDelete: () => void) => {
+export const useDishCategoryCard = (setDishCategory: (dishCategory: DishCategorySchema, id: string) => void, openCancelDelete: () => void, refetchCategories: () => void) => {
     const deleteDishCategory = useDeleteCategoryByIdMutation()
 
     const handleEditCategory = (id: string, name: string, description: string) => {
@@ -17,7 +17,7 @@ export const useDishCategoryCard = (setDishCategory: (dishCategory: DishCategory
     const handleDeleteCategory = async (id: string) => {
         await deleteDishCategory.mutateAsync({ params: { id } },
             {
-                onSuccess: () => console.log("Delete" + id),
+                onSuccess: () => refetchCategories(),
                 onError: (error) => {
                     if (error.response?.status !== 401) openCancelDelete()
                 }

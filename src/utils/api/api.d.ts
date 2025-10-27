@@ -33,7 +33,14 @@ interface Dish {
 }
 
 interface DetailDish extends Dish {
-    ingredients: string[]
+    ingredients: string[];
+}
+
+interface GetDetailDish {
+    foodDetails: DetailDish;
+    couldRate: boolean;
+    hasRate: boolean;
+    userRating: number;
 }
 
 interface Categories {
@@ -46,6 +53,19 @@ interface Stat {
     id: string,
     operatorName: string,
     orderAmount: number
+}
+
+interface ItemCart {
+    dishId: string,
+    name: string,
+    price: number,
+    imageUrl?: string,
+    quantity: number
+}
+
+interface Cart {
+    total: number,
+    items: ItemCart[]
 }
 
 interface Order {
@@ -79,6 +99,10 @@ interface NewDishDTO {
     description: string,
     ingredients: string,
     photo: string
+}
+
+interface Token {
+    accessToken: string;
 }
 
 interface MutationSettings<Params = void, Func = unknown> {

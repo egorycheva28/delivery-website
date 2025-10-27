@@ -1,13 +1,14 @@
 import { useGetAbout } from "@/utils/api/hooks/useGetAbout";
 import { useMemo, useState } from "react";
 import type { EditAboutSchema } from "../components/EditAboutDialog/constants/EditAboutShema";
+import {useAuth} from "@/utils/contexts/auth";
 
 export const useAbout = () => {
     const abouts = useGetAbout();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [editAbout, setEditAbout] = useState<About>();
-    const [role] = useState<string>("admin");
+    const { authenticated, roles } = useAuth()
     const [aboutData, setAboutData] = useState<EditAboutSchema | undefined>(undefined);
     /*const [abouts, setAbouts] = useState<About>(
         {
@@ -32,7 +33,7 @@ export const useAbout = () => {
     }, [abouts.data]);
 
     return {
-        state: { isOpen, editAbout, role, abouts, getAboutInfo, aboutData },
+        state: { isOpen, editAbout, roles, authenticated, abouts, getAboutInfo, aboutData },
         functions: {
             setIsOpen,
             setEditAbout,
