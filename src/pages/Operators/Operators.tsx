@@ -23,7 +23,7 @@ const Operators = () => {
                 }
             </div>
             <div className='mb-6'>
-                <CustomPagination totalPages={10} />
+                <CustomPagination totalPages={state.totalPage} />
             </div>
         </div>
     )

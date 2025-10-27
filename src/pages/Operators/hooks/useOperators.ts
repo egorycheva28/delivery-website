@@ -16,59 +16,11 @@ export const useOperators = () => {
         username: ''
     });
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    //const [page, setPage] = useState<number>(1);
-    //const [totalPage, setTotalPage] = useState<number>(5);
-    const [canselDeleteOpen, setCanselDeleteOpen] = useState(false)
-    /*const [operators, setOperators] = useState<Operator[]>([
-        {
-            id: '1',
-            role: '',
-            createTime: '',
-            fullName: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99',
-            username: ''
-        },
-        {
-            id: '2',
-            role: '',
-            createTime: '',
-            fullName: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99',
-            username: ''
-        },
-        {
-            id: '3',
-            role: '',
-            createTime: '',
-            fullName: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99',
-            username: ''
-        },
-        {
-            id: '4',
-            role: '',
-            createTime: '',
-            fullName: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99',
-            username: ''
-        },
-        {
-            id: '5',
-            role: '',
-            createTime: '',
-            fullName: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99',
-            username: ''
-        }
-    ]);*/
 
     const handleDeleteOperator = async (operatorId: string) => {
         await deleteOperator.mutateAsync({ params: { operatorId } },
             {
-                onSuccess: () => console.log("Delete" + operatorId),
-                onError: (error) => {
-                    if (error.response?.status !== 401) setCanselDeleteOpen(true)
-                }
+                onSuccess: () => operators.refetch()
             })
     }
 
