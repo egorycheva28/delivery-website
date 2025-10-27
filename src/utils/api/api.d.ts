@@ -1,10 +1,13 @@
-interface EditAboutDTO {
-    name: string,
-    phoneOperator: string,
-    phoneManager: string,
-    email: string,
-    address: string,
-    information: string
+interface About {
+    companyName: string,
+    contactEmail: string,
+    mailAddress: string,
+    managerPhone: string,
+    operatorPhone: string
+}
+
+interface DetailAbout extends About {
+    id: string
 }
 
 interface NewOperatorDTO {
