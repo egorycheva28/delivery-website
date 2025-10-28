@@ -3,6 +3,7 @@ import { Calendar, MapPin, MessageSquare, RussianRuble } from "lucide-react";
 import CommentDialog from "./CommentDialog/CommentDialog";
 import { SelectStatus } from "@/components/SelectStatus/SelectStatus";
 import { NavLink } from "react-router-dom";
+import ReasonDialog from "./ReasonDialog/ReasonDialog";
 
 interface OrderItemProps {
     order: Order;
@@ -10,11 +11,15 @@ interface OrderItemProps {
     appointOperator: (value: any) => void;
     isComment: boolean;
     setIsComment: (isComment: boolean) => void;
+    isReason: boolean;
+    setIsReason: (isReason: boolean) => void;
     comment: NewComment;
-    changeStatus: () => void;
+    changeStatus: (id: string, orderId: string) => void;
+    reason: Reason;
+    reloadOrder: () => void;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isComment, setIsComment, comment, changeStatus }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isComment, setIsComment, isReason, setIsReason, comment, changeStatus, reason, reloadOrder }) => {
 
     return (
         <div className="flex flex-col w-[100%] p-10 gap-6">
@@ -69,6 +74,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                                 { id: "CANCELED", name: "Отменен" }
                             ]}
                             onChange={changeStatus}
+                            orderId={order.id}
                         />
                     ) : (
                         <SelectStatus
@@ -79,9 +85,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                                 { id: "CANCELED", name: "Отменен" }
                             ]}
                             onChange={changeStatus}
+                            orderId={order.id}
                         />
                     )}
-                    <CommentDialog isComment={isComment} setIsComment={setIsComment} order={order} comment={comment} />
+                    <ReasonDialog isReason={isReason} setIsReason={setIsReason} order={order} reason={reason}
+                        reloadOrder={reloadOrder} />
                     {role == 'operator' && order.status?.includes(OrderStatus.NEW) ? (
                         <Button className="cursor-pointer" onClick={appointOperator}>Назначить себя оператором</Button>
                     ) : (

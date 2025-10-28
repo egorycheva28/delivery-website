@@ -1,4 +1,7 @@
+import { useGetOrdersWithoutOperatorQuery } from "@/utils/api/hooks/useGetOrdersWithoutOperatorQuery";
 import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
+import { usePutChangeOrderStatusMutation } from "@/utils/api/hooks/usePutChangeOrderStatusMutation";
+import { useAuth } from "@/utils/contexts/auth/useAuth";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -10,7 +13,15 @@ export interface OrderListFilters {
 
 export const useOrders = () => {
     const changeOperator = usePutChangeOperatorMutation()
+    const ordersWithoutOperator = useGetOrdersWithoutOperatorQuery({
+        page: 1,
+        size: 8,
+        sort: []
+    })
+    const changeOrderStatus = usePutChangeOrderStatusMutation()
 
+    //const myOrders=
+    const { authenticated, roles } = useAuth()
     const [role, setRole] = useState<string>('admin');
     const [myId, setMyId] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -18,9 +29,15 @@ export const useOrders = () => {
     const [isOperator, setIsOperator] = useState<boolean>(false);
     const [myOrders, setMyOrders] = useState<boolean>(false);
     const [isComment, setIsComment] = useState<boolean>(false);
+    const [isReason, setIsReason] = useState<boolean>(false);
     const [comment, setComment] = useState<NewComment>(
         {
             comment: ''
+        }
+    );
+    const [reason, setReason] = useState<Reason>(
+        {
+            reason: ''
         }
     );
     const [orders, setOrders] = useState<Order[]>([])
@@ -67,9 +84,21 @@ export const useOrders = () => {
         // reloadOComments()
     })
 
-    const changeStatus = () => {
-        //логика изменения статуса
-    }
+    const changeStatus = (async (id: string, orderId: string) => {
+        if (id == 'CANCELED') {
+            setIsReason(true);
+        }
+        else {
+            await changeOrderStatus.mutateAsync({
+                params: {
+                    orderId: orderId, status: id
+                }
+            })
+        }
+
+        ordersWithoutOperator.refetch;//заменить
+        setIsStatus(false);
+    })
 
     const [searchParams, setSearchParams] = useSearchParams();
     const initialFilters = useMemo((): OrderListFilters => {
@@ -117,10 +146,13 @@ export const useOrders = () => {
     }, [filters])
 
     return {
-        state: { isOpen, orders, role, isStatus, isOperator, filters, myOrders, isComment, comment },
+        state: {
+            isOpen, orders, role, isStatus, isOperator, filters, myOrders,
+            isComment, comment, ordersWithoutOperator, authenticated, roles, isReason, reason
+        },
         functions: {
             setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters,
-            setMyOrders, appointOperator, setIsComment, setComment, changeStatus
+            setMyOrders, appointOperator, setIsComment, setComment, changeStatus, setIsReason, setReason
         }
     }
 };

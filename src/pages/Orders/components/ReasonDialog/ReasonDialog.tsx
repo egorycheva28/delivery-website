@@ -4,18 +4,16 @@ import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useReasonDialog } from "./hooks/useReasonDialog";
 
-interface CommnetDialogProps {
+interface ReasonDialogProps {
     isReason: boolean;
     setIsReason: (isComment: boolean) => void;
     order: Order;
     reason: Reason;
-    setReason: (reason: Reason) => void;
+    reloadOrder: () => void;
 }
 
-const ReasonDialog = ({ isReason, setIsReason, order, reason, setReason }: CommnetDialogProps) => {
-    const { state,
-        form,
-        functions } = useReasonDialog(isReason, setIsReason, order, reason, setReason);
+const ReasonDialog = ({ isReason, setIsReason, order, reason, reloadOrder }: ReasonDialogProps) => {
+    const { form, functions } = useReasonDialog(isReason, setIsReason, order, reason, reloadOrder);
 
     return (
         <Dialog open={isReason} onOpenChange={setIsReason}>
@@ -24,7 +22,7 @@ const ReasonDialog = ({ isReason, setIsReason, order, reason, setReason }: Commn
                     <DialogTitle>Причина</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={functions.addReason} className='w-full space-y-4'>
+                    <form onSubmit={functions.onSubmit} className='w-full space-y-4'>
                         <div className="flex flex-col gap-4 items-center">
                             <FormField
                                 control={form.control}

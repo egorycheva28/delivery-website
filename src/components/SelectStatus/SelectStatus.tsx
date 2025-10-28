@@ -8,12 +8,16 @@ type Status = { id: string; name: string }
 interface SelectStatusProps {
     selected: Status
     statuses: Status[]
-    onChange: (id: string) => void
+    onChange: (id: string, orderId: string) => void
+    orderId: string
 }
 
-export function SelectStatus({ selected, statuses, onChange }: SelectStatusProps) {
+export const SelectStatus = ({ selected, statuses, onChange, orderId }: SelectStatusProps) => {
+    const handleChange = (id: string) => {
+        onChange(id, orderId);
+    };
     return (
-        <SelectPrimitive.Root value={selected.id} onValueChange={onChange}>
+        <SelectPrimitive.Root value={selected.id} onValueChange={handleChange}>
             <SelectPrimitive.Trigger asChild>
                 <Button>
                     <SelectPrimitive.Value>{selected.name}</SelectPrimitive.Value>
