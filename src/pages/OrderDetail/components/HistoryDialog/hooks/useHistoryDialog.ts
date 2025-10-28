@@ -1,45 +1,21 @@
-import { useEffect, useState } from "react"
+import { useGetStatusHistoryQuery } from "@/utils/api/hooks/useGetStatusHistoryQuery";
 
-export const useHistoryDialog = (isHistory: boolean) => {
-    const [history, setHistory] = useState<Status[]>(
-        [
-            {
-                id: "new",
-                name: "Новый"
-            },
-            {
-                id: "confirmed",
-                name: "Подвтержден"
-            },
-            {
-                id: "inPreparation",
-                name: "Готовится"
-            },
-            {
-                id: "awaiting",
-                name: "Ожидает курьера"
-            },
-            {
-                id: "handed",
-                name: "Передан курьеру"
-            },
-            {
-                id: "delievered",
-                name: "Доставлен"
-            },
-            {
-                id: "cancelled",
-                name: "Отменен"
-            }
-        ]
-    );
+export const useHistoryDialog = (order: Order) => {
+    const statusHistory = useGetStatusHistoryQuery({ orderId: order.id })
 
-    useEffect(() => {
-        //логика получения истории заказов
-    }, [isHistory]);
+    const formatDateTime = (dateTime: string) => {
+        const date = new Date(dateTime);
+
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+        };
+
+        return date.toLocaleString(undefined, options);
+    }
 
     return {
-        state: { history },
-        functions: { setHistory }
+        state: { statusHistory },
+        functions: { formatDateTime }
     }
 }

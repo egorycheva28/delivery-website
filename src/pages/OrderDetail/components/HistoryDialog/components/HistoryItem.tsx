@@ -1,13 +1,16 @@
+import { TranslateStatus } from "@/utils/constants/translateStatus";
+
 interface HistoryItemProps {
-    status: Status;
+    status: StatusHistory;
     order: Order;
+    formatDateTime: (dateTime: string) => string;
 }
 
-const HistoryItem: React.FC<HistoryItemProps> = ({ status, order }) => {
+const HistoryItem: React.FC<HistoryItemProps> = ({ status, order, formatDateTime }) => {
     return (
         <div className="flex flex-col gap-1">
-            <span className={`font-medium ${status.name == order.status ? 'text-green-600' : 'text-black'}`}>{status.name}</span>
-            <span className={`${status.name == order.status ? 'text-green-600' : 'text-black'}`}>Дата</span>
+            <span className={`font-medium ${status.status == order.status ? 'text-green-600' : 'text-black'}`}>{TranslateStatus[status.status]}</span>
+            <span className={`${status.status == order.status ? 'text-green-600' : 'text-black'}`}>{formatDateTime(status.date)}</span>
         </div>
     )
 }
