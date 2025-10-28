@@ -9,7 +9,6 @@ export const useOrderDetail = () => {
     const order = useGetOrderByIdQuery({ orderId: id || "" })
     //const client = useGetClientByIdQuery({ order.data?.data.id||""})
     //const changeOperator = usePutChangeOperatorMutation()
-    //const operators= получение списка всех операторов
 
     const { authenticated, roles } = useAuth()
     // const [role, setRole] = useState<string>('admin');
@@ -85,7 +84,7 @@ export const useOrderDetail = () => {
     }, [isChangeOperator, isAddDish]);
 
     return {
-        state: { order, isComment, comment, user, isChangeOperator, isAddDish, isHistory, authenticated, roles, totalPage },
+        state: { order, isComment, comment, user, isChangeOperator, isAddDish, isHistory, authenticated, roles, totalPage, id },
         functions: {
             setIsComment,
             setComment,

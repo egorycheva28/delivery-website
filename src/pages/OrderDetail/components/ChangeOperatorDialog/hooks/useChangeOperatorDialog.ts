@@ -1,41 +1,32 @@
-import { useEffect, useState } from "react"
+import { useGetOperatorsQuery } from "@/utils/api/hooks/useGetOperatorsQuery";
+import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
+import { useMemo } from "react"
 
-export const useChangeOperatorDialog = (isChangeOperator: boolean,
-    setIsChangeOperator: (isChangeOperator: boolean) => void) => {
-    const [listOperators, setListOperators] = useState<OperatorDTO[]>([
-        {
-            name: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99'
-        },
-        {
-            name: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99'
-        },
-        {
-            name: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99'
-        },
-        {
-            name: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99'
-        },
-        {
-            name: 'Фамилия Имя Отчество',
-            phone: '8 (999) 999-99-99'
-        }
-    ]);
+const ITEMS_PER_PAGE = 8;
+export const useChangeOperatorDialog = (
+    setIsChangeOperator: (isChangeOperator: boolean) => void, orderId: string, reloadOrder: () => void) => {
+    const operators = useGetOperatorsQuery()
+    const changeOperator = usePutChangeOperatorMutation()
 
-    const changeOperator = () => {
-        //логика смены оператора
+    const changeOperators = (async (operatorId: string) => {
+        await changeOperator.mutateAsync({
+            params: {
+                orderId: orderId, operatorId: operatorId
+            }
+        })
+
+        reloadOrder()
         setIsChangeOperator(false);
-    }
+    })
 
-    useEffect(() => {
-        //логика получения списка всех операторов
-    }, [isChangeOperator]);
+    const totalPage = useMemo(() => {
+        if (!operators.data) return 0
+
+        return Math.ceil(operators.data.data.length / ITEMS_PER_PAGE);
+    }, [operators.data]);
 
     return {
-        state: { listOperators },
-        functions: { setListOperators, changeOperator }
+        state: { operators, totalPage },
+        functions: { changeOperators }
     }
 }

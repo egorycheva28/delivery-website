@@ -73,7 +73,8 @@ const OrderDetail = () => {
                     {state.authenticated && state.roles.includes('ADMIN') ? (
                         <div>
                             <Button className="cursor-pointer" onClick={() => functions.setIsChangeOperator(true)}>Сменить оператора</Button>
-                            <ChangeOperatorDialog isChangeOperator={state.isChangeOperator} setIsChangeOperator={functions.setIsChangeOperator} />
+                            <ChangeOperatorDialog isChangeOperator={state.isChangeOperator}
+                                setIsChangeOperator={functions.setIsChangeOperator} orderId={state.id || ''} reloadOrder={state.order.refetch} />
                         </div>
                     ) : (
                         null

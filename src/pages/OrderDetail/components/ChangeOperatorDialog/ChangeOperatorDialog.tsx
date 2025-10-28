@@ -6,10 +6,12 @@ import ChangeOperatorItem from "./components/ChangeOperatorItem";
 interface ChangeOperatorDialogProps {
     isChangeOperator: boolean;
     setIsChangeOperator: (isChangeOperator: boolean) => void;
+    orderId: string;
+    reloadOrder: () => void;
 }
 
-const ChangeOperatorDialog = ({ isChangeOperator, setIsChangeOperator }: ChangeOperatorDialogProps) => {
-    const { state, functions } = useChangeOperatorDialog(isChangeOperator, setIsChangeOperator);
+const ChangeOperatorDialog = ({ isChangeOperator, setIsChangeOperator, orderId, reloadOrder }: ChangeOperatorDialogProps) => {
+    const { state, functions } = useChangeOperatorDialog(setIsChangeOperator, orderId, reloadOrder);
 
     return (
         <Dialog open={isChangeOperator} onOpenChange={setIsChangeOperator}>
@@ -18,11 +20,11 @@ const ChangeOperatorDialog = ({ isChangeOperator, setIsChangeOperator }: ChangeO
                     <DialogTitle>Операторы</DialogTitle>
                 </DialogHeader>
                 <div className="flex-1 overflow-y-auto p-4 flex flex-col ">
-                    {state.listOperators.map(operator => (
-                        <ChangeOperatorItem operator={operator} changeOperator={functions.changeOperator} />
+                    {state.operators.data?.data.map(operator => (
+                        <ChangeOperatorItem operator={operator} changeOperator={functions.changeOperators} />
                     ))}
                 </div>
-                <CustomPagination totalPages={10} />
+                <CustomPagination totalPages={state.totalPage} />
             </DialogContent>
         </Dialog>
     )
