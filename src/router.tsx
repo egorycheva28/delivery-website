@@ -11,6 +11,7 @@ import Orders from "./pages/Orders/Orders";
 import Statistics from "@/pages/Statistics/Statistics.tsx";
 import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
 import OrderDetail from "./pages/OrderDetail/OrderDetail";
+import DeliveryAndPayment from "@/pages/DeliveryAndPayment/DeliveryAndPayment.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.ORDER_DETAILS,
                 element: <OrderDetail />
+            },
+            {
+                path: ROUTES.DELIVERY_AND_PAYMENT,
+                element: <DeliveryAndPayment />
             }
         ]
     }

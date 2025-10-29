@@ -8,5 +8,6 @@ export const ROUTES = {
     DISH_MANAGEMENT: '/dishManagement',
     STATISTICS: '/statics',
     DISH_CATEGORY: '/dish_category',
-    ORDER_DETAILS: '/order/:id'
+    ORDER_DETAILS: '/order/:id',
+    DELIVERY_AND_PAYMENT: '/delivery-and-payment'
 }
