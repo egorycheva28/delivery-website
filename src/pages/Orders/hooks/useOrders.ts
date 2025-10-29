@@ -1,3 +1,5 @@
+import { useGetMyOrdersQuery } from "@/utils/api/hooks/useGetMyOrdersQuery";
+import { useGetOrdersWithFiltersQuery } from "@/utils/api/hooks/useGetOrdersWithFiltersQuery";
 import { useGetOrdersWithoutOperatorQuery } from "@/utils/api/hooks/useGetOrdersWithoutOperatorQuery";
 import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
 import { usePutChangeOrderStatusMutation } from "@/utils/api/hooks/usePutChangeOrderStatusMutation";
@@ -19,15 +21,20 @@ export const useOrders = () => {
         sort: []
     })
     const changeOrderStatus = usePutChangeOrderStatusMutation()
-
-    //const myOrders=
-    const { authenticated, roles } = useAuth()
-    const [role, setRole] = useState<string>('admin');
     const [myId, setMyId] = useState<string>('');
+
+    const myOrders = useGetMyOrdersQuery({
+        operatorId: myId,
+        page: 1,
+        size: 8,
+        sort: []
+    })
+
+    const { authenticated, roles } = useAuth()
+    //const [role, setRole] = useState<string>('admin');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isStatus, setIsStatus] = useState<boolean>(false);
     const [isOperator, setIsOperator] = useState<boolean>(false);
-    const [myOrders, setMyOrders] = useState<boolean>(false);
     const [isComment, setIsComment] = useState<boolean>(false);
     const [isReason, setIsReason] = useState<boolean>(false);
     const [comment, setComment] = useState<NewComment>(
@@ -40,39 +47,6 @@ export const useOrders = () => {
             reason: ''
         }
     );
-    const [orders, setOrders] = useState<Order[]>([])
-    /*const [orders, setOrders] = useState<Order[]>([
-        {
-            id: '1',
-            number: 1,
-            date: 'string',
-            address: 'string',
-            price: 500,
-            status: 'new',
-            payment: 'наличными',
-            comment: ''
-        },
-        {
-            id: '2',
-            number: 2,
-            date: 'string',
-            address: 'string',
-            price: 500,
-            status: 'cancelled',
-            payment: 'картой',
-            comment: ''
-        },
-        {
-            id: '3',
-            number: 3,
-            date: 'string',
-            address: 'string',
-            price: 500,
-            status: 'confirmed',
-            payment: 'QR-код',
-            comment: ''
-        }
-    ])*/
 
     const appointOperator = (async (value: any) => {
         await changeOperator.mutateAsync({
@@ -119,6 +93,13 @@ export const useOrders = () => {
     }, []);
 
     const [filters, setFilters] = useState<OrderListFilters>(initialFilters);
+    const ordersWithFilters = useGetOrdersWithFiltersQuery({
+        operatorName: filters.operators,
+        status: filters.statuses,
+        page: 1,
+        size: 8,
+        sort: []
+    });
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -133,7 +114,7 @@ export const useOrders = () => {
         } else {
             params.delete('operators');
         }
-        if (role == 'admin') {
+        if (authenticated && roles.includes('ADMIN')) {
             params.delete('amOperator');
         } else if (filters.amOperator === true) {
             params.set('amOperator', 'true');
@@ -147,12 +128,12 @@ export const useOrders = () => {
 
     return {
         state: {
-            isOpen, orders, role, isStatus, isOperator, filters, myOrders,
-            isComment, comment, ordersWithoutOperator, authenticated, roles, isReason, reason
+            isOpen, isStatus, isOperator, filters, myOrders,
+            isComment, comment, ordersWithoutOperator, authenticated, roles, isReason, reason, ordersWithFilters
         },
         functions: {
-            setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters,
-            setMyOrders, appointOperator, setIsComment, setComment, changeStatus, setIsReason, setReason
+            setIsOpen, setIsStatus, setIsOperator, setFilters,
+            appointOperator, setIsComment, setComment, changeStatus, setIsReason, setReason
         }
     }
 };

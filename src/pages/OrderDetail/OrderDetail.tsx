@@ -7,6 +7,7 @@ import CustomPagination from "@/components/Pagination/CustomPagination";
 import HistoryDialog from "./components/HistoryDialog/HistoryDialog";
 import AddDishDialog from "./components/AddDichDialog/AddDishDialog";
 import ChangeOperatorDialog from "./components/ChangeOperatorDialog/ChangeOperatorDialog";
+import { TranslateStatus } from "@/utils/constants/translateStatus";
 
 const OrderDetail = () => {
     const { state, functions } = useOrderDetail();
@@ -51,7 +52,7 @@ const OrderDetail = () => {
                         </div>
                     </div>
                     <div>
-                        <Button className="cursor-pointer" onClick={() => functions.setIsHistory(true)}>{state.order.status}</Button>
+                        <Button className="cursor-pointer" onClick={() => functions.setIsHistory(true)}>{TranslateStatus[state.order.data?.data.status || '']}</Button>
                         {state.order.data?.data && (
                             <HistoryDialog isHistory={state.isHistory} setIsHistory={functions.setIsHistory}
                                 order={state.order.data?.data} />

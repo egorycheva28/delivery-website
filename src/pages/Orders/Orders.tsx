@@ -12,35 +12,53 @@ const Orders = () => {
     return (
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
             <span className='text-4xl font-medium'>Управление заказами</span>
-            {state.role == 'admin' ? (
-                <div className="flex justify-items-start w-[90%]">
-                    <Button variant="outline" className="h-10 max-w-64 flex justify-between items-center cursor-pointer"
-                        onClick={() => functions.setIsOpen(true)}>
-                        <p>{"Фильтры"}</p>
-                        <SlidersHorizontal />
-                    </Button>
-                    <FilterDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen}
-                        isStatus={state.isStatus} setIsStatus={functions.setIsStatus}
-                        isOperator={state.isOperator} setIsOperator={functions.setIsOperator}
-                        filters={state.filters} setFilters={functions.setFilters}
-                    />
+            {state.authenticated && state.roles.includes('ADMIN') ? (
+                <div>
+                    <div className="flex justify-items-start w-[90%]">
+                        <Button variant="outline" className="h-10 max-w-64 flex justify-between items-center cursor-pointer"
+                            onClick={() => functions.setIsOpen(true)}>
+                            <p>{"Фильтры"}</p>
+                            <SlidersHorizontal />
+                        </Button>
+                        <FilterDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen}
+                            isStatus={state.isStatus} setIsStatus={functions.setIsStatus}
+                            isOperator={state.isOperator} setIsOperator={functions.setIsOperator}
+                            filters={state.filters} setFilters={functions.setFilters}
+                        />
+                    </div>
+                    <div className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
+                        {state.ordersWithFilters.data?.data.content.map(order => (
+                            <OrderItem order={order} roles={state.roles} appointOperator={functions.appointOperator}
+                                isComment={state.isComment} setIsComment={functions.setIsComment}
+                                isReason={state.isReason} setIsReason={functions.setIsReason}
+                                comment={state.comment} changeStatus={functions.changeStatus}
+                                reason={state.reason} reloadOrder={state.ordersWithoutOperator.refetch} authenticated={state.authenticated} />
+                        ))}
+                    </div>
                 </div>
             ) : (
-                <div className="flex justify-items-start w-[90%] items-center gap-4">
-                    <span>Являюсь оператором</span>
-                    <Switch className="cursor-pointer" checked={state.filters.amOperator}
-                        onCheckedChange={(checked: boolean) => functions.setFilters(prev => ({ ...prev, amOperator: checked }))} />
+                <div>
+                    <div className="flex justify-items-start w-[90%] items-center gap-4">
+                        <span>Являюсь оператором</span>
+                        <Switch className="cursor-pointer" checked={state.filters.amOperator}
+                            onCheckedChange={(checked: boolean) => functions.setFilters(prev => ({ ...prev, amOperator: checked }))} />
+                    </div>
+                    {state.filters.amOperator ? (
+                        <div></div>
+                    ) : (
+                        <div className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
+                            {state.ordersWithoutOperator.data?.data.content.map(order => (
+                                <OrderItem order={order} roles={state.roles} appointOperator={functions.appointOperator}
+                                    isComment={state.isComment} setIsComment={functions.setIsComment}
+                                    isReason={state.isReason} setIsReason={functions.setIsReason}
+                                    comment={state.comment} changeStatus={functions.changeStatus}
+                                    reason={state.reason} reloadOrder={state.ordersWithoutOperator.refetch} authenticated={state.authenticated} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
-            <div className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
-                {state.orders.map(order => (
-                    <OrderItem order={order} role={state.role} appointOperator={functions.appointOperator}
-                        isComment={state.isComment} setIsComment={functions.setIsComment}
-                        isReason={state.isReason} setIsReason={functions.setIsReason}
-                        comment={state.comment} changeStatus={functions.changeStatus}
-                        reason={state.reason} reloadOrder={state.ordersWithoutOperator.refetch} />
-                ))}
-            </div>
+
             <div className='mb-6'>
                 <CustomPagination totalPages={10} />
             </div>

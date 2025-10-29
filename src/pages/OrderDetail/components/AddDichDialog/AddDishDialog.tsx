@@ -10,7 +10,7 @@ interface AddDishDialogProps {
 }
 
 const AddDishDialog = ({ isAddDish, setIsAddDish }: AddDishDialogProps) => {
-    const { state } = useAddDishDialog(isAddDish);
+    const { state, functions } = useAddDishDialog(setIsAddDish);
 
     return (
         <Dialog open={isAddDish} onOpenChange={setIsAddDish}>
@@ -19,13 +19,13 @@ const AddDishDialog = ({ isAddDish, setIsAddDish }: AddDishDialogProps) => {
                     <DialogTitle>Меню</DialogTitle>
                 </DialogHeader>
                 <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-                    {state.dishes.map(dish => (
+                    {state.dishes.data?.data.map(dish => (
                         <DishCard key={dish.id} {...dish}>
-                            <AddBasketBtn className="w-full" idDish={dish.id} />
+                            <AddBasketBtn className="w-full" idDish={dish.id} onClick={functions.reloadDishes} />
                         </DishCard>
                     ))}
                 </div>
-                <CustomPagination totalPages={10} />
+                <CustomPagination totalPages={state.totalPage} />
             </DialogContent>
         </Dialog>
     )

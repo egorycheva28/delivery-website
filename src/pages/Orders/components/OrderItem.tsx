@@ -7,7 +7,7 @@ import ReasonDialog from "./ReasonDialog/ReasonDialog";
 
 interface OrderItemProps {
     order: Order;
-    role: string;
+    roles: string[];
     appointOperator: (value: any) => void;
     isComment: boolean;
     setIsComment: (isComment: boolean) => void;
@@ -17,9 +17,10 @@ interface OrderItemProps {
     changeStatus: (id: string, orderId: string) => void;
     reason: Reason;
     reloadOrder: () => void;
+    authenticated: boolean;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isComment, setIsComment, isReason, setIsReason, comment, changeStatus, reason, reloadOrder }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, roles, appointOperator, isComment, setIsComment, isReason, setIsReason, comment, changeStatus, reason, reloadOrder, authenticated }) => {
 
     return (
         <div className="flex flex-col w-[100%] p-10 gap-6">
@@ -28,7 +29,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                     <NavLink to={`/order/${order.id}`} className="cursor-pointer">
                         <span className="text-2xl font-medium underline">Заказ №</span>
                     </NavLink>
-                    {role == 'operator' ? (
+                    {authenticated && roles.includes('OPERATOR') ? (
                         <MessageSquare className=" flex items-end h-[60%] cursor-pointer" onClick={() => setIsComment(true)} />
                     ) : (
                         null
@@ -61,7 +62,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
-                    {role == 'admin' ? (
+                    {authenticated && roles.includes('ADMIN') ? (
                         <SelectStatus
                             selected={{ id: order.status, name: order.status }}
                             statuses={[
@@ -90,7 +91,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, role, appointOperator, isC
                     )}
                     <ReasonDialog isReason={isReason} setIsReason={setIsReason} order={order} reason={reason}
                         reloadOrder={reloadOrder} />
-                    {role == 'operator' && order.status?.includes(OrderStatus.NEW) ? (
+                    {authenticated && roles.includes('OPERATOR') && order.status?.includes(OrderStatus.NEW) ? (
                         <Button className="cursor-pointer" onClick={appointOperator}>Назначить себя оператором</Button>
                     ) : (
                         null

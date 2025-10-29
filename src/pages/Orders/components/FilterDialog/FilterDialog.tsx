@@ -93,7 +93,7 @@ const FilterDialog = ({ filters, setFilters, setIsOpen, isOpen, setIsStatus, isS
                                 name="operators"
                                 render={() => (
                                     <FormItem>
-                                        {state.operators.map((operator) => (
+                                        {state.operators.data?.data.map((operator) => (
                                             <FormField
                                                 key={operator.id}
                                                 control={form.control}
@@ -115,7 +115,7 @@ const FilterDialog = ({ filters, setFilters, setIsOpen, isOpen, setIsStatus, isS
                                                             />
                                                         </FormControl>
                                                         <FormLabel className="text-sm font-normal">
-                                                            {operator.label}
+                                                            {operator.fullName}
                                                         </FormLabel>
                                                     </FormItem>
                                                 )}

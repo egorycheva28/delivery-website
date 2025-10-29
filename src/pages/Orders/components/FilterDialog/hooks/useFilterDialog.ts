@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form"
 import type { GetFilterSchema } from "../constants/FilterSchema"
 import type { OrderListFilters } from "@/pages/Orders/hooks/useOrders"
+import { useGetOperatorsQuery } from "@/utils/api/hooks/useGetOperatorsQuery"
 
 export const useFilterDialog = (
     filters: OrderListFilters,
@@ -9,57 +10,36 @@ export const useFilterDialog = (
 
     const statuses = [
         {
-            id: "new",
+            id: "NEW",
             label: "Новый",
         },
         {
-            id: "confirmed",
+            id: "CONFIRMED",
             label: "Подтвержден",
         },
         {
-            id: "inPreparation",
+            id: "COOKING",
             label: "Готовится",
         },
         {
-            id: "awaiting",
+            id: "WAITING_FOR_COURIER",
             label: "Ожидает курьера",
         },
         {
-            id: "handed",
+            id: "TOOK_BY_COURIER",
             label: "Передан курьеру",
         },
         {
-            id: "delievered",
+            id: "COMPLETED",
             label: "Доставлен",
         },
         {
-            id: "cancelled",
+            id: "CANCELED",
             label: "Отменен",
         }
     ] as const
 
-    const operators = [
-        {
-            id: "1",
-            label: "Оператор 1",
-        },
-        {
-            id: "2",
-            label: "Оператор 2",
-        },
-        {
-            id: "3",
-            label: "Оператор 3",
-        },
-        {
-            id: "4",
-            label: "Оператор 4",
-        },
-        {
-            id: "5",
-            label: "Оператор 5",
-        }
-    ] as const
+    const operators = useGetOperatorsQuery()
 
     const filterForm = useForm<GetFilterSchema>({
         defaultValues: {

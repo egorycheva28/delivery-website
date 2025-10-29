@@ -87,6 +87,35 @@ interface Order {
     meals: Meal[];
 }
 
+interface OrderAnswer {
+    totalPages: number,
+    totalElements: number,
+    size: number,
+    content: Order[],
+    number: number,
+    sort: {
+        empty: boolean,
+        sorted: boolean,
+        unsorted: boolean
+    },
+    numberOfElements: number,
+    first: boolean,
+    last: boolean,
+    pageable: {
+        offset: number,
+        sort: {
+            empty: boolean,
+            sorted: boolean,
+            unsorted: boolean
+        },
+        pageNumber: number,
+        pageSize: number,
+        paged: boolean,
+        unpaged: boolean
+    },
+    empty: boolean
+}
+
 enum OrderStatus {
     NEW = "NEW",
     CONFIRMED = "CONFIRMED",
@@ -115,6 +144,13 @@ interface NewComment {
 interface Status {
     id: string;
     name: string;
+}
+
+interface StatusHistory {
+    id: string;
+    orderId: string;
+    status: OrderStatus;
+    date: string;
 }
 
 interface Reason {
