@@ -2,11 +2,13 @@ import * as z from 'zod';
 
 export const editDishSchema = z.object({
     name: z.string().nonempty("Это поле обязательно"),
-    category: z.string().nonempty("Выберите категорию"),
-    price: z.number().min(1, { message: "Это поле обязательно" }),
+    categoryId: z.string().nonempty("Выберите категорию"),
+    photo: z.string().optional(),
+    rate: z.number(),
+    price: z.number(),
     description: z.string().nonempty("Это поле обязательно"),
-    ingredients: z.string().nonempty("Это поле обязательно"),
-    photo: z.string().nonempty("Это поле обязательно")
+    ingredients: z.array(z.string()).nonempty("Это поле обязательно"),
+    isAvailable: z.boolean()
 })
 
 export type EditDishSchema = z.infer<typeof editDishSchema>;

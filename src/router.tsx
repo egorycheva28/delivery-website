@@ -8,6 +8,10 @@ import Operators from "./pages/Operators/Operators";
 import DishManagement from "./pages/DishManagement/DishManagement";
 import Basket from "@/pages/Basket/Basket.tsx";
 import Profile from "@/pages/Profile/Profile.tsx";
+import Orders from "./pages/Orders/Orders";
+import Statistics from "@/pages/Statistics/Statistics.tsx";
+import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
+import OrderDetail from "./pages/OrderDetail/OrderDetail";
 
 export const router = createBrowserRouter([
     {
@@ -24,7 +28,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: ROUTES.BASKET,
-                element: <Basket/>
+                element: <Basket />
             },
             {
                 path: ROUTES.OPERATORS,
@@ -41,6 +45,22 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.PROFILE,
                 element: <Profile/>
+            },
+            {
+                path: ROUTES.ORDERS,
+                element: <Orders />
+            },
+            {
+                path: ROUTES.STATISTICS,
+                element: <Statistics />
+            },
+            {
+                path: ROUTES.DISH_CATEGORY,
+                element: <DishCategory />
+            },
+            {
+                path: ROUTES.ORDER_DETAILS,
+                element: <OrderDetail />
             }
         ]
     }

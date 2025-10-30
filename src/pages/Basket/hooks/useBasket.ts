@@ -1,7 +1,8 @@
-import {useMemo} from "react";
+import {useState} from "react";
+import {useGetCartQuery} from "@/utils/api/hooks/useGetCartQuery.ts";
 
 export const useBasket = () => {
-    const dishes = [
+    /*const dishes = [
         {
             id: "string1",
             name: "Basket 1",
@@ -23,20 +24,18 @@ export const useBasket = () => {
             photos: [],
             dishNum: 1
         }
-    ]
+    ]*/
 
-    const totalAmount = useMemo((): number => {
-        return dishes.reduce((sum, dish) => {
-            return sum + (dish.price * dish.dishNum);
-        }, 0);
-    }, [dishes]);
+    const cart = useGetCartQuery()
+
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleDeleteAll = () => {
         console.log("Delete All")
     }
 
     return {
-        state: { dishes, totalAmount },
-        functions: { handleDeleteAll }
+        state: { cart, isOpen },
+        functions: { handleDeleteAll, setIsOpen }
     }
 }

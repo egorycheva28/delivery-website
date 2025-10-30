@@ -5,10 +5,14 @@ import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVal
 import {Button} from "@/components/ui/button.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 
-const BasketForm = () => {
+interface BasketFormProps {
+    openSuccessBasketDesign: () => void
+}
+
+const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
     const { state,
         form,
-        functions } = useBasketForm()
+        functions } = useBasketForm(openSuccessBasketDesign)
 
     return (
         <Form {...form}>

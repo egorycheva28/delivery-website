@@ -1,14 +1,14 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog.tsx";
 import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form.tsx";
 import {useFilterDialog} from "@/pages/Menu/components/FilterDialog/hooks/useFilterDialog.ts";
-import type {DishListFilters} from "@/pages/Menu/hooks/useMenu.ts";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import type {GetFoodsWithFilterParams} from "@/utils/api/requests/foods/filter";
 
 interface FilterDialogProps {
-    filters: DishListFilters;
-    setFilters: (filters: DishListFilters) => void;
+    filters: GetFoodsWithFilterParams;
+    setFilters: (filters: GetFoodsWithFilterParams) => void;
     setIsOpen: (isOpen: boolean) => void;
     isOpen: boolean;
 }
@@ -69,7 +69,7 @@ const FilterDialog = ({filters, setFilters, setIsOpen, isOpen}: FilterDialogProp
                                 render={({field}) => (
                                     <FormItem className="w-[190px]">
                                         <FormControl>
-                                            <Input placeholder="MIN цена" {...field} />
+                                            <Input placeholder="MIN цена" {...field} type="number" />
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -80,7 +80,7 @@ const FilterDialog = ({filters, setFilters, setIsOpen, isOpen}: FilterDialogProp
                                 render={({field}) => (
                                     <FormItem className="w-[190px]">
                                         <FormControl>
-                                            <Input placeholder="MAX цена" {...field} />
+                                            <Input placeholder="MAX цена" {...field} type="number" />
                                         </FormControl>
                                     </FormItem>
                                 )}

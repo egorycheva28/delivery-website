@@ -8,13 +8,14 @@ import {
 import {useCustomPagination} from "@/components/Pagination/hooks/useCustomPagination.ts";
 
 interface PaginationProps {
-    totalPages: number
+    totalPages: number,
+    isGoToStart?: boolean
 }
 
-const CustomPagination = ({ totalPages }: PaginationProps) => {
-    const { state, functions } = useCustomPagination(totalPages);
+const CustomPagination = ({ totalPages, isGoToStart }: PaginationProps) => {
+    const { state, functions } = useCustomPagination(totalPages, isGoToStart);
 
-    return (
+    return totalPages > 1 && (
         <Pagination>
             <PaginationContent>
                 <PaginationItem>

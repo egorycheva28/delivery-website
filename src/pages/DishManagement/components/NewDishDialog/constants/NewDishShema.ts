@@ -1,12 +1,13 @@
 import * as z from 'zod';
 
-export const newOperatorSchema = z.object({
+export const newDishSchema = z.object({
     name: z.string().nonempty("Это поле обязательно"),
-    category: z.string().nonempty("Выберите категорию"),
+    categoryId: z.string().nonempty("Выберите категорию"),
+    photo: z.string().optional(),
+    rate: z.number(),
     price: z.number(),
     description: z.string().nonempty("Это поле обязательно"),
-    ingredients: z.string().nonempty("Это поле обязательно"),
-    photo: z.string().nonempty("Это поле обязательно")
+    ingredients: z.array(z.string()).nonempty("Это поле обязательно")
 })
 
-export type NewOperatorSchema = z.infer<typeof newOperatorSchema>;
+export type NewDishSchema = z.infer<typeof newDishSchema>;

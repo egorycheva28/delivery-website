@@ -3,7 +3,11 @@ export const ROUTES = {
     ABOUT: '/about',
     DISH_DETAILS: '/dish/:id',
     OPERATORS: '/operators',
-    DISH_MANAGEMENT: '/dishManagement',
     BASKET: '/basket',
-    PROFILE: '/profile'
+    ORDERS: '/orders',
+    DISH_MANAGEMENT: '/dishManagement',
+    PROFILE: '/profile',
+    STATISTICS: '/statics',
+    DISH_CATEGORY: '/dish_category',
+    ORDER_DETAILS: '/order/:id'
 }
