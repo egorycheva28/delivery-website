@@ -8,11 +8,10 @@ interface CommnetDialogProps {
     isComment: boolean;
     setIsComment: (isComment: boolean) => void;
     order: Order;
-    comment: NewComment;
 }
 
-const CommentDialog = ({ isComment, setIsComment, order, comment }: CommnetDialogProps) => {
-    const { form, functions } = useCommentDialog(isComment, setIsComment, order, comment);
+const CommentDialog = ({ isComment, setIsComment, order}: CommnetDialogProps) => {
+    const { form, functions } = useCommentDialog(isComment, setIsComment, order);
 
     return (
         <Dialog open={isComment} onOpenChange={setIsComment}>

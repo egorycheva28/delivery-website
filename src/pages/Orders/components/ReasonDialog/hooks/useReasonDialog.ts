@@ -4,13 +4,13 @@ import type { GetReasonSchema } from "../constants/ReasonShema";
 import { usePutDeclineOrderMutation } from "@/utils/api/hooks/usePutDeclineOrderMutation";
 
 export const useReasonDialog = (isReason: boolean,
-    setIsReason: (isReason: boolean) => void, order: Order, reason: Reason,
+    setIsReason: (isReason: boolean) => void, order: Order,
     reloadOrder: () => void) => {
     const declineOrder = usePutDeclineOrderMutation()
 
     const newReasonForm = useForm<GetReasonSchema>({
         defaultValues: {
-            reason: reason.reason
+            reason: ''
         }
     })
 

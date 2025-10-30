@@ -15,7 +15,7 @@ const Menu = () => {
     return (
         <div className="mx-auto mt-4 flex flex-col gap-10 p-8">
             <div className="flex gap-4 flex-col md:flex-row md:items-center md:justify-between">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 ">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     <Input
                         defaultValue={state.filters.search}
                         leftIcon={<SearchIcon className='h-5 w-5' />}

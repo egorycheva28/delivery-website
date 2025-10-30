@@ -1,26 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.tsx";
 import { Calendar, MapPin, MessageSquare, RussianRuble } from "lucide-react";
-import CommentDialog from "./CommentDialog/CommentDialog";
-import { SelectStatus } from "@/components/SelectStatus/SelectStatus";
+import CommentDialog from "../CommentDialog/CommentDialog.tsx";
+import { SelectStatus } from "@/components/SelectStatus/SelectStatus.tsx";
 import { NavLink } from "react-router-dom";
-import ReasonDialog from "./ReasonDialog/ReasonDialog";
+import ReasonDialog from "../ReasonDialog/ReasonDialog.tsx";
+import React from "react";
+import {useOrderItem} from "@/pages/Orders/components/OrderItem/hooks/useOrderItem.ts";
 
 interface OrderItemProps {
     order: Order;
-    roles: string[];
-    appointOperator: (value: any) => void;
-    isComment: boolean;
-    setIsComment: (isComment: boolean) => void;
-    isReason: boolean;
-    setIsReason: (isReason: boolean) => void;
-    comment: NewComment;
-    changeStatus: (id: string, orderId: string) => void;
-    reason: Reason;
     reloadOrder: () => void;
-    authenticated: boolean;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order, roles, appointOperator, isComment, setIsComment, isReason, setIsReason, comment, changeStatus, reason, reloadOrder, authenticated }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
+    const { state, functions } = useOrderItem()
 
     return (
         <div className="flex flex-col w-[100%] p-10 gap-6">
@@ -29,12 +22,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, roles, appointOperator, is
                     <NavLink to={`/order/${order.id}`} className="cursor-pointer">
                         <span className="text-2xl font-medium underline">Заказ №</span>
                     </NavLink>
-                    {authenticated && roles.includes('OPERATOR') ? (
-                        <MessageSquare className=" flex items-end h-[60%] cursor-pointer" onClick={() => setIsComment(true)} />
-                    ) : (
-                        null
-                    )}
-                    <CommentDialog isComment={isComment} setIsComment={setIsComment} order={order} comment={comment} />
+                    {state.authenticated && state.roles.includes('OPERATOR') ? (
+                        <MessageSquare className=" flex items-end h-[60%] cursor-pointer"
+                                       onClick={() => functions.setIsComment(true)} />
+                    ) : null}
+                    <CommentDialog isComment={state.isComment} setIsComment={functions.setIsComment} order={order} />
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="flex flex-row items-center">
@@ -62,7 +54,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, roles, appointOperator, is
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
-                    {authenticated && roles.includes('ADMIN') ? (
+                    {state.authenticated && state.roles.includes('ADMIN') ? (
                         <SelectStatus
                             selected={{ id: order.status, name: order.status }}
                             statuses={[
@@ -74,7 +66,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, roles, appointOperator, is
                                 { id: "COMPLETED", name: "Доставлен" },
                                 { id: "CANCELED", name: "Отменен" }
                             ]}
-                            onChange={changeStatus}
+                            onChange={functions.changeStatus}
                             orderId={order.id}
                         />
                     ) : (
@@ -85,17 +77,17 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, roles, appointOperator, is
                                 { id: "CONFIRMED", name: "Подвтержден" },
                                 { id: "CANCELED", name: "Отменен" }
                             ]}
-                            onChange={changeStatus}
+                            onChange={functions.changeStatus}
                             orderId={order.id}
                         />
                     )}
-                    <ReasonDialog isReason={isReason} setIsReason={setIsReason} order={order} reason={reason}
+                    <ReasonDialog isReason={state.isReason} setIsReason={functions.setIsReason} order={order}
                         reloadOrder={reloadOrder} />
-                    {authenticated && roles.includes('OPERATOR') && order.status?.includes(OrderStatus.NEW) ? (
-                        <Button className="cursor-pointer" onClick={appointOperator}>Назначить себя оператором</Button>
-                    ) : (
-                        null
-                    )}
+                    {state.authenticated && state.roles.includes('OPERATOR') && order.status?.includes(OrderStatus.NEW) ? (
+                        <Button className="cursor-pointer" onClick={functions.appointOperator}>
+                            Назначить себя оператором
+                        </Button>
+                    ) : null}
                 </div>
             </div>
         </div>

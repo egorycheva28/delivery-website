@@ -1,139 +1,169 @@
 import { useGetMyOrdersQuery } from "@/utils/api/hooks/useGetMyOrdersQuery";
 import { useGetOrdersWithFiltersQuery } from "@/utils/api/hooks/useGetOrdersWithFiltersQuery";
 import { useGetOrdersWithoutOperatorQuery } from "@/utils/api/hooks/useGetOrdersWithoutOperatorQuery";
-import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
-import { usePutChangeOrderStatusMutation } from "@/utils/api/hooks/usePutChangeOrderStatusMutation";
 import { useAuth } from "@/utils/contexts/auth/useAuth";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import {useDebounceCallback} from "@/utils/hooks/useDebounceCallback/useDebounceCallback.ts";
 
 export interface OrderListFilters {
-    statuses?: string[],
-    operators?: string[],
-    amOperator: boolean
+    statuses?: string,
+    operators?: string
 }
 
+const SEARCH_TIMEOUT = 500;
+const ITEMS_PER_PAGE = 8;
 export const useOrders = () => {
-    const changeOperator = usePutChangeOperatorMutation()
+    const { authenticated, roles, userId } = useAuth()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [isMyOrder, setIsMyOrder] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isGoToStart, setGoToStart] = useState(false);
+
+    const isAdmin = authenticated && roles.includes('ADMIN');
+    const statuses = [
+        {
+            id: "NEW",
+            label: "Новый",
+        },
+        {
+            id: "CONFIRMED",
+            label: "Подтвержден",
+        },
+        {
+            id: "COOKING",
+            label: "Готовится",
+        },
+        {
+            id: "WAITING_FOR_COURIER",
+            label: "Ожидает курьера",
+        },
+        {
+            id: "TOOK_BY_COURIER",
+            label: "Передан курьеру",
+        },
+        {
+            id: "COMPLETED",
+            label: "Доставлен",
+        },
+        {
+            id: "CANCELED",
+            label: "Отменен",
+        }
+    ] as const
+
     const ordersWithoutOperator = useGetOrdersWithoutOperatorQuery({
-        page: 1,
-        size: 8,
+        page: currentPage,
+        size: ITEMS_PER_PAGE,
         sort: []
+    }, {
+        options: {
+            enabled: !isAdmin && !isMyOrder
+        }
     })
-    const changeOrderStatus = usePutChangeOrderStatusMutation()
-    const [myId, setMyId] = useState<string>('');
 
     const myOrders = useGetMyOrdersQuery({
-        operatorId: myId,
-        page: 1,
-        size: 8,
+        operatorId: userId,
+        page: currentPage,
+        size: ITEMS_PER_PAGE,
         sort: []
+    }, {
+        options: {
+            enabled: !isAdmin && isMyOrder
+        }
     })
 
-    const { authenticated, roles } = useAuth()
-    //const [role, setRole] = useState<string>('admin');
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [isStatus, setIsStatus] = useState<boolean>(false);
-    const [isOperator, setIsOperator] = useState<boolean>(false);
-    const [isComment, setIsComment] = useState<boolean>(false);
-    const [isReason, setIsReason] = useState<boolean>(false);
-    const [comment, setComment] = useState<NewComment>(
-        {
-            comment: ''
-        }
-    );
-    const [reason, setReason] = useState<Reason>(
-        {
-            reason: ''
-        }
-    );
-
-    const appointOperator = (async (value: any) => {
-        await changeOperator.mutateAsync({
-            params: {
-                orderId: value.id, operatorId: myId
-            }
-        })
-
-        // reloadOComments()
-    })
-
-    const changeStatus = (async (id: string, orderId: string) => {
-        if (id == 'CANCELED') {
-            setIsReason(true);
-        }
-        else {
-            await changeOrderStatus.mutateAsync({
-                params: {
-                    orderId: orderId, status: id
-                }
-            })
-        }
-
-        ordersWithoutOperator.refetch;//заменить
-        setIsStatus(false);
-    })
-
-    const [searchParams, setSearchParams] = useSearchParams();
     const initialFilters = useMemo((): OrderListFilters => {
-        const params: OrderListFilters = {
-            amOperator: false
-        };
+        const params: OrderListFilters = {};
 
         const statuses = searchParams.get('statuses');
-        if (statuses) params.statuses = statuses.split(',');
+        if (statuses) params.statuses = statuses;
 
         const operators = searchParams.get('operators');
-        if (operators) params.operators = operators.split(',');
+        if (operators) params.operators = operators;
 
-        const amOperator = searchParams.get('amOperator');
-        if (amOperator) params.amOperator = amOperator === 'true';
+        const myOrder = searchParams.get('isMyOrder');
+        setIsMyOrder(myOrder === 'true')
 
         return params;
     }, []);
 
     const [filters, setFilters] = useState<OrderListFilters>(initialFilters);
-    const ordersWithFilters = useGetOrdersWithFiltersQuery({
-        operatorName: filters.operators,
-        status: filters.statuses,
-        page: 1,
-        size: 8,
-        sort: []
-    });
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        if (filters.statuses && filters.statuses.length > 0) {
-            params.set('statuses', filters.statuses.join(','));
+        if (filters.statuses) {
+            params.set('statuses', filters.statuses);
         } else {
             params.delete('statuses');
         }
-        if (filters.operators && filters.operators.length > 0) {
-            params.set('operators', filters.operators.join(','));
+
+        if (filters.operators) {
+            params.set('operators', filters.operators);
         } else {
             params.delete('operators');
         }
+
         if (authenticated && roles.includes('ADMIN')) {
-            params.delete('amOperator');
-        } else if (filters.amOperator === true) {
-            params.set('amOperator', 'true');
+            params.delete('isMyOrder');
+        } else if (isMyOrder) {
+            params.set('isMyOrder', 'true');
 
         } else {
-            params.set('amOperator', 'false');
+            params.set('isMyOrder', 'false');
         }
 
         setSearchParams(params, { replace: true });
-    }, [filters])
+    }, [filters, isMyOrder])
+
+    const ordersWithFilters = useGetOrdersWithFiltersQuery({
+        operatorName: filters.operators,
+        status: filters.statuses === "all" ? undefined : filters.statuses,
+        page: currentPage,
+        size: ITEMS_PER_PAGE,
+        sort: []
+    }, {
+        options: {
+            enabled: isAdmin
+        }
+    });
+
+    const activeQuery = useMemo(() => {
+        if (isAdmin) {
+            return ordersWithFilters;
+        } else if (!isAdmin && isMyOrder) {
+            return myOrders;
+        } else if (!isAdmin && !isMyOrder) {
+            return ordersWithoutOperator;
+        }
+
+        return {
+            data: undefined,
+            isLoading: false,
+            isError: false,
+            error: null,
+            refetch: () => {}
+        };
+    }, [isAdmin, isMyOrder]);
+
+    const handleSelectStatus = (id: string) => {
+        setFilters({...filters, statuses: id})
+        setGoToStart(prev => !prev)
+    }
+
+    const debouncedSearchByName = useDebounceCallback((name: string) => {
+        setFilters({ ...filters, operators: name });
+        setGoToStart(prev => !prev)
+    }, SEARCH_TIMEOUT);
+
+    const handleSetIsMyOrder = (checked: boolean) => {
+        setIsMyOrder(checked)
+        setGoToStart(prev => !prev)
+    }
 
     return {
-        state: {
-            isOpen, isStatus, isOperator, filters, myOrders,
-            isComment, comment, ordersWithoutOperator, authenticated, roles, isReason, reason, ordersWithFilters
-        },
-        functions: {
-            setIsOpen, setIsStatus, setIsOperator, setFilters,
-            appointOperator, setIsComment, setComment, changeStatus, setIsReason, setReason
-        }
+        state: { statuses, filters, isMyOrder, authenticated, roles, activeQuery, isGoToStart},
+        functions: { debouncedSearchByName, handleSelectStatus, setFilters, handleSetIsMyOrder, setCurrentPage}
     }
 };

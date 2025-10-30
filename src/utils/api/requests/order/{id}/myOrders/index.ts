@@ -10,4 +10,7 @@ export interface GetMyOrdersParams {
 export type GetMyOrdersConfig = RequestConfig<GetMyOrdersParams>;
 
 export const getMyOrders = async ({ config, params }: GetMyOrdersConfig) =>
-    instance.get<OrderAnswer>(`http://localhost:8096/order/find-by-operator?operatorId=${params.operatorId}&page=${params.page}&size=${params.size}&sort=${params.sort}`, config);
+    instance.get<OrderAnswer>(`http://localhost:8096/order/find-by-operator/${params.operatorId}`, {
+        ...config,
+        params: { ...config?.params, ...params }
+    });

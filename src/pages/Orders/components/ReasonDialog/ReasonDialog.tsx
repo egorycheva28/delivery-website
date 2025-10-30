@@ -8,12 +8,11 @@ interface ReasonDialogProps {
     isReason: boolean;
     setIsReason: (isComment: boolean) => void;
     order: Order;
-    reason: Reason;
     reloadOrder: () => void;
 }
 
-const ReasonDialog = ({ isReason, setIsReason, order, reason, reloadOrder }: ReasonDialogProps) => {
-    const { form, functions } = useReasonDialog(isReason, setIsReason, order, reason, reloadOrder);
+const ReasonDialog = ({ isReason, setIsReason, order, reloadOrder }: ReasonDialogProps) => {
+    const { form, functions } = useReasonDialog(isReason, setIsReason, order, reloadOrder);
 
     return (
         <Dialog open={isReason} onOpenChange={setIsReason}>

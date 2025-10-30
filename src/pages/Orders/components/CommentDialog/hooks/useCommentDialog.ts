@@ -4,12 +4,12 @@ import { useEffect } from "react";
 import { usePutAddCommentMutation } from "@/utils/api/hooks/usePutAddCommentMutation";
 
 export const useCommentDialog = (isComment: boolean,
-    setIsComment: (isComment: boolean) => void, order: Order, comment: NewComment) => {
+    setIsComment: (isComment: boolean) => void, order: Order) => {
     const addComment = usePutAddCommentMutation()
 
     const newCommentForm = useForm<GetCommentSchema>({
         defaultValues: {
-            comment: comment.comment || undefined
+            comment: ''
         }
     })
 

@@ -180,6 +180,7 @@ interface EditDishDTO {
 
 interface Token {
     accessToken: string;
+    refreshToken: string;
 }
 
 interface MutationSettings<Params = void, Func = unknown> {

@@ -1,10 +1,10 @@
 import CustomPagination from "@/components/Pagination/CustomPagination";
 import { useOrders } from "./hooks/useOrders";
-import OrderItem from "./components/OrderItem";
-import { Button } from "@/components/ui/button";
-import { SlidersHorizontal } from "lucide-react";
-import FilterDialog from "./components/FilterDialog/FilterDialog";
+import OrderItem from "./components/OrderItem/OrderItem.tsx";
+import {SearchIcon} from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import {Input} from "@/components/ui/input.tsx";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 const Orders = () => {
     const { state, functions } = useOrders();
@@ -12,57 +12,53 @@ const Orders = () => {
     return (
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
             <span className='text-4xl font-medium'>Управление заказами</span>
-            {state.authenticated && state.roles.includes('ADMIN') ? (
-                <div>
-                    <div className="flex justify-items-start w-[90%]">
-                        <Button variant="outline" className="h-10 max-w-64 flex justify-between items-center cursor-pointer"
-                            onClick={() => functions.setIsOpen(true)}>
-                            <p>{"Фильтры"}</p>
-                            <SlidersHorizontal />
-                        </Button>
-                        <FilterDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen}
-                            isStatus={state.isStatus} setIsStatus={functions.setIsStatus}
-                            isOperator={state.isOperator} setIsOperator={functions.setIsOperator}
-                            filters={state.filters} setFilters={functions.setFilters}
-                        />
-                    </div>
-                    <div className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
-                        {state.ordersWithFilters.data?.data.content.map(order => (
-                            <OrderItem order={order} roles={state.roles} appointOperator={functions.appointOperator}
-                                isComment={state.isComment} setIsComment={functions.setIsComment}
-                                isReason={state.isReason} setIsReason={functions.setIsReason}
-                                comment={state.comment} changeStatus={functions.changeStatus}
-                                reason={state.reason} reloadOrder={state.ordersWithoutOperator.refetch} authenticated={state.authenticated} />
-                        ))}
-                    </div>
-                </div>
-            ) : (
-                <div>
-                    <div className="flex justify-items-start w-[90%] items-center gap-4">
-                        <span>Являюсь оператором</span>
-                        <Switch className="cursor-pointer" checked={state.filters.amOperator}
-                            onCheckedChange={(checked: boolean) => functions.setFilters(prev => ({ ...prev, amOperator: checked }))} />
-                    </div>
-                    {state.filters.amOperator ? (
-                        <div></div>
+            {state.activeQuery.data && state.activeQuery.data?.data.content.length > 0 ? (
+                <>
+                    {state.authenticated && state.roles.includes('ADMIN') ? (
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-[90%]">
+                            <Input
+                                defaultValue={state.filters.operators}
+                                leftIcon={<SearchIcon className='h-5 w-5'/>}
+                                placeholder="Поиск..."
+                                onChange={(e) => functions.debouncedSearchByName(e.target.value)}
+                                className='h-10 sm:max-w-64 w-full'
+                            />
+                            <Select value={state.filters.statuses || "all"} onValueChange={functions.handleSelectStatus}>
+                                <SelectTrigger className="!h-10 sm:max-w-64 w-full">
+                                    <SelectValue placeholder="Категория блюда"/>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value="all">Все категории</SelectItem>
+                                        {state.statuses.map(status => (
+                                            <SelectItem value={status.id}>{status.label}</SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     ) : (
-                        <div className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
-                            {state.ordersWithoutOperator.data?.data.content.map(order => (
-                                <OrderItem order={order} roles={state.roles} appointOperator={functions.appointOperator}
-                                    isComment={state.isComment} setIsComment={functions.setIsComment}
-                                    isReason={state.isReason} setIsReason={functions.setIsReason}
-                                    comment={state.comment} changeStatus={functions.changeStatus}
-                                    reason={state.reason} reloadOrder={state.ordersWithoutOperator.refetch} authenticated={state.authenticated} />
-                            ))}
+                        <div className="flex justify-items-start w-[90%] items-center gap-4">
+                            <span>Мои заказы</span>
+                            <Switch className="cursor-pointer" checked={state.isMyOrder}
+                                    onCheckedChange={(checked: boolean) => functions.handleSetIsMyOrder(checked)}/>
                         </div>
                     )}
-                </div>
+                    <div
+                        className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
+                        {state.activeQuery.data.data.content.map(order => (
+                            <OrderItem order={order} reloadOrder={state.activeQuery.refetch}/>
+                        ))}
+                    </div>
+                    <div className='mb-6'>
+                        <CustomPagination totalPages={state.activeQuery.data.data.totalPages}
+                                          setPage={functions.setCurrentPage} isGoToStart={state.isGoToStart}/>
+                    </div>
+                </>
+            ) : (
+                <p className="text-center text-xl font-bold">{"Заказов нет"}</p>
             )}
-
-            <div className='mb-6'>
-                <CustomPagination totalPages={10} />
-            </div>
-        </div >
+        </div>
     )
 }
 

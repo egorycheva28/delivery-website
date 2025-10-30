@@ -30,7 +30,7 @@ export const useRegisterDialog = (setIsOpen: (isOpen: boolean) => void) => {
                 }
             })
 
-            login(token.data.accessToken)
+            login(token.data.accessToken, token.data.refreshToken)
             registerForm.reset()
             setIsOpen(false)
         } catch (error) {

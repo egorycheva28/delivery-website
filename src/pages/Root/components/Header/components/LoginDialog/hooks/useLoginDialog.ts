@@ -28,7 +28,7 @@ export const useLoginDialog = (setIsOpen: (isOpen: boolean) => void) => {
                 }
             });
 
-            handleLogin(token.data.accessToken)
+            handleLogin(token.data.accessToken, token.data.refreshToken)
             loginForm.reset();
             setIsOpen(false);
         } catch (error) {
