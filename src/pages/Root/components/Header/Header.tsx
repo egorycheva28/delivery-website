@@ -11,7 +11,7 @@ const Header = () => {
     const { state, functions } = useHeader()
 
     const NavigationContent = ({ isMobile = false }: { isMobile?: boolean }) => (
-        <div className={`flex ${isMobile ? "flex-col gap-4 p-4" : "items-center gap-12"}`}>
+        <div className={`flex ${isMobile ? "flex-col gap-4 p-4" : "items-center gap-8"}`}>
             <NavLink to={ROUTES.ROOT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
                 className={({ isActive }) =>
                     isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"

@@ -4,6 +4,7 @@ import {Card, CardContent, CardTitle} from "@/components/ui/card.tsx";
 import {Star} from "lucide-react";
 import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBasketBtn.tsx";
 import {getIngredientRus} from "@/pages/DishDetail/helpers/GetIngredientRus.ts";
+import {Button} from "@/components/ui/button.tsx";
 
 const DishDetail = () => {
     const { state } = useDishDetail()
@@ -64,7 +65,13 @@ const DishDetail = () => {
                         ))}
                     </div>
                     {state.dish.data?.data.foodDetails.id && (
-                        <AddBasketBtn className="w-[calc(100%-24px)] mx-3" idDish={state.dish.data?.data.foodDetails.id}/>
+                        state.dish.data?.data.foodDetails.isAvailable ? (
+                            <AddBasketBtn className="w-[calc(100%-24px)] mx-3" {...state.dishIntoCart} />
+                        ) : (
+                            <Button disabled={true} className="w-[calc(100%-24px)] mx-3">
+                                {"Блюдо не доступно"}
+                            </Button>
+                        )
                     )}
                 </CardContent>
             </Card>

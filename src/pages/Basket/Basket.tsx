@@ -21,7 +21,7 @@ const Basket = () => {
                     <Card className="w-full overflow-hidden p-0">
                         <CardContent className="p-0">
                             {state.cart.data?.data.items.map(dishBasket => (
-                                <DishBasketCard key={dishBasket.dishId} {...dishBasket} />
+                                <DishBasketCard key={dishBasket.dishId} {...dishBasket} reload={state.cart.refetch}/>
                             ))}
                         </CardContent>
                     </Card>

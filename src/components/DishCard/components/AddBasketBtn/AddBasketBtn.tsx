@@ -4,12 +4,16 @@ import {Button} from "@/components/ui/button.tsx";
 import {cn} from "@/lib/utils.ts";
 
 interface AddBasketBtnProps extends ComponentProps<'button'> {
-    initialNum?: number;
-    idDish: string;
+    dishId: string;
+    name: string;
+    price: number;
+    imageUrl?: string;
+    quantity: number;
+    reload?: () => void;
 }
 
-const AddBasketBtn = ({ initialNum = 0, idDish, className, ...props }: AddBasketBtnProps) => {
-    const { state, functions } = useAddBasketBtn(initialNum, idDish)
+const AddBasketBtn = ({ dishId, name, price, imageUrl, quantity, reload, className, ...props }: AddBasketBtnProps) => {
+    const { state, functions } = useAddBasketBtn(dishId, name, price, quantity, reload, imageUrl)
 
     return (
         <>

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuth} from "@/utils/contexts/auth";
 
 export const useHeader = () => {
@@ -20,6 +20,19 @@ export const useHeader = () => {
             setIsOpenRegister(true);
         }, 300);
     }
+
+    const generateBasketId = (): string => {
+        return crypto.randomUUID();
+    };
+
+    useEffect(() => {
+        let existingBasketId = localStorage.getItem('basketId');
+
+        if (!existingBasketId) {
+            existingBasketId = generateBasketId();
+            localStorage.setItem('basketId', existingBasketId);
+        }
+    }, []);
 
     return {
         state: { isOpenLogin, isOpenRegister, authenticated, roles, isMenuOpen },

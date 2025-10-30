@@ -6,6 +6,7 @@ import {useGetFoodsWithFiltersQuery} from "@/utils/api/hooks/useGetFoodsWithFilt
 import {getSortingForRequest} from "@/pages/Menu/helpers/getSortingForRequest.ts";
 import {getSortingForUrl} from "@/pages/Menu/helpers/getSortingForUrl.ts";
 import {useGetCategoriesQuery} from "@/utils/api/hooks/useGetCategoriesQuery.ts";
+import {useGetCartQuery} from "@/utils/api/hooks/useGetCartQuery.ts";
 
 const SEARCH_TIMEOUT = 500;
 const ITEMS_PER_PAGE = 8;
@@ -103,6 +104,7 @@ export const useMenu = () => {
     }, SEARCH_TIMEOUT);
 
     const categories = useGetCategoriesQuery();
+    const cart = useGetCartQuery({ basketId: localStorage.getItem('basketId')! })
     const dishes = useGetFoodsWithFiltersQuery({
         search: filters.search,
         minPrice: filters.minPrice,
@@ -118,7 +120,22 @@ export const useMenu = () => {
 
         const currentPage = parseInt(searchParams.get('page') || "1", 10) - 1;
         const startItem = ITEMS_PER_PAGE * currentPage;
-        return dishes.data.data.slice(startItem, startItem + ITEMS_PER_PAGE) || [];
+
+        return dishes.data.data.map((itemData) => {
+            const dishItem = cart.data?.data.items.find(item => item.dishId !== itemData.id)
+
+            return {
+                dishId: itemData.id!,
+                name: itemData.name!,
+                price: itemData.price!,
+                quantity: dishItem?.quantity || 0,
+                photo: itemData.photo!,
+                rate: itemData.rate!,
+                description: itemData.description!,
+                categoryId: itemData.categoryId!,
+                isAvailable: itemData.isAvailable!,
+            };
+        }).slice(startItem, startItem + ITEMS_PER_PAGE) || [];
     }, [dishes.data, searchParams]);
 
     const totalPage = useMemo(() => {
