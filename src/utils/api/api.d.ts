@@ -18,6 +18,23 @@ interface OperatorDTO {
     phone: string;
 }
 
+interface UserProfileDTO{
+    name: string;
+    phone: string;
+    password: string;
+}
+
+interface UserNewPasswordDTO{
+    oldPassword1: string;
+    newPassword1: string;
+    newPassword2: string;
+}
+
+interface ShortUserOrdersDTO{
+    inProcess: number;
+    completed: number;
+}
+
 interface Dish {
     id: string;
     name: string;

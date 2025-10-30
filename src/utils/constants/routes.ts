@@ -4,5 +4,6 @@ export const ROUTES = {
     DISH_DETAILS: '/dish/:id',
     OPERATORS: '/operators',
     DISH_MANAGEMENT: '/dishManagement',
-    BASKET: '/basket'
+    BASKET: '/basket',
+    PROFILE: '/profile'
 }
