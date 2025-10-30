@@ -1,5 +1,4 @@
 import {NavLink} from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import {Button} from "@/components/ui/button.tsx";
 import {ROUTES} from "@/utils/constants/routes.ts";
 import {useHeader} from "@/pages/Root/components/Header/hooks/useHeader.ts";

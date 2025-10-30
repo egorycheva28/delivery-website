@@ -27,9 +27,10 @@ interface NewOperatorDTO {
 }
 
 interface UserProfileDTO{
-    name: string;
+    id: string;
+    role: string;
+    fullName: string;
     phone: string;
-    password: string;
 }
 
 interface UserNewPasswordDTO{

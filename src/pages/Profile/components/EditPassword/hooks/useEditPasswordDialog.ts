@@ -2,14 +2,14 @@ import { useForm } from "react-hook-form"
 import { editPasswordShema } from "../constants/EditPasswordShema"
 import { useEffect} from "react"
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePutEditPasswordMutation } from "@/utils/api/hooks/usePutEditPasswordMutation";
+import { Route } from "react-router-dom";
 
 
 export const useEditPasswordDialog = (
     setIsOpen: (isOpen: boolean) => void,
-    isOpen: boolean,
-    editUserPassword  : UserNewPasswordDTO,
-    setEditUserPassword: (editUserPassword: UserNewPasswordDTO) => void) => {
-
+    isOpen: boolean) => {
+    const editPassword = usePutEditPasswordMutation()
 
     const newPasswordForm = useForm<UserNewPasswordDTO>({
         resolver: zodResolver(editPasswordShema),
@@ -21,9 +21,18 @@ export const useEditPasswordDialog = (
     })
     
     const addNewPassword = newPasswordForm.handleSubmit(
-        (data) => {
-            setEditUserPassword(data)
-            setIsOpen(false)
+        async (data) => {
+            await editPassword.mutateAsync({params: {password: data.oldPassword1, newPassword: data.newPassword1}}, {
+                onSuccess:() => {
+                    setIsOpen(false)
+                },
+                onError:() =>{
+                    newPasswordForm.setError("root", {
+                        type: "manual",
+                        message: "Неверные данные"
+                    })
+                }
+            })            
         }
     )
 

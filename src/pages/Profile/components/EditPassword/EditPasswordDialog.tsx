@@ -7,13 +7,11 @@ import { useEditPasswordDialog } from "./hooks/useEditPasswordDialog";
 interface ChangePasswordDialogProps {
   setIsOpen: (isOpen: boolean) => void;
   isOpen: boolean;
-  editUserPassword  : UserNewPasswordDTO;
-  setEditUserPassword: (EditUserPassword: UserNewPasswordDTO) => void;
 }
 
-const EditPasswordDialog  = ({setIsOpen, isOpen, editUserPassword, setEditUserPassword}: ChangePasswordDialogProps) => {
+const EditPasswordDialog  = ({setIsOpen, isOpen}: ChangePasswordDialogProps) => {
   const {form,
-    functions } = useEditPasswordDialog(setIsOpen, isOpen, editUserPassword, setEditUserPassword);
+    functions } = useEditPasswordDialog(setIsOpen, isOpen);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -64,7 +62,7 @@ const EditPasswordDialog  = ({setIsOpen, isOpen, editUserPassword, setEditUserPa
                 render={({ field, fieldState }) => (
                   <FormItem className="w-[100%]">
                     <FormLabel className="text-sm font-normal">
-                      {"Подтверждение пароляь"}
+                      {"Подтверждение пароля"}
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="Повторите старый пароль" {...field} />
@@ -76,6 +74,11 @@ const EditPasswordDialog  = ({setIsOpen, isOpen, editUserPassword, setEditUserPa
                 )}
               />
             </div>
+            {form.formState?.errors?.root && (
+                <p className="text-red-600 text-xs text-center mt-1">
+                    {form.formState.errors.root.message}
+                </p>
+            )}
             <Button type='submit' className='h-10 w-full'>
               {"Изменить"}
             </Button>
