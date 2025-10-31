@@ -75,6 +75,7 @@ interface Cart {
 
 interface Order {
     id: string;
+    orderNumber: number;
     clientId: string;
     address: string;
     phoneNumber: string;
@@ -82,6 +83,8 @@ interface Order {
     price: number;
     declineReason?: string;
     operatorId?: string;
+    operatorName: string;
+    date: string;
     status: OrderStatus;
     payWay?: OrderPayWay;
     meals: Meal[];
@@ -136,7 +139,10 @@ interface Meal {
     id: string;
     name: string;
     price: number;
+    imageUrl: string[];
+    quantity: number;
 }
+
 interface NewComment {
     comment: string;
 }

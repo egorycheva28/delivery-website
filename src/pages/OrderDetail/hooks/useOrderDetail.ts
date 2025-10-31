@@ -1,3 +1,4 @@
+import { useDeleteDishByIdFromOrderMutation } from "@/utils/api/hooks/useDeleteDishByIdFromOrderMutation";
 import { useGetOrderByIdQuery } from "@/utils/api/hooks/useGetOrderByIdQuery";
 import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
 import { useAuth } from "@/utils/contexts/auth/useAuth";
@@ -8,8 +9,8 @@ const ITEMS_PER_PAGE = 8;
 export const useOrderDetail = () => {
     const { id } = useParams<{ id: string }>();
     const order = useGetOrderByIdQuery({ orderId: id || "" })
-    //const client = useGetClientByIdQuery({ order.data?.data.id||""})
     const changeOperator = usePutChangeOperatorMutation()
+    const deleteDishFromOrder = useDeleteDishByIdFromOrderMutation()
 
     const { authenticated, roles, userId } = useAuth()
     const [isComment, setIsComment] = useState<boolean>(false);
@@ -38,8 +39,11 @@ export const useOrderDetail = () => {
         order.refetch;
     })
 
-    const deleteDish = () => {
-        //логика удаления блюда из заказа
+    const handleDeleteDishFromOrder = async (dishId: string) => {
+        await deleteDishFromOrder.mutateAsync({ params: { orderId: order.data?.data.id, dishId: dishId } },
+            {
+                onSuccess: () => order.refetch()
+            })
     }
 
     useEffect(() => {
@@ -52,7 +56,7 @@ export const useOrderDetail = () => {
             setIsComment,
             setComment,
             makeOperator,
-            deleteDish,
+            handleDeleteDishFromOrder,
             setIsChangeOperator,
             setIsAddDish,
             setIsHistory

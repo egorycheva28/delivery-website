@@ -5,7 +5,7 @@ import { SelectStatus } from "@/components/SelectStatus/SelectStatus.tsx";
 import { NavLink } from "react-router-dom";
 import ReasonDialog from "../ReasonDialog/ReasonDialog.tsx";
 import React from "react";
-import {useOrderItem} from "@/pages/Orders/components/OrderItem/hooks/useOrderItem.ts";
+import { useOrderItem } from "@/pages/Orders/components/OrderItem/hooks/useOrderItem.ts";
 
 interface OrderItemProps {
     order: Order;
@@ -20,11 +20,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-4 ">
                     <NavLink to={`/order/${order.id}`} className="cursor-pointer">
-                        <span className="text-2xl font-medium underline">Заказ №</span>
+                        <span className="text-2xl font-medium underline">Заказ № {order.orderNumber}</span>
                     </NavLink>
                     {state.authenticated && state.roles.includes('OPERATOR') ? (
                         <MessageSquare className=" flex items-end h-[60%] cursor-pointer"
-                                       onClick={() => functions.setIsComment(true)} />
+                            onClick={() => functions.setIsComment(true)} />
                     ) : null}
                     <CommentDialog isComment={state.isComment} setIsComment={functions.setIsComment} order={order} />
                 </div>
@@ -42,14 +42,14 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                         <Calendar className="w-[32px] h-[32px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Дата заказа:</span>
-                            <span className=""></span>
+                            <span>{order.date}</span>
                         </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
                         <MapPin className="w-[32px] h-[32px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Адрес доставки:</span>
-                            <span className="">{order.address}</span>
+                            <span>{order.address}</span>
                         </div>
                     </div>
                 </div>

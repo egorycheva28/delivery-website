@@ -24,7 +24,7 @@ const OrderDetail = () => {
             <div className="flex flex-col w-[90%] border border-black rounded-lg divide-y divide-black mb-8">
                 <div className="flex flex-row justify-between p-8 items-center">
                     <div className="flex flex-row gap-4">
-                        <span className="text-2xl font-medium underline">Заказ </span>
+                        <span className="text-2xl font-medium underline">Заказ № {state.order.data?.data.orderNumber}</span>
                         {state.authenticated && state.roles.includes('OPERATOR') ? (
                             <MessageSquare className=" flex items-end h-[60%] cursor-pointer" onClick={() => functions.setIsComment(true)} />
                         ) : (
@@ -65,7 +65,7 @@ const OrderDetail = () => {
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Ответсвенный оператор:</span>
                             {state.order.data?.data.operatorId ? (
-                                <span></span>
+                                <span>{state.order.data.data.operatorName}</span>
                             ) : (
                                 <span>Оператор не назначен</span>
                             )}
@@ -87,7 +87,7 @@ const OrderDetail = () => {
                         {state.authenticated && state.roles.includes('OPERATOR') ? (
                             <div>
                                 <Button className="cursor-pointer" onClick={() => functions.setIsAddDish(true)}>Добавить блюдо</Button>
-                                <AddDishDialog isAddDish={state.isAddDish} setIsAddDish={functions.setIsAddDish} />
+                                <AddDishDialog isAddDish={state.isAddDish} setIsAddDish={functions.setIsAddDish} order={state.order} />
                             </div>
                         ) : (
                             null
@@ -95,7 +95,7 @@ const OrderDetail = () => {
                     </div>
                     <div className="flex flex-col w-full border border-black  divide-y divide-black">
                         {state.order.data?.data.meals.map(meal => (
-                            <DishItem key={meal.id} meal={meal} deleteDish={functions.deleteDish} roles={state.roles} authenticated={state.authenticated} />
+                            <DishItem key={meal.id} meal={meal} handleDeleteDishFromOrder={functions.handleDeleteDishFromOrder} roles={state.roles} authenticated={state.authenticated} />
                         ))}
                     </div>
                     <CustomPagination totalPages={state.totalPage} />
