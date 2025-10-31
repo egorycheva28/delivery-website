@@ -1,10 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
-import {getCart} from "@/utils/api/requests/cart/get";
+import {getCart, type GetCartParams} from "@/utils/api/requests/cart/get";
 
-export const useGetCartQuery = (settings?: QuerySettings<typeof getCart>) =>
+export const useGetCartQuery = (
+    params: GetCartParams,
+    settings?: QuerySettings<typeof getCart>
+) =>
     useQuery({
-        queryKey: ['getCart'],
-        queryFn: () => getCart({ config: settings?.config }),
+        queryKey: ['getCart', params.basketId],
+        queryFn: () => getCart({ config: settings?.config, params }),
         ...settings?.options
     });

@@ -4,9 +4,8 @@ export type PostAddDishIntoCartParams = {
     dishId: string,
     name: string,
     price: number,
-    imageUrl: string,
-    quantity: number,
-    createOrder: boolean
+    imageUrl?: string,
+    quantity: number
 };
 
 export type PostAddDishIntoCartConfig = RequestConfig<PostAddDishIntoCartParams>;

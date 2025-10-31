@@ -5,13 +5,14 @@ interface DishBasketCardProps {
     name: string;
     price: number;
     imageUrl?: string;
-    quantity: number
+    quantity: number;
+    reload: () => void;
 }
 
-const DishBasketCard = ({ dishId, name, price, imageUrl, quantity }: DishBasketCardProps) => (
+const DishBasketCard = ({ dishId, name, price, imageUrl, quantity, reload }: DishBasketCardProps) => (
     <div className="w-full flex items-center justify-between border p-5">
         <div className="flex items-center gap-2">
-            <div className="h-[100px] overflow-hidden bg-gray-100">
+            <div className="h-[100px] w-[100px] overflow-hidden bg-gray-100">
                 <img
                     src={imageUrl || "https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
                     alt="dish photo"
@@ -23,7 +24,8 @@ const DishBasketCard = ({ dishId, name, price, imageUrl, quantity }: DishBasketC
                 <p>{`${price} ₽`}</p>
             </div>
         </div>
-        <AddBasketBtn className="w-[200px]" idDish={dishId} initialNum={quantity}/>
+        <AddBasketBtn className="w-[200px]" dishId={dishId} name={name} price={price} quantity={quantity}
+                      imageUrl={imageUrl} reload={reload}/>
     </div>
 )
 
