@@ -48,7 +48,7 @@ export const useBasketForm = (openSuccessBasketDesign: () => void) => {
             }
 
             if (!authenticated && values.password) {
-                let token: string;
+                let token: string[];
 
                 if (userExists) {
                     const loginResponse = await login.mutateAsync({
@@ -57,7 +57,7 @@ export const useBasketForm = (openSuccessBasketDesign: () => void) => {
                             password: values.password
                         }
                     });
-                    token = loginResponse.data.accessToken;
+                    token = [loginResponse.data.accessToken, loginResponse.data.refreshToken];
                 } else {
                     const registerResponse = await register.mutateAsync({
                         params: {
@@ -66,10 +66,10 @@ export const useBasketForm = (openSuccessBasketDesign: () => void) => {
                             password: values.password
                         }
                     });
-                    token = registerResponse.data.accessToken;
+                    token = [registerResponse.data.accessToken, registerResponse.data.refreshToken];
                 }
 
-                handleLogin(token);
+                handleLogin(token[0], token[1]);
             }
 
             await createOrder.mutateAsync({

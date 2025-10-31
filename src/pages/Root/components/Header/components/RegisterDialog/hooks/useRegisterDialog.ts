@@ -7,7 +7,7 @@ import {
 import {usePostRegisterMutation} from "@/utils/api/hooks/usePostRegisterMutation.ts";
 import {useAuth} from "@/utils/contexts/auth";
 
-export const useRegisterDialog = (setIsOpen: (isOpen: boolean) => void) => {
+export const useRegisterDialog = (setIsOpen: (isOpen: boolean) => void, reload: () => void) => {
     const register = usePostRegisterMutation()
     const { login } = useAuth()
 
@@ -30,8 +30,9 @@ export const useRegisterDialog = (setIsOpen: (isOpen: boolean) => void) => {
                 }
             })
 
-            login(token.data.accessToken)
+            login(token.data.accessToken, token.data.refreshToken)
             registerForm.reset()
+            reload()
             setIsOpen(false)
         } catch (error) {
             registerForm.setError('root', {

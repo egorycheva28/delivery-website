@@ -82,14 +82,21 @@ const Header = () => {
                 {"О нас"}
             </NavLink>
             {state.authenticated ? (
-                <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
-                    onClick={() => {
-                        functions.logout();
-                        if (isMobile) functions.setIsMenuOpen(false);
-                    }}
-                >
-                    {"Выйти"}
-                </Button>
+                <>
+                    <NavLink to={ROUTES.PROFILE} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}>
+                        <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}>
+                            {state.userProfile.data?.data.fullName}
+                        </Button>
+                    </NavLink>
+                    <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
+                            onClick={() => {
+                                functions.logout();
+                                if (isMobile) functions.setIsMenuOpen(false);
+                            }}
+                    >
+                        {"Выйти"}
+                    </Button>
+                </>
             ) : (
                 <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
                     onClick={() => {
@@ -124,9 +131,9 @@ const Header = () => {
                 </Sheet>
             </div>
             <LoginDialog isOpen={state.isOpenLogin} setIsOpen={functions.setIsOpenLogin}
-                         register={functions.handleRegister}/>
+                         register={functions.handleRegister} reload={state.userProfile.refetch}/>
             <RegisterDialog isOpen={state.isOpenRegister} setIsOpen={functions.setIsOpenRegister}
-                            login={functions.handleLogin}/>
+                            login={functions.handleLogin} reload={state.userProfile.refetch}/>
         </div>
     )
 }

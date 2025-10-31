@@ -1,4 +1,4 @@
-export function getRoles(token?: string | null) {
+export function getDataJWT(token?: string | null) {
     try {
         if (!token) return null;
         const base64Url = token.split('.')[1];
@@ -6,9 +6,7 @@ export function getRoles(token?: string | null) {
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-        const json = JSON.parse(jsonPayload);
-
-        return json.role;
+        return JSON.parse(jsonPayload);
     } catch (e) {
         return null;
     }

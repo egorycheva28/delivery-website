@@ -7,11 +7,14 @@ import DishDetail from "@/pages/DishDetail/DishDetail.tsx";
 import Operators from "./pages/Operators/Operators";
 import DishManagement from "./pages/DishManagement/DishManagement";
 import Basket from "@/pages/Basket/Basket.tsx";
+import Profile from "@/pages/Profile/Profile.tsx";
 import Orders from "./pages/Orders/Orders";
 import Statistics from "@/pages/Statistics/Statistics.tsx";
 import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
 import OrderDetail from "./pages/OrderDetail/OrderDetail";
 import DeliveryAndPayment from "@/pages/DeliveryAndPayment/DeliveryAndPayment.tsx";
+import ProfileOrders from "@/pages/ProfileOrders/ProfileOrders.tsx";
+import OrderDishes from "@/pages/OrderDishes/OrderDishes.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -40,7 +43,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: ROUTES.ABOUT,
-                element: <About />
+                element: <About/>
+            },
+            {
+                path: ROUTES.PROFILE,
+                element: <Profile/>
             },
             {
                 path: ROUTES.ORDERS,
@@ -61,6 +68,14 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.DELIVERY_AND_PAYMENT,
                 element: <DeliveryAndPayment />
+            },
+            {
+                path: ROUTES.PROFILE_ORDERS,
+                element: <ProfileOrders />
+            },
+            {
+                path: ROUTES.ORDER_DISHES,
+                element: <OrderDishes />
             }
         ]
     }
