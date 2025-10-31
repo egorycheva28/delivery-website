@@ -13,7 +13,7 @@ interface OrderItemProps {
 }
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
-    const { state, functions } = useOrderItem()
+    const { state, functions } = useOrderItem(reloadOrder)
 
     return (
         <div className="flex flex-col w-[100%] p-10 gap-6">

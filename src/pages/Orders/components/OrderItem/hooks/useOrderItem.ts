@@ -1,9 +1,9 @@
-import {useState} from "react";
-import {useAuth} from "@/utils/contexts/auth";
-import {usePutChangeOperatorMutation} from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation.ts";
-import {usePutChangeOrderStatusMutation} from "@/utils/api/hooks/usePutChangeOrderStatusMutation.ts";
+import { useState } from "react";
+import { useAuth } from "@/utils/contexts/auth";
+import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation.ts";
+import { usePutChangeOrderStatusMutation } from "@/utils/api/hooks/usePutChangeOrderStatusMutation.ts";
 
-export const useOrderItem = () => {
+export const useOrderItem = (reloadOrder: () => void) => {
     const { authenticated, roles, userId } = useAuth()
     const [isComment, setIsComment] = useState<boolean>(false);
     const [isReason, setIsReason] = useState<boolean>(false);
@@ -18,7 +18,7 @@ export const useOrderItem = () => {
             }
         })
 
-        // reloadOComments()
+        reloadOrder();
     })
 
     const changeStatus = (async (id: string, orderId: string) => {
@@ -33,7 +33,7 @@ export const useOrderItem = () => {
             })
         }
 
-        //ordersWithoutOperator.refetch;//заменить
+        reloadOrder();
     })
 
     return {

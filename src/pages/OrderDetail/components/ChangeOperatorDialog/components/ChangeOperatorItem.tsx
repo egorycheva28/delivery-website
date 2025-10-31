@@ -2,13 +2,13 @@ import { Phone } from "lucide-react";
 
 interface ChangeOperatorItemProps {
     operator: Operator;
-    changeOperator: (orderId: string) => void;
+    changeOperators: (orderId: string) => void;
 }
 
-const ChangeOperatorItem: React.FC<ChangeOperatorItemProps> = ({ operator, changeOperator }) => {
+const ChangeOperatorItem: React.FC<ChangeOperatorItemProps> = ({ operator, changeOperators }) => {
     return (
         <div className="flex flex-col w-[100%] p-6 gap-3 border-b border-gray-300 last:border-b-0 last:pb-0 cursor-pointer"
-            onClick={() => changeOperator(operator.id)}>
+            onClick={() => changeOperators(operator.id)}>
             <div className="flex flex-row justify-between">
                 <span className="text-2xl font-medium">{operator.fullName}</span>
             </div>

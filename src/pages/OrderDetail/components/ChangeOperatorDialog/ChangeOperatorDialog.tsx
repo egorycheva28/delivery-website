@@ -21,7 +21,7 @@ const ChangeOperatorDialog = ({ isChangeOperator, setIsChangeOperator, orderId, 
                 </DialogHeader>
                 <div className="flex-1 overflow-y-auto p-4 flex flex-col ">
                     {state.operators.data?.data.map(operator => (
-                        <ChangeOperatorItem operator={operator} changeOperator={functions.changeOperators} />
+                        <ChangeOperatorItem operator={operator} changeOperators={functions.changeOperators} />
                     ))}
                 </div>
                 <CustomPagination totalPages={state.totalPage} />

@@ -48,7 +48,7 @@ const OrderDetail = () => {
                         <User className="w-[36px] h-[36px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Клиент:</span>
-                            <span className="">{state.user.name}, {state.user.phone}</span>
+                            <span>{state.order.data?.data.phoneNumber}</span>
                         </div>
                     </div>
                     <div>
@@ -64,8 +64,8 @@ const OrderDetail = () => {
                         <Headphones className="w-[36px] h-[36px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Ответсвенный оператор:</span>
-                            {state.user ? (
-                                <span>{state.user.name}, {state.user.phone}</span>
+                            {state.order.data?.data.operatorId ? (
+                                <span></span>
                             ) : (
                                 <span>Оператор не назначен</span>
                             )}
