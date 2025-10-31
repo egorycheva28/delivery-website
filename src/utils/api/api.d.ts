@@ -93,13 +93,43 @@ interface Cart {
 
 interface Order {
     id: string;
-    number: number;
-    date: string;
+    orderNumber: number;
+    clientId: string;
     address: string;
+    phoneNumber: string;
+    comment?: string;
     price: number;
-    status: string;
-    payment: string;
-    comment: string;
+    declineReason?: string;
+    operatorId?: string;
+    operatorName: string;
+    date: string;
+    status: OrderStatus;
+    payWay?: OrderPayWay;
+    meals: Meal[];
+}
+
+enum OrderStatus {
+    NEW = "NEW",
+    CONFIRMED = "CONFIRMED",
+    COOKING = "COOKING",
+    WAITING_FOR_COURIER = "WAITING_FOR_COURIER",
+    TOOK_BY_COURIER = "TOOK_BY_COURIER",
+    COMPLETED = "COMPLETED",
+    CANCELED = "CANCELED"
+}
+
+enum OrderPayWay {
+    CASH = "CASH",
+    CARD = "CARD",
+    ONLINE = "ONLINE"
+}
+
+interface Meal {
+    id: string;
+    name: string;
+    price: number;
+    imageUrl: string[];
+    quantity: number;
 }
 
 interface NewComment {
@@ -138,6 +168,7 @@ interface EditDishDTO {
 
 interface Token {
     accessToken: string;
+    refreshToken: string;
 }
 
 interface MutationSettings<Params = void, Func = unknown> {

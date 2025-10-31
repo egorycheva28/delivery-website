@@ -2,7 +2,8 @@ import {useProfile} from "@/pages/Profile/hooks/useProfile.ts";
 import {Button} from "@/components/ui/button.tsx";
 import EditPassword from "./components/EditPassword/EditPasswordDialog";
 import { getRoleRus } from "./helpers/getRoleRus";
-//<EditPassword isOpen={state.isOpen} setIsOpen={functions.setIsOpen} editUserPassword={state.editUserPassword} setEditUserPassword={functions.setEditUserPassword}}/>
+import {ROUTES} from "@/utils/constants/routes.ts";
+import {NavLink} from "react-router-dom";
 
 const Profile = () => {
     const { state, functions } = useProfile()
@@ -39,7 +40,9 @@ const Profile = () => {
                         <label htmlFor="completed">Заказы завершено:</label>
                         <input className="w-[40px] h-[20px]" type="number" id="completed" value={state.UserOrders.completed} readOnly />
                     </div>
-                    <Button>Подробнее</Button>
+                    <NavLink to={ROUTES.PROFILE_ORDERS} className="w-full">
+                        <Button className="w-full cursor-pointer">Подробнее</Button>
+                    </NavLink>
                 </div>
             </div>
         </div>

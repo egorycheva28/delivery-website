@@ -9,10 +9,11 @@ interface RegisterDialogProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     login: () => void;
+    reload: () => void;
 }
 
-const RegisterDialog = ({ isOpen, setIsOpen, login }: RegisterDialogProps) => {
-    const { form, functions } = useRegisterDialog(setIsOpen)
+const RegisterDialog = ({ isOpen, setIsOpen, login, reload }: RegisterDialogProps) => {
+    const { form, functions } = useRegisterDialog(setIsOpen, reload)
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>

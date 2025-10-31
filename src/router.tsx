@@ -13,6 +13,8 @@ import Statistics from "@/pages/Statistics/Statistics.tsx";
 import DishCategory from "@/pages/DishCategory/DishCategory.tsx";
 import OrderDetail from "./pages/OrderDetail/OrderDetail";
 import DeliveryAndPayment from "@/pages/DeliveryAndPayment/DeliveryAndPayment.tsx";
+import ProfileOrders from "@/pages/ProfileOrders/ProfileOrders.tsx";
+import OrderDishes from "@/pages/OrderDishes/OrderDishes.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -66,6 +68,14 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.DELIVERY_AND_PAYMENT,
                 element: <DeliveryAndPayment />
+            },
+            {
+                path: ROUTES.PROFILE_ORDERS,
+                element: <ProfileOrders />
+            },
+            {
+                path: ROUTES.ORDER_DISHES,
+                element: <OrderDishes />
             }
         ]
     }

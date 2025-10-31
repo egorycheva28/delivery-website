@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {USER_TOKEN} from "@/utils/constants/token.ts";
+import {REFRESH_TOKEN, USER_TOKEN} from "@/utils/constants/token.ts";
 import {AuthContext} from "@/utils/contexts/auth/AuthContext.tsx";
-import {getRoles} from "@/utils/helpers/getRoles.ts";
+import {getDataJWT} from "@/utils/helpers/getDataJWT.ts";
 import {getUserToken} from "@/utils/helpers/getUserToken.ts";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -12,13 +12,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsAuthenticated(!!token);
     }, []);
 
-    const login = (token: string) => {
+    const login = (token: string, refresh: string) => {
         localStorage.setItem(USER_TOKEN, token);
+        localStorage.setItem(REFRESH_TOKEN, refresh);
         setIsAuthenticated(true);
     };
 
     const logout = () => {
         localStorage.removeItem(USER_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
         setIsAuthenticated(false);
 
         if (window.location.pathname !== '/') {
@@ -27,12 +29,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const value = useMemo(
-        () => ({
-            authenticated: isAuthenticated,
-            roles: getRoles(getUserToken()),
-            login,
-            logout
-        }),
+        () => {
+            const token = getUserToken();
+            const data = token ? getDataJWT(token) : { role: [], sub: '' };
+
+            return ({
+                authenticated: isAuthenticated,
+                roles: data?.role || [],
+                userId: data?.sub || '',
+                login,
+                logout
+            })
+        },
         [isAuthenticated]
     );
 
