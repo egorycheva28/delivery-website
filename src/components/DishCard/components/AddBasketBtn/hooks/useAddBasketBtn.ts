@@ -14,6 +14,7 @@ export const useAddBasketBtn = (dishId: string, name: string, price: number, qua
         await addDishIntoCart.mutateAsync({ params: { dishId, name, price, quantity: 1, imageUrl } }, {
             onSuccess: () => {
                 setDishNumber(prev => prev + 1);
+                if (reload) reload()
             }
         })
     }
@@ -23,6 +24,7 @@ export const useAddBasketBtn = (dishId: string, name: string, price: number, qua
             await deleteOneDish.mutateAsync({ params: { dishId, quantity: dishNumber - 1 } }, {
                 onSuccess: () => {
                     setDishNumber(prev => prev - 1);
+                    if (reload) reload()
                 }
             })
         } else {

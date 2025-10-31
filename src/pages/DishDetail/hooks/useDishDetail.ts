@@ -7,20 +7,21 @@ export const useDishDetail = () => {
     const { id } = useParams<{ id: string }>();
 
     const cart = useGetCartQuery({ basketId: localStorage.getItem('basketId')! })
-    const dish = useGetDishByIdQuery({ id: id || "" })
+    const dish = useGetDishByIdQuery({ id: id! })
 
     const dishIntoCart = useMemo(() => {
-        const dishItem = cart.data?.data.items.find(item => item.dishId !== id)
+        const dishItem = cart.data?.data.items.find(item => item.dishId === id)
 
-        return dishItem ? dishItem : {
+        return {
             dishId: id!,
             name: dish.data?.data.foodDetails.name!,
             price: dish.data?.data.foodDetails.price!,
-            quantity: 0
+            imageUrl: dish.data?.data.foodDetails.photo!,
+            quantity: dishItem?.quantity || 0
         };
-    }, [cart.data])
+    }, [cart.data, dish.data])
 
     return {
-        state: { dish, dishIntoCart }
+        state: { dish, dishIntoCart, cart }
     }
 }

@@ -66,7 +66,7 @@ const DishDetail = () => {
                     </div>
                     {state.dish.data?.data.foodDetails.id && (
                         state.dish.data?.data.foodDetails.isAvailable ? (
-                            <AddBasketBtn className="w-[calc(100%-24px)] mx-3" {...state.dishIntoCart} />
+                            <AddBasketBtn className="w-[calc(100%-24px)] mx-3" {...state.dishIntoCart} reload={state.cart.refetch} />
                         ) : (
                             <Button disabled={true} className="w-[calc(100%-24px)] mx-3">
                                 {"Блюдо не доступно"}

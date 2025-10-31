@@ -12,7 +12,7 @@ interface DishBasketCardProps {
 const DishBasketCard = ({ dishId, name, price, imageUrl, quantity, reload }: DishBasketCardProps) => (
     <div className="w-full flex items-center justify-between border p-5">
         <div className="flex items-center gap-2">
-            <div className="h-[100px] overflow-hidden bg-gray-100">
+            <div className="h-[100px] w-[100px] overflow-hidden bg-gray-100">
                 <img
                     src={imageUrl || "https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
                     alt="dish photo"

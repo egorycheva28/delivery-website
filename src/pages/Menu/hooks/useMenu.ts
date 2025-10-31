@@ -122,7 +122,7 @@ export const useMenu = () => {
         const startItem = ITEMS_PER_PAGE * currentPage;
 
         return dishes.data.data.map((itemData) => {
-            const dishItem = cart.data?.data.items.find(item => item.dishId !== itemData.id)
+            const dishItem = cart.data?.data.items.find(item => item.dishId === itemData.id)
 
             return {
                 dishId: itemData.id!,

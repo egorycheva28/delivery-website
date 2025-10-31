@@ -3,6 +3,7 @@ import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {PhoneInput} from "@/components/ui/input-phone.tsx";
 
 interface RegisterDialogProps {
     isOpen: boolean;
@@ -56,7 +57,7 @@ const RegisterDialog = ({ isOpen, setIsOpen, login }: RegisterDialogProps) => {
                                         <p>{"Номер телефона"}</p>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <PhoneInput
                                             {...field}
                                             placeholder="Введите номер телефона"
                                         />
