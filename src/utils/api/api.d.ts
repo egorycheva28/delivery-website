@@ -26,6 +26,24 @@ interface NewOperatorDTO {
     username: string;
 }
 
+interface UserProfileDTO{
+    id: string;
+    role: string;
+    fullName: string;
+    phone: string;
+}
+
+interface UserNewPasswordDTO{
+    oldPassword1: string;
+    newPassword1: string;
+    newPassword2: string;
+}
+
+interface ShortUserOrdersDTO{
+    inProcess: number;
+    completed: number;
+}
+
 interface Dish {
     id: string;
     name: string;

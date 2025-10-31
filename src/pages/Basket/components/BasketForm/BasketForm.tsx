@@ -4,6 +4,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
+import {PhoneInput} from "@/components/ui/input-phone.tsx";
 
 interface BasketFormProps {
     openSuccessBasketDesign: () => void
@@ -19,7 +20,7 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
             <form onSubmit={functions.onSubmit} className='w-full space-y-4'>
                 <FormField
                     control={form.control}
-                    name='deliveryAddress'
+                    name='address'
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
@@ -29,9 +30,9 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
                                 />
                             </FormControl>
                             <FormMessage>
-                                {form.formState?.errors?.deliveryAddress && (
+                                {form.formState?.errors?.address && (
                                     <p className="text-red-600 text-xs mt-1">
-                                        {form.formState.errors.deliveryAddress.message}
+                                        {form.formState.errors.address.message}
                                     </p>
                                 )}
                             </FormMessage>
@@ -40,26 +41,26 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
                 />
                 <FormField
                     control={form.control}
-                    name='email'
+                    name='phoneNumber'
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input
+                                <PhoneInput
                                     {...field}
-                                    placeholder="Введите email"
+                                    placeholder="Введите номер телефона"
                                 />
                             </FormControl>
                             <FormMessage>
-                                {form.formState?.errors?.email && (
+                                {form.formState?.errors?.phoneNumber && (
                                     <p className="text-red-600 text-xs mt-1">
-                                        {form.formState.errors.email.message}
+                                        {form.formState.errors.phoneNumber.message}
                                     </p>
                                 )}
                             </FormMessage>
                         </FormItem>
                     )}
                 />
-                {state.isRegistered && (
+                {!state.isRegistered && (
                     <FormField
                         control={form.control}
                         name='password'
@@ -105,8 +106,8 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem value="card_site">Картой на сайте</SelectItem>
-                                <SelectItem value="cash">Наличными курьеру</SelectItem>
+                                <SelectItem value="card_online">Картой на сайте</SelectItem>
+                                <SelectItem value="cash_courier">Наличными курьеру</SelectItem>
                                 <SelectItem value="card_courier">Картой курьеру</SelectItem>
                             </SelectGroup>
                         </SelectContent>

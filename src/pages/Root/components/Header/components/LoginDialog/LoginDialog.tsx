@@ -3,15 +3,17 @@ import {useLoginDialog} from "@/pages/Root/components/Header/components/LoginDia
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {PhoneInput} from "@/components/ui/input-phone.tsx";
 
 interface LoginDialogProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     register: () => void;
+    reload: () => void;
 }
 
-const LoginDialog = ({isOpen, setIsOpen, register}: LoginDialogProps) => {
-    const { form, functions } = useLoginDialog(setIsOpen);
+const LoginDialog = ({isOpen, setIsOpen, register, reload}: LoginDialogProps) => {
+    const { form, functions } = useLoginDialog(setIsOpen, reload);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -32,7 +34,7 @@ const LoginDialog = ({isOpen, setIsOpen, register}: LoginDialogProps) => {
                                         <p>{"Номер телефона"}</p>
                                     </FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <PhoneInput
                                             {...field}
                                             placeholder="Введите номер телефона"
                                         />

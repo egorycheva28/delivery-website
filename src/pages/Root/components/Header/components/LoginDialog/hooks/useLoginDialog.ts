@@ -7,7 +7,7 @@ import {
 import {usePostLoginMutation} from "@/utils/api/hooks/usePostLoginMutation.ts";
 import {useAuth} from "@/utils/contexts/auth";
 
-export const useLoginDialog = (setIsOpen: (isOpen: boolean) => void) => {
+export const useLoginDialog = (setIsOpen: (isOpen: boolean) => void, reload: () => void) => {
     const login = usePostLoginMutation()
     const { login: handleLogin } = useAuth()
 
@@ -30,6 +30,7 @@ export const useLoginDialog = (setIsOpen: (isOpen: boolean) => void) => {
 
             handleLogin(token.data.accessToken, token.data.refreshToken)
             loginForm.reset();
+            reload()
             setIsOpen(false);
         } catch (error) {
             loginForm.setError('root', {

@@ -11,7 +11,7 @@ const Header = () => {
     const { state, functions } = useHeader()
 
     const NavigationContent = ({ isMobile = false }: { isMobile?: boolean }) => (
-        <div className={`flex ${isMobile ? "flex-col gap-4 p-4" : "items-center gap-12"}`}>
+        <div className={`flex ${isMobile ? "flex-col gap-4 p-4" : "items-center gap-8"}`}>
             <NavLink to={ROUTES.ROOT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
                 className={({ isActive }) =>
                     isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
@@ -67,6 +67,13 @@ const Header = () => {
                     {"Заказы"}
                 </NavLink>
             )}
+            <NavLink to={ROUTES.DELIVERY_AND_PAYMENT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
+                     className={({ isActive }) =>
+                         isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
+                     }
+            >
+                {"Доставка и оплата"}
+            </NavLink>
             <NavLink to={ROUTES.ABOUT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
                 className={({ isActive }) =>
                     isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
@@ -75,14 +82,21 @@ const Header = () => {
                 {"О нас"}
             </NavLink>
             {state.authenticated ? (
-                <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
-                    onClick={() => {
-                        functions.logout();
-                        if (isMobile) functions.setIsMenuOpen(false);
-                    }}
-                >
-                    {"Выйти"}
-                </Button>
+                <>
+                    <NavLink to={ROUTES.PROFILE} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}>
+                        <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}>
+                            {state.userProfile.data?.data.fullName}
+                        </Button>
+                    </NavLink>
+                    <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
+                            onClick={() => {
+                                functions.logout();
+                                if (isMobile) functions.setIsMenuOpen(false);
+                            }}
+                    >
+                        {"Выйти"}
+                    </Button>
+                </>
             ) : (
                 <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
                     onClick={() => {
@@ -117,9 +131,9 @@ const Header = () => {
                 </Sheet>
             </div>
             <LoginDialog isOpen={state.isOpenLogin} setIsOpen={functions.setIsOpenLogin}
-                         register={functions.handleRegister}/>
+                         register={functions.handleRegister} reload={state.userProfile.refetch}/>
             <RegisterDialog isOpen={state.isOpenRegister} setIsOpen={functions.setIsOpenRegister}
-                            login={functions.handleLogin}/>
+                            login={functions.handleLogin} reload={state.userProfile.refetch}/>
         </div>
     )
 }
