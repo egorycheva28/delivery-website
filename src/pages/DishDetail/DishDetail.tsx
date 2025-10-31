@@ -5,9 +5,10 @@ import {Star} from "lucide-react";
 import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBasketBtn.tsx";
 import {getIngredientRus} from "@/pages/DishDetail/helpers/GetIngredientRus.ts";
 import {Button} from "@/components/ui/button.tsx";
+import RateDialog from "@/pages/DishDetail/components/RateDialog/RateDialog.tsx";
 
 const DishDetail = () => {
-    const { state } = useDishDetail()
+    const { state, functions } = useDishDetail()
 
     return (
         <div className="mx-auto mt-4 flex flex-col gap-10 p-8">
@@ -29,10 +30,11 @@ const DishDetail = () => {
                         {state.dish.data?.data.foodDetails.name}
                     </CardTitle>
                     <div className="w-full h-[40] p-2 flex items-center justify-between border-y my-3">
-                        {state.dish.data?.data.foodDetails.rate || state.dish.data?.data.foodDetails.rate === 0 && (
+                        {(state.dish.data?.data.foodDetails.rate || (state.dish.data?.data.foodDetails.rate === 0)) && (
                             <div className="flex items-center gap-2">
                                 {[1, 2, 3, 4, 5].map((position) => {
                                     const fillPercentage = Math.max(0, Math.min(1, state.dish.data?.data.foodDetails.rate! - position + 1)) * 100;
+                                    const userFillPercentage = Math.max(0, Math.min(1, (state.dish.data?.data.userRating || 0) - position + 1)) * 100;
 
                                     return (
                                         <div key={position} className="relative">
@@ -42,9 +44,32 @@ const DishDetail = () => {
                                             >
                                                 <Star size={20} className="text-yellow-500 fill-yellow-500"/>
                                             </div>
+                                            {state.dish.data?.data.hasRate && (
+                                                <div className="absolute top-0 left-0 overflow-hidden"
+                                                     style={{width: `${userFillPercentage}%`}}
+                                                >
+                                                    <Star size={20}
+                                                          className="text-transparent stroke-2 stroke-yellow-900 fill-transparent"/>
+                                                </div>
+                                            )}
                                         </div>
                                     );
                                 })}
+                                {state.dish.data?.data.couldRate && !state.dish.data?.data.hasRate && (
+                                    <Button className="cursor-pointer ml-3" onClick={functions.openAddRate}>
+                                        {"Поставить оценку блюду"}
+                                    </Button>
+                                )}
+                                {state.dish.data?.data.hasRate && (
+                                    <Button className="cursor-pointer ml-3"
+                                            onClick={() => functions.openEditRate({ rating: state.dish.data?.data.userRating! })}>
+                                        {"Изменить оценку блюду"}
+                                    </Button>
+                                )}
+                                {state.dish.data?.data.couldRate && (
+                                    <RateDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen}
+                                                dishId={state.id!} reload={state.dish.refetch} initialData={state.rateData} />
+                                )}
                             </div>
                         )}
                         <p className="font-bold">
