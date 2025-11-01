@@ -83,10 +83,12 @@ const Header = () => {
             </NavLink>
             {state.authenticated ? (
                 <>
-                    <NavLink to={ROUTES.PROFILE} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}>
-                        <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}>
-                            {state.userProfile.data?.data.fullName}
-                        </Button>
+                    <NavLink to={ROUTES.PROFILE} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
+                             className={({ isActive }) =>
+                                 isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
+                             }
+                    >
+                        {"Профиль"}
                     </NavLink>
                     <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
                             onClick={() => {
@@ -131,9 +133,9 @@ const Header = () => {
                 </Sheet>
             </div>
             <LoginDialog isOpen={state.isOpenLogin} setIsOpen={functions.setIsOpenLogin}
-                         register={functions.handleRegister} reload={state.userProfile.refetch}/>
+                         register={functions.handleRegister}/>
             <RegisterDialog isOpen={state.isOpenRegister} setIsOpen={functions.setIsOpenRegister}
-                            login={functions.handleLogin} reload={state.userProfile.refetch}/>
+                            login={functions.handleLogin}/>
         </div>
     )
 }

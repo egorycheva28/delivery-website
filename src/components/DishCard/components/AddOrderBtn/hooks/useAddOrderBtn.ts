@@ -1,29 +1,54 @@
 import { usePutAddDishToOrderMutation } from "@/utils/api/hooks/usePutAddDishToOrder";
 import { useState } from "react";
+import {usePutEditAmountDishToOrderMutation} from "@/utils/api/hooks/usePutEditAmountDishToOrderMutation.ts";
 
-export const useAddOrderBtn = (initialNum: number, idDish: string, order: Order) => {
+export const useAddOrderBtn = (initialNum: number, idDish: string, orderId: string, reload: () => void) => {
     const addDishIntoOrder = usePutAddDishToOrderMutation()
+    const editAmountDishToOrder = usePutEditAmountDishToOrderMutation()
 
     const [dishNumber, setDishNumber] = useState(initialNum);
 
     const handleAddOrder = async () => {
         await addDishIntoOrder.mutateAsync({
             params: {
-                orderId: order.id, dishId: idDish
+                orderId: orderId, dishId: idDish
+            }
+        }, {
+            onSuccess: () => {
+                setDishNumber(prev => prev + 1);
+                reload()
             }
         })
-
-        console.log("add " + idDish)
-        setDishNumber(prev => prev + 1);
     }
 
-    const handleRemoveOrder = () => {
-        console.log("remove " + idDish)
-        setDishNumber(prev => prev - 1);
+    const handleAddDishToOrder = async () => {
+        await editAmountDishToOrder.mutateAsync({
+            params: {
+                orderId: orderId, dishId: idDish, amount: dishNumber + 1
+            }
+        }, {
+            onSuccess: () => {
+                setDishNumber(prev => prev + 1);
+                reload()
+            }
+        })
+    }
+
+    const handleRemoveOrder = async () => {
+        await editAmountDishToOrder.mutateAsync({
+            params: {
+                orderId: orderId, dishId: idDish, amount: dishNumber - 1
+            }
+        }, {
+            onSuccess: () => {
+                setDishNumber(prev => prev - 1);
+                reload()
+            }
+        })
     }
 
     return {
         state: { dishNumber },
-        functions: { handleAddOrder, handleRemoveOrder }
+        functions: { handleAddOrder, handleRemoveOrder, handleAddDishToOrder }
     }
 }

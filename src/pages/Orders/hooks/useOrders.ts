@@ -53,7 +53,7 @@ export const useOrders = () => {
     ] as const
 
     const ordersWithoutOperator = useGetOrdersWithoutOperatorQuery({
-        page: currentPage,
+        page: currentPage - 1,
         size: ITEMS_PER_PAGE,
         sort: []
     }, {
@@ -64,7 +64,7 @@ export const useOrders = () => {
 
     const myOrders = useGetMyOrdersQuery({
         operatorId: userId,
-        page: currentPage,
+        page: currentPage - 1,
         size: ITEMS_PER_PAGE,
         sort: []
     }, {
@@ -120,7 +120,7 @@ export const useOrders = () => {
     const ordersWithFilters = useGetOrdersWithFiltersQuery({
         operatorName: filters.operators,
         status: filters.statuses === "all" ? undefined : filters.statuses,
-        page: currentPage,
+        page: currentPage - 1,
         size: ITEMS_PER_PAGE,
         sort: []
     }, {
@@ -145,7 +145,7 @@ export const useOrders = () => {
             error: null,
             refetch: () => {}
         };
-    }, [isAdmin, isMyOrder]);
+    }, [isAdmin, isMyOrder, ordersWithFilters.data, myOrders.data, ordersWithoutOperator.data]);
 
     const handleSelectStatus = (id: string) => {
         setFilters({...filters, statuses: id})
@@ -153,7 +153,7 @@ export const useOrders = () => {
     }
 
     const debouncedSearchByName = useDebounceCallback((name: string) => {
-        setFilters({ ...filters, operators: name });
+        setFilters({ ...filters, operators: name !== '' ? name : undefined });
         setGoToStart(prev => !prev)
     }, SEARCH_TIMEOUT);
 

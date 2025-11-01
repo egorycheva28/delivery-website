@@ -8,4 +8,7 @@ export type PutChangeOrderStatusParams = {
 export type PutChangeOrderStatusConfig = RequestConfig<PutChangeOrderStatusParams>;
 
 export const putChangeOrderStatus = async ({ config, params }: PutChangeOrderStatusConfig) =>
-    instance.put(`http://localhost:8080/api/order/change-order-status/${params.orderId}?status=${params.status}`, config);
+    instance.put(`http://localhost:8096/order/change-order-status/${params.orderId}`, null, {
+        ...config,
+        params: { ...config?.params, ...params }
+    });

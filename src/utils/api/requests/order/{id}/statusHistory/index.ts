@@ -7,4 +7,7 @@ export interface GetStatusHistoryParams {
 export type GetStatusHistoryConfig = RequestConfig<GetStatusHistoryParams>;
 
 export const getStatusHistory = async ({ config, params }: GetStatusHistoryConfig) =>
-    instance.get<StatusHistory[]>(`http://localhost:8080/api/order/get-status-history/${params.orderId}`, config);
+    instance.get<StatusHistory[]>(`http://localhost:8096/order/get-status-history`, {
+        ...config,
+        params: { ...config?.params, ...params }
+    });

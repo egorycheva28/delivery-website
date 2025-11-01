@@ -12,38 +12,38 @@ const Orders = () => {
     return (
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
             <span className='text-4xl font-medium'>Управление заказами</span>
+            {state.authenticated && state.roles.includes('ADMIN') ? (
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-[90%]">
+                    <Input
+                        defaultValue={state.filters.operators}
+                        leftIcon={<SearchIcon className='h-5 w-5'/>}
+                        placeholder="Поиск..."
+                        onChange={(e) => functions.debouncedSearchByName(e.target.value)}
+                        className='h-10 sm:max-w-64 w-full'
+                    />
+                    <Select value={state.filters.statuses || "all"} onValueChange={functions.handleSelectStatus}>
+                        <SelectTrigger className="!h-10 sm:max-w-64 w-full">
+                            <SelectValue placeholder="Категория блюда"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="all">Все категории</SelectItem>
+                                {state.statuses.map(status => (
+                                    <SelectItem value={status.id}>{status.label}</SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+            ) : (
+                <div className="flex justify-items-start w-[90%] items-center gap-4">
+                    <span>Мои заказы</span>
+                    <Switch className="cursor-pointer" checked={state.isMyOrder}
+                            onCheckedChange={(checked: boolean) => functions.handleSetIsMyOrder(checked)}/>
+                </div>
+            )}
             {state.activeQuery.data && state.activeQuery.data?.data.content.length > 0 ? (
                 <>
-                    {state.authenticated && state.roles.includes('ADMIN') ? (
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-[90%]">
-                            <Input
-                                defaultValue={state.filters.operators}
-                                leftIcon={<SearchIcon className='h-5 w-5'/>}
-                                placeholder="Поиск..."
-                                onChange={(e) => functions.debouncedSearchByName(e.target.value)}
-                                className='h-10 sm:max-w-64 w-full'
-                            />
-                            <Select value={state.filters.statuses || "all"} onValueChange={functions.handleSelectStatus}>
-                                <SelectTrigger className="!h-10 sm:max-w-64 w-full">
-                                    <SelectValue placeholder="Категория блюда"/>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectItem value="all">Все категории</SelectItem>
-                                        {state.statuses.map(status => (
-                                            <SelectItem value={status.id}>{status.label}</SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    ) : (
-                        <div className="flex justify-items-start w-[90%] items-center gap-4">
-                            <span>Мои заказы</span>
-                            <Switch className="cursor-pointer" checked={state.isMyOrder}
-                                    onCheckedChange={(checked: boolean) => functions.handleSetIsMyOrder(checked)}/>
-                        </div>
-                    )}
                     <div
                         className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
                         {state.activeQuery.data.data.content.map(order => (

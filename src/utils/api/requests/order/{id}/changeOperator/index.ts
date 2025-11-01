@@ -8,4 +8,7 @@ export type PutChangeOperatorParams = {
 export type PutChangeOperatorConfig = RequestConfig<PutChangeOperatorParams>;
 
 export const putChangeOperator = async ({ config, params }: PutChangeOperatorConfig) =>
-    instance.put(`http://localhost:8080/api/order/change-operator-for-order?orderId=${params.orderId}&operatorId=${params.operatorId}`, config);
+    instance.put(`http://localhost:8096/order/change-operator-for-order`, null, {
+        ...config,
+        params: { ...config?.params, ...params }
+    });

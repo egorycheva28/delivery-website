@@ -7,10 +7,11 @@ import AddOrderBtn from "@/components/DishCard/components/AddOrderBtn/AddOrderBt
 interface AddDishDialogProps {
     isAddDish: boolean;
     setIsAddDish: (isAddDish: boolean) => void;
-    order: Order;
+    orderId: string;
+    reload: () => void;
 }
 
-const AddDishDialog = ({ isAddDish, setIsAddDish, order }: AddDishDialogProps) => {
+const AddDishDialog = ({ isAddDish, setIsAddDish, orderId, reload }: AddDishDialogProps) => {
     const { state, functions } = useAddDishDialog(setIsAddDish);
 
     return (
@@ -22,7 +23,7 @@ const AddDishDialog = ({ isAddDish, setIsAddDish, order }: AddDishDialogProps) =
                 <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
                     {state.dishes.data?.data.map(dish => (
                         <DishCard key={dish.id} {...dish}>
-                            <AddOrderBtn className="w-full" idDish={dish.id} order={order} onClick={functions.reloadDishes} />
+                            <AddOrderBtn className="w-full" idDish={dish.id} orderId={orderId} onClick={functions.reloadDishes} reload={reload} />
                         </DishCard>
                     ))}
                 </div>

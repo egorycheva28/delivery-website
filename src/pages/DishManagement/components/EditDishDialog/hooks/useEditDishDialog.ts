@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form"
+import {useFieldArray, useForm} from "react-hook-form"
 import {type EditDishSchema, editDishSchema} from "../constants/EditDishShema"
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -11,7 +11,11 @@ export const useEditDishDialog = (
     reloadDishes: () => void,
     dishId?: string) => {
     const editDish = usePutUpdateDishMutation()
-    const dish = useGetDishByIdQuery({ id: dishId || "" })
+    const dish = useGetDishByIdQuery({ id: dishId! }, {
+        options: {
+            enabled: !!dishId
+        }
+    })
     const categories = useGetCategoriesQuery();
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -71,19 +75,36 @@ export const useEditDishDialog = (
             categoryId: '',
             price: 0,
             rate: 0,
-            photo: '',
+            photos: [],
             description: '',
             ingredients: [],
             isAvailable: true
         }
     })
 
+    const { fields, append, remove } = useFieldArray({
+        control: editDishForm.control,
+        name: "photos" as never
+    })
+
+    const addPhoto = () => {
+        append("")
+    }
+
+    const removePhoto = (index: number) => {
+        remove(index)
+    }
+
+    const updatePhoto = (index: number, newUrl: string) => {
+        editDishForm.setValue(`photos.${index}`, newUrl)
+    }
+
     const onSubmit = editDishForm.handleSubmit(async (value) => {
         if (!dishId) return
         await editDish.mutateAsync({
             params: {
                 id: dishId, name: value.name, categoryId: value.categoryId,
-                photo: value.photo, rate: value.rate,
+                photos: value.photos, rate: value.rate,
                 price: value.price, description: value.description,
                 ingredients: value.ingredients, isAvailable: value.isAvailable
             }
@@ -102,7 +123,7 @@ export const useEditDishDialog = (
             categoryId: dish.data.data.foodDetails.categoryId,
             price: dish.data.data.foodDetails.price,
             rate: dish.data.data.foodDetails.rate,
-            photo: dish.data.data.foodDetails.photo,
+            photos: dish.data.data.foodDetails.photos,
             description: dish.data.data.foodDetails.description,
             ingredients: dish.data.data.foodDetails.ingredients,
             isAvailable: dish.data.data.foodDetails.isAvailable
@@ -116,13 +137,16 @@ export const useEditDishDialog = (
     }
 
     return {
-        state: { selectedFile, selectedCategory, ingredients, categories },
+        state: { selectedFile, selectedCategory, ingredients, categories, fields },
         form: editDishForm,
         functions: {
             onSubmit,
             setSelectedFile,
             handleFileChange,
-            handleSetCategory
+            handleSetCategory,
+            addPhoto,
+            removePhoto,
+            updatePhoto
         }
     }
 }

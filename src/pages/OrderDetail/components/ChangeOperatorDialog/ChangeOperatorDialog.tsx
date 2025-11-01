@@ -15,7 +15,7 @@ const ChangeOperatorDialog = ({ isChangeOperator, setIsChangeOperator, orderId, 
 
     return (
         <Dialog open={isChangeOperator} onOpenChange={setIsChangeOperator}>
-            <DialogContent className="mx-auto max-w-md h-[700px] overflow-hidden w-auto">
+            <DialogContent className="mx-auto max-w-md overflow-hidden w-auto">
                 <DialogHeader>
                     <DialogTitle>Операторы</DialogTitle>
                 </DialogHeader>

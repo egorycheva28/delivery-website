@@ -11,10 +11,10 @@ export const useOrderItem = (reloadOrder: () => void) => {
     const changeOperator = usePutChangeOperatorMutation()
     const changeOrderStatus = usePutChangeOrderStatusMutation()
 
-    const appointOperator = (async (value: any) => {
+    const appointOperator = (async (id: string) => {
         await changeOperator.mutateAsync({
             params: {
-                orderId: value.id, operatorId: userId
+                orderId: id, operatorId: userId
             }
         })
 
@@ -37,7 +37,7 @@ export const useOrderItem = (reloadOrder: () => void) => {
     })
 
     return {
-        state: { isComment, authenticated, roles, isReason },
+        state: { isComment, authenticated, roles, isReason, userId },
         functions: { setIsComment, appointOperator, changeStatus, setIsReason }
     }
 }

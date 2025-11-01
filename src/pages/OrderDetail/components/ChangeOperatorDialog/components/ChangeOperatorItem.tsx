@@ -1,4 +1,5 @@
 import { Phone } from "lucide-react";
+import React from "react";
 
 interface ChangeOperatorItemProps {
     operator: Operator;
@@ -7,7 +8,7 @@ interface ChangeOperatorItemProps {
 
 const ChangeOperatorItem: React.FC<ChangeOperatorItemProps> = ({ operator, changeOperators }) => {
     return (
-        <div className="flex flex-col w-[100%] p-6 gap-3 border-b border-gray-300 last:border-b-0 last:pb-0 cursor-pointer"
+        <div className="flex flex-col w-[100%] p-6 gap-3 border-b border-gray-300 first:pt-0 last:border-b-0 last:pb-0 cursor-pointer"
             onClick={() => changeOperators(operator.id)}>
             <div className="flex flex-row justify-between">
                 <span className="text-2xl font-medium">{operator.fullName}</span>

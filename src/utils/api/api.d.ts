@@ -51,7 +51,7 @@ interface Dish {
     description: string;
     price: number;
     rate: number;
-    photo?: string;
+    photos: string[];
     isAvailable: boolean;
 }
 

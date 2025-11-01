@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import ReasonDialog from "../ReasonDialog/ReasonDialog.tsx";
 import React from "react";
 import { useOrderItem } from "@/pages/Orders/components/OrderItem/hooks/useOrderItem.ts";
+import {getPaymentMethod} from "@/utils/helpers/getPaymentMethod.ts";
 
 interface OrderItemProps {
     order: Order;
@@ -33,7 +34,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                         <span className="text-3xl font-medium">{order.price}</span>
                         <RussianRuble className="w-[22px] h-[22px]" />
                     </div>
-                    <span className="font-medium">{order.payWay}</span>
+                    <span className="font-medium">{getPaymentMethod(order.payWay)}</span>
                 </div>
             </div>
             <div className="flex flex-col sm:flex-row  gap-8 justify-between items-start sm:items-center">
@@ -70,21 +71,19 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                             orderId={order.id}
                         />
                     ) : (
-                        <SelectStatus
-                            selected={{ id: order.status, name: order.status }}
-                            statuses={[
-                                { id: "NEW", name: "Новый" },
-                                { id: "CONFIRMED", name: "Подвтержден" },
-                                { id: "CANCELED", name: "Отменен" }
-                            ]}
-                            onChange={functions.changeStatus}
-                            orderId={order.id}
-                        />
+                        <div className="flex items-center gap-2">
+                            <Button onClick={() => functions.changeStatus("CONFIRMED", order.id)} disabled={order.status === "CONFIRMED"}>
+                                {"Подтвердить"}
+                            </Button>
+                            <Button onClick={() => functions.changeStatus("CANCELED", order.id)} disabled={order.status === "CANCELED"}>
+                                {"Отменить"}
+                            </Button>
+                        </div>
                     )}
                     <ReasonDialog isReason={state.isReason} setIsReason={functions.setIsReason} order={order}
                         reloadOrder={reloadOrder} />
-                    {state.authenticated && state.roles.includes('OPERATOR') && order.status?.includes(OrderStatus.NEW) ? (
-                        <Button className="cursor-pointer" onClick={functions.appointOperator}>
+                    {state.authenticated && state.roles.includes('OPERATOR') && (order.operatorId !== state.userId) ? (
+                        <Button className="cursor-pointer" onClick={() => functions.appointOperator(order.id)}>
                             Назначить себя оператором
                         </Button>
                     ) : null}

@@ -29,10 +29,10 @@ export const useOrderDetail = () => {
         return Math.ceil(order.data.data.meals.length / ITEMS_PER_PAGE);
     }, [order.data?.data.meals]);
 
-    const makeOperator = (async (value: any) => {
+    const makeOperator = (async (id: string) => {
         await changeOperator.mutateAsync({
             params: {
-                orderId: value.id, operatorId: userId
+                orderId: id, operatorId: userId
             }
         })
 
@@ -51,7 +51,7 @@ export const useOrderDetail = () => {
     }, [isChangeOperator, isAddDish]);
 
     return {
-        state: { order, isComment, comment, isChangeOperator, isAddDish, isHistory, authenticated, roles, totalPage, id },
+        state: { order, isComment, comment, isChangeOperator, isAddDish, isHistory, authenticated, roles, totalPage, id, userId },
         functions: {
             setIsComment,
             setComment,

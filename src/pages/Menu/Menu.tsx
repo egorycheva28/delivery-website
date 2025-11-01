@@ -83,7 +83,7 @@ const Menu = () => {
                         {state.displayedData.map(dish => (
                             <DishCard key={dish.dishId} id={dish.dishId} {...dish}>
                                 {dish.isAvailable ? (
-                                    <AddBasketBtn className="w-full" {...dish} imageUrl={dish.photo}/>
+                                    <AddBasketBtn className="w-full" {...dish} imageUrl={dish.photos[0]}/>
                                 ) : (
                                     <Button disabled={true} className="h-10 w-full">
                                         {"Блюдо не доступно"}
