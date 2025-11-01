@@ -14,14 +14,24 @@ const DishDetail = () => {
         <div className="mx-auto mt-4 flex flex-col gap-10 p-8">
             <Carousel className="w-full max-w-[300px] mx-auto">
                 <CarouselContent>
-                    <CarouselItem>
-                        <img
-                            src={state.dish.data?.data.foodDetails.photo
-                                || "https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
-                            alt="dish photo"
-                            className="h-[300px] object-cover object-center border"
-                        />
-                    </CarouselItem>
+                    {state.dish.data && state.dish.data?.data.foodDetails.photos.length > 0
+                        ? state.dish.data?.data.foodDetails.photos.map((photo) => (
+                            <CarouselItem>
+                                <img
+                                    src={photo}
+                                    alt="dish photo"
+                                    className="h-[300px] object-cover object-center border"
+                                />
+                            </CarouselItem>
+                        )) : (
+                            <CarouselItem>
+                                <img
+                                    src={"https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
+                                    alt="dish photo"
+                                    className="h-[300px] object-cover object-center border"
+                                />
+                            </CarouselItem>
+                        )}
                 </CarouselContent>
             </Carousel>
             <Card className="pb-3">

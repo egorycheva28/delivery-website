@@ -1,80 +1,89 @@
+import { useGetMyOrdersQuery } from "@/utils/api/hooks/useGetMyOrdersQuery";
+import { useGetOrdersWithFiltersQuery } from "@/utils/api/hooks/useGetOrdersWithFiltersQuery";
+import { useGetOrdersWithoutOperatorQuery } from "@/utils/api/hooks/useGetOrdersWithoutOperatorQuery";
+import { useAuth } from "@/utils/contexts/auth/useAuth";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import {useDebounceCallback} from "@/utils/hooks/useDebounceCallback/useDebounceCallback.ts";
 
 export interface OrderListFilters {
-    statuses?: string[],
-    operators?: string[],
-    amOperator: boolean
+    statuses?: string,
+    operators?: string
 }
 
+const SEARCH_TIMEOUT = 500;
+const ITEMS_PER_PAGE = 8;
 export const useOrders = () => {
-    const [role, setRole] = useState<string>('admin');
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [isStatus, setIsStatus] = useState<boolean>(false);
-    const [isOperator, setIsOperator] = useState<boolean>(false);
-    const [myOrders, setMyOrders] = useState<boolean>(false);
-    const [isComment, setIsComment] = useState<boolean>(false);
-    const [comment, setComment] = useState<NewComment>(
-        {
-            newComment: ''
-        }
-    );
-
-    const [orders, setOrders] = useState<Order[]>([
-        {
-            id: '1',
-            number: 1,
-            date: 'string',
-            address: 'string',
-            price: 500,
-            status: 'new',
-            payment: 'наличными',
-            comment: ''
-        },
-        {
-            id: '2',
-            number: 2,
-            date: 'string',
-            address: 'string',
-            price: 500,
-            status: 'cancelled',
-            payment: 'картой',
-            comment: ''
-        },
-        {
-            id: '3',
-            number: 3,
-            date: 'string',
-            address: 'string',
-            price: 500,
-            status: 'confirmed',
-            payment: 'QR-код',
-            comment: ''
-        }
-    ])
-
-    const appointOperator = () => {
-        //логика назначения себя оператором
-    }
-
-    const changeStatus = () => {
-        //логика изменения статуса
-    }
-
+    const { authenticated, roles, userId } = useAuth()
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isMyOrder, setIsMyOrder] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isGoToStart, setGoToStart] = useState(false);
+
+    const isAdmin = authenticated && roles.includes('ADMIN');
+    const statuses = [
+        {
+            id: "NEW",
+            label: "Новый",
+        },
+        {
+            id: "CONFIRMED",
+            label: "Подтвержден",
+        },
+        {
+            id: "COOKING",
+            label: "Готовится",
+        },
+        {
+            id: "WAITING_FOR_COURIER",
+            label: "Ожидает курьера",
+        },
+        {
+            id: "TOOK_BY_COURIER",
+            label: "Передан курьеру",
+        },
+        {
+            id: "COMPLETED",
+            label: "Доставлен",
+        },
+        {
+            id: "CANCELED",
+            label: "Отменен",
+        }
+    ] as const
+
+    const ordersWithoutOperator = useGetOrdersWithoutOperatorQuery({
+        page: currentPage - 1,
+        size: ITEMS_PER_PAGE,
+        sort: []
+    }, {
+        options: {
+            enabled: !isAdmin && !isMyOrder
+        }
+    })
+
+    const myOrders = useGetMyOrdersQuery({
+        operatorId: userId,
+        page: currentPage - 1,
+        size: ITEMS_PER_PAGE,
+        sort: []
+    }, {
+        options: {
+            enabled: !isAdmin && isMyOrder
+        }
+    })
+
     const initialFilters = useMemo((): OrderListFilters => {
-        const params: OrderListFilters = {
-            amOperator: false
-        };
+        const params: OrderListFilters = {};
 
         const statuses = searchParams.get('statuses');
-        if (statuses) params.statuses = statuses.split(',');
+        if (statuses) params.statuses = statuses;
 
         const operators = searchParams.get('operators');
-        if (operators) params.operators = operators.split(',');
+        if (operators) params.operators = operators;
 
-        const amOperator = searchParams.get('amOperator');
-        if (amOperator) params.amOperator = amOperator === 'true';
+        const myOrder = searchParams.get('isMyOrder');
+        setIsMyOrder(myOrder === 'true')
 
         return params;
     }, []);
@@ -84,33 +93,77 @@ export const useOrders = () => {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        if (filters.statuses && filters.statuses.length > 0) {
-            params.set('statuses', filters.statuses.join(','));
+        if (filters.statuses) {
+            params.set('statuses', filters.statuses);
         } else {
             params.delete('statuses');
         }
-        if (filters.operators && filters.operators.length > 0) {
-            params.set('operators', filters.operators.join(','));
+
+        if (filters.operators) {
+            params.set('operators', filters.operators);
         } else {
             params.delete('operators');
         }
-        if (role == 'admin') {
-            params.delete('amOperator');
-        } else if (filters.amOperator === true) {
-            params.set('amOperator', 'true');
+
+        if (authenticated && roles.includes('ADMIN')) {
+            params.delete('isMyOrder');
+        } else if (isMyOrder) {
+            params.set('isMyOrder', 'true');
 
         } else {
-            params.set('amOperator', 'false');
+            params.set('isMyOrder', 'false');
         }
 
         setSearchParams(params, { replace: true });
-    }, [filters])
+    }, [filters, isMyOrder])
+
+    const ordersWithFilters = useGetOrdersWithFiltersQuery({
+        operatorName: filters.operators,
+        status: filters.statuses === "all" ? undefined : filters.statuses,
+        page: currentPage - 1,
+        size: ITEMS_PER_PAGE,
+        sort: []
+    }, {
+        options: {
+            enabled: isAdmin
+        }
+    });
+
+    const activeQuery = useMemo(() => {
+        if (isAdmin) {
+            return ordersWithFilters;
+        } else if (!isAdmin && isMyOrder) {
+            return myOrders;
+        } else if (!isAdmin && !isMyOrder) {
+            return ordersWithoutOperator;
+        }
+
+        return {
+            data: undefined,
+            isLoading: false,
+            isError: false,
+            error: null,
+            refetch: () => {}
+        };
+    }, [isAdmin, isMyOrder, ordersWithFilters.data, myOrders.data, ordersWithoutOperator.data]);
+
+    const handleSelectStatus = (id: string) => {
+        setFilters({...filters, statuses: id})
+        setGoToStart(prev => !prev)
+    }
+
+    const debouncedSearchByName = useDebounceCallback((name: string) => {
+        setFilters({ ...filters, operators: name !== '' ? name : undefined });
+        setGoToStart(prev => !prev)
+    }, SEARCH_TIMEOUT);
+
+    const handleSetIsMyOrder = (checked: boolean) => {
+        setIsMyOrder(checked)
+        setGoToStart(prev => !prev)
+    }
 
     return {
-        state: { isOpen, orders, role, isStatus, isOperator, filters, myOrders, isComment, comment },
-        functions: {
-            setIsOpen, setOrders, setRole, setIsStatus, setIsOperator, setFilters,
-            setMyOrders, appointOperator, setIsComment, setComment, changeStatus
-        }
+        state: { statuses, filters, isMyOrder, authenticated, roles, activeQuery, isGoToStart},
+        functions: { debouncedSearchByName, handleSelectStatus, setFilters, handleSetIsMyOrder, setCurrentPage}
     }
 };

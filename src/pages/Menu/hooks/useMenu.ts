@@ -129,7 +129,7 @@ export const useMenu = () => {
                 name: itemData.name!,
                 price: itemData.price!,
                 quantity: dishItem?.quantity || 0,
-                photo: itemData.photo!,
+                photos: itemData.photos!,
                 rate: itemData.rate!,
                 description: itemData.description!,
                 categoryId: itemData.categoryId!,

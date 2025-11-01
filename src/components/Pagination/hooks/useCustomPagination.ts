@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {useSearchParams} from "react-router-dom";
 
-export const useCustomPagination = (totalPages: number, isGoToStart?: boolean) => {
+export const useCustomPagination = (totalPages: number, isGoToStart?: boolean, setPage?: (page: number) => void) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const initialPage = useMemo(() => {
         const pageFromUrl = parseInt(searchParams.get('page') || '1');
@@ -47,18 +47,21 @@ export const useCustomPagination = (totalPages: number, isGoToStart?: boolean) =
     const goToPage = (page: number) => {
         if (page >= 1 && page <= totalPages) {
             setCurrentPage(page);
+            if (setPage) setPage(page);
         }
     };
 
     const nextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
+            if (setPage) setPage(currentPage + 1);
         }
     };
 
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
+            if (setPage) setPage(currentPage - 1);
         }
     };
 

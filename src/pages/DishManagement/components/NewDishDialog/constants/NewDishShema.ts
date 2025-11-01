@@ -3,9 +3,9 @@ import * as z from 'zod';
 export const newDishSchema = z.object({
     name: z.string().nonempty("Это поле обязательно"),
     categoryId: z.string().nonempty("Выберите категорию"),
-    photo: z.string().optional(),
-    rate: z.number(),
-    price: z.number(),
+    photos: z.array(z.string().url("Введите корректный URL")).optional(),
+    rate: z.number("Поле должно быть заполнено"),
+    price: z.number("Поле должно быть заполнено"),
     description: z.string().nonempty("Это поле обязательно"),
     ingredients: z.array(z.string()).nonempty("Это поле обязательно")
 })

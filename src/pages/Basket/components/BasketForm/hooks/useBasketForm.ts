@@ -72,9 +72,11 @@ export const useBasketForm = (openSuccessBasketDesign: () => void) => {
                 handleLogin(token[0], token[1]);
             }
 
+            const formattedPhone = values.phoneNumber.replace(/^8/, '+7');
+
             await createOrder.mutateAsync({
                 params: {
-                    phoneNumber: values.phoneNumber,
+                    phoneNumber: formattedPhone,
                     address: values.address,
                     paymentMethod: values.paymentMethod,
                     comment: values.comment

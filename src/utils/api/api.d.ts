@@ -51,7 +51,7 @@ interface Dish {
     description: string;
     price: number;
     rate: number;
-    photo?: string;
+    photos: string[];
     isAvailable: boolean;
 }
 
@@ -108,6 +108,35 @@ interface Order {
     meals: Meal[];
 }
 
+interface OrderAnswer {
+    totalPages: number,
+    totalElements: number,
+    size: number,
+    content: Order[],
+    number: number,
+    sort: {
+        empty: boolean,
+        sorted: boolean,
+        unsorted: boolean
+    },
+    numberOfElements: number,
+    first: boolean,
+    last: boolean,
+    pageable: {
+        offset: number,
+        sort: {
+            empty: boolean,
+            sorted: boolean,
+            unsorted: boolean
+        },
+        pageNumber: number,
+        pageSize: number,
+        paged: boolean,
+        unpaged: boolean
+    },
+    empty: boolean
+}
+
 enum OrderStatus {
     NEW = "NEW",
     CONFIRMED = "CONFIRMED",
@@ -133,12 +162,19 @@ interface Meal {
 }
 
 interface NewComment {
-    newComment: string;
+    comment: string;
 }
 
 interface Status {
     id: string;
     name: string;
+}
+
+interface StatusHistory {
+    id: string;
+    orderId: string;
+    status: OrderStatus;
+    date: string;
 }
 
 interface Reason {

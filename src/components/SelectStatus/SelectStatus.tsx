@@ -1,48 +1,32 @@
-import * as SelectPrimitive from "@radix-ui/react-select"
-import { CheckIcon, ChevronDownIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "../ui/button"
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 type Status = { id: string; name: string }
 
 interface SelectStatusProps {
     selected: Status
     statuses: Status[]
-    onChange: (id: string) => void
+    onChange: (id: string, orderId: string) => void
+    orderId: string
 }
 
-export function SelectStatus({ selected, statuses, onChange }: SelectStatusProps) {
-    return (
-        <SelectPrimitive.Root value={selected.id} onValueChange={onChange}>
-            <SelectPrimitive.Trigger asChild>
-                <Button>
-                    <SelectPrimitive.Value>{selected.name}</SelectPrimitive.Value>
-                    <ChevronDownIcon className="ml-2" />
-                </Button>
-            </SelectPrimitive.Trigger>
+export const SelectStatus = ({ selected, statuses, onChange, orderId }: SelectStatusProps) => {
+    const handleChange = (id: string) => {
+        onChange(id, orderId);
+    };
 
-            <SelectPrimitive.Portal>
-                <SelectPrimitive.Content className="flex bg-white rounded-md shadow-md mt-12" align="center">
-                    <SelectPrimitive.Viewport className="p-1">
-                        {statuses.map(status => (
-                            <SelectPrimitive.Item
-                                key={status.id}
-                                value={status.id}
-                                className={cn(
-                                    "cursor-pointer select-none py-2 px-4 hover:bg-input/50 rounded-md",
-                                    status.id === selected.id
-                                )}
-                            >
-                                <div className="flex flex-row">
-                                    <SelectPrimitive.ItemText>{status.name}</SelectPrimitive.ItemText>
-                                    {status.id === selected.id && <CheckIcon className="ml-auto" />}
-                                </div>
-                            </SelectPrimitive.Item>
-                        ))}
-                    </SelectPrimitive.Viewport>
-                </SelectPrimitive.Content>
-            </SelectPrimitive.Portal>
-        </SelectPrimitive.Root>
+    return (
+        <Select value={selected.id} onValueChange={handleChange}>
+            <SelectTrigger className="!h-10 min-w-[200px] w-full bg-black text-white [&>svg]:!text-white">
+                <SelectValue placeholder="Статус заказа"/>
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup>
+                    {statuses.map(status => (
+                        <SelectItem key={status.id} value={status.id}>{status.name}</SelectItem>
+                    ))}
+                </SelectGroup>
+            </SelectContent>
+        </Select>
     )
 }
 

@@ -9,11 +9,10 @@ interface LoginDialogProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     register: () => void;
-    reload: () => void;
 }
 
-const LoginDialog = ({isOpen, setIsOpen, register, reload}: LoginDialogProps) => {
-    const { form, functions } = useLoginDialog(setIsOpen, reload);
+const LoginDialog = ({isOpen, setIsOpen, register}: LoginDialogProps) => {
+    const { form, functions } = useLoginDialog(setIsOpen);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>

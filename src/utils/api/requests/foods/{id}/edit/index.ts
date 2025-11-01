@@ -4,7 +4,7 @@ export type PutUpdateDishParams = {
     id: string;
     name: string,
     categoryId: string,
-    photo?: string,
+    photos?: string[],
     rate: number,
     price: number,
     description: string,

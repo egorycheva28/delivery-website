@@ -1,25 +1,30 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import type { GetReasonSchema } from "../constants/ReasonShema";
+import { usePutDeclineOrderMutation } from "@/utils/api/hooks/usePutDeclineOrderMutation";
 
 export const useReasonDialog = (isReason: boolean,
-    setIsReason: (isReason: boolean) => void, order: Order, reason: Reason,
-    setReason: (reason: Reason) => void) => {
+    setIsReason: (isReason: boolean) => void, order: Order,
+    reloadOrder: () => void) => {
+    const declineOrder = usePutDeclineOrderMutation()
 
     const newReasonForm = useForm<GetReasonSchema>({
         defaultValues: {
-            reason: reason.reason || undefined
+            reason: ''
         }
     })
 
-    const addReason = newReasonForm.handleSubmit(
-        (data) => {
-            if (data.reason !== undefined) {
-                setReason({ reason: data.reason });
+    const onSubmit = newReasonForm.handleSubmit(async (value) => {
+        await declineOrder.mutateAsync({
+            params: {
+                orderId: order.id, declineReason: value.reason
             }
-            setIsReason(false)
-        }
-    )
+        })
+
+        reloadOrder()
+        newReasonForm.reset()
+        setIsReason(false)
+    })
 
     useEffect(() => {
         if (!isReason) {
@@ -32,6 +37,6 @@ export const useReasonDialog = (isReason: boolean,
     return {
         state: {},
         form: newReasonForm,
-        functions: { addReason }
+        functions: { onSubmit }
     }
 }

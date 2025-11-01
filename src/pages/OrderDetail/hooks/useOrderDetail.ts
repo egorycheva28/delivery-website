@@ -1,62 +1,49 @@
-import { useEffect, useState } from "react";
+import { useDeleteDishByIdFromOrderMutation } from "@/utils/api/hooks/useDeleteDishByIdFromOrderMutation";
+import { useGetOrderByIdQuery } from "@/utils/api/hooks/useGetOrderByIdQuery";
+import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
+import { useAuth } from "@/utils/contexts/auth/useAuth";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
+const ITEMS_PER_PAGE = 8;
 export const useOrderDetail = () => {
     const { id } = useParams<{ id: string }>();
+    const order = useGetOrderByIdQuery({ orderId: id || "" })
+    const changeOperator = usePutChangeOperatorMutation()
+    const deleteDishFromOrder = useDeleteDishByIdFromOrderMutation()
 
-    const [role, setRole] = useState<string>('admin');
+    const { authenticated, roles, userId } = useAuth()
     const [isComment, setIsComment] = useState<boolean>(false);
     const [isChangeOperator, setIsChangeOperator] = useState<boolean>(false);
     const [isAddDish, setIsAddDish] = useState<boolean>(false);
     const [isHistory, setIsHistory] = useState<boolean>(false);
     const [comment, setComment] = useState<NewComment>(
         {
-            newComment: ''
+            comment: ''
         }
     );
-    const order = {
-        id: id || '',
-        number: 1,
-        date: 'string',
-        address: 'string',
-        price: 500,
-        status: 'new',
-        payment: 'наличными',
-        comment: '',
-        dishes: [{
-            id: "string1",
-            name: "string1",
-            category: "string",
-            description: "Проснись вместе со вкусом лета! Наш фруктовый завтрак — это взрыв свежести и витаминов в первой половине дня. Сочные дольки манго, хрустящие яблоки, спелые ягоды клубники и сладкий виноград — идеально сбалансированное сочетание для лёгкого старта.",
-            price: 600,
-            rating: 3.5,
-            photos: []
-        },
-        {
-            id: "string2",
-            name: "string2",
-            category: "string",
-            description: "string",
-            price: 5000,
-            rating: 3.5,
-            photos: []
-        }]
-    }
-    const user = {
-        name: 'Фамилия Имя Отчество',
-        phone: '+79999999999'
-    }
 
-    const makeOperator = () => {
-        //логика назначения себя оператором
-    }
+    const totalPage = useMemo(() => {
+        if (!order.data?.data.meals) return 0
 
-    const deleteDish = () => {
-        //логика удаления блюда из заказа
-    }
+        return Math.ceil(order.data.data.meals.length / ITEMS_PER_PAGE);
+    }, [order.data?.data.meals]);
 
-    const changeOperator = () => {
-        //логика смены оператора
+    const makeOperator = (async (id: string) => {
+        await changeOperator.mutateAsync({
+            params: {
+                orderId: id, operatorId: userId
+            }
+        })
+
+        order.refetch;
+    })
+
+    const handleDeleteDishFromOrder = async (dishId: string) => {
+        await deleteDishFromOrder.mutateAsync({ params: { orderId: order.data?.data.id, dishId: dishId } },
+            {
+                onSuccess: () => order.refetch()
+            })
     }
 
     useEffect(() => {
@@ -64,9 +51,15 @@ export const useOrderDetail = () => {
     }, [isChangeOperator, isAddDish]);
 
     return {
-        state: { order, role, isComment, comment, user, isChangeOperator, isAddDish, isHistory },
+        state: { order, isComment, comment, isChangeOperator, isAddDish, isHistory, authenticated, roles, totalPage, id, userId },
         functions: {
-            setRole, setIsComment, setComment, makeOperator, deleteDish, changeOperator, setIsChangeOperator, setIsAddDish, setIsHistory
+            setIsComment,
+            setComment,
+            makeOperator,
+            handleDeleteDishFromOrder,
+            setIsChangeOperator,
+            setIsAddDish,
+            setIsHistory
         }
     }
 }

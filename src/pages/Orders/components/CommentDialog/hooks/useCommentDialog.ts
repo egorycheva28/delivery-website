@@ -1,25 +1,29 @@
 import { useForm } from "react-hook-form";
 import type { GetCommentSchema } from "../constants/CommentShema";
 import { useEffect } from "react";
+import { usePutAddCommentMutation } from "@/utils/api/hooks/usePutAddCommentMutation";
 
 export const useCommentDialog = (isComment: boolean,
-    setIsComment: (isComment: boolean) => void, order: Order, comment: NewComment,
-    setComment: (newComment: NewComment) => void) => {
+    setIsComment: (isComment: boolean) => void, order: Order) => {
+    const addComment = usePutAddCommentMutation()
 
     const newCommentForm = useForm<GetCommentSchema>({
         defaultValues: {
-            comment: comment.newComment || undefined
+            comment: ''
         }
     })
 
-    const addComment = newCommentForm.handleSubmit(
-        (data) => {
-            if (data.comment !== undefined) {
-                setComment({ newComment: data.comment });
+    const onSubmit = newCommentForm.handleSubmit(async (value) => {
+        await addComment.mutateAsync({
+            params: {
+                orderId: order.id, comment: value.comment
             }
-            setIsComment(false)
-        }
-    )
+        })
+
+        // reloadOperators()
+        newCommentForm.reset()
+        setIsComment(false)
+    })
 
     useEffect(() => {
         if (!isComment) {
@@ -32,6 +36,6 @@ export const useCommentDialog = (isComment: boolean,
     return {
         state: {},
         form: newCommentForm,
-        functions: { addComment }
+        functions: { onSubmit }
     }
 }

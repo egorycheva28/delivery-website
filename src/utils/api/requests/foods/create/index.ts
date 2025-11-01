@@ -3,7 +3,7 @@ import { instance } from '@/utils/api/instance';
 export type PostCreateDishParams = {
     name: string,
     categoryId: string,
-    photo?: string,
+    photos?: string[],
     rate: number,
     price: number,
     description: string,

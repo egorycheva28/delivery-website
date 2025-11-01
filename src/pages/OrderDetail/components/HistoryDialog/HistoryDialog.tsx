@@ -10,7 +10,7 @@ interface HistoryDialogProps {
 }
 
 const HistoryDialog = ({ isHistory, setIsHistory, order }: HistoryDialogProps) => {
-    const { state } = useHistoryDialog(isHistory);
+    const { state, functions } = useHistoryDialog(order);
 
     return (
         <Dialog open={isHistory} onOpenChange={setIsHistory}>
@@ -19,8 +19,8 @@ const HistoryDialog = ({ isHistory, setIsHistory, order }: HistoryDialogProps) =
                     <DialogTitle>История статусов</DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col w-full gap-4">
-                    {state.history.map(status => (
-                        <HistoryItem key={status.id} status={status} order={order} />
+                    {state.statusHistory.data?.data.map(status => (
+                        <HistoryItem key={status.id} status={status} order={order} formatDateTime={functions.formatDateTime} />
                     ))}
                 </div>
                 <Button className="cursor-pointer" onClick={() => setIsHistory(false)}>Понятно</Button>

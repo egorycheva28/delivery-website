@@ -30,7 +30,7 @@ export const useDishDetail = () => {
             dishId: id!,
             name: dish.data?.data.foodDetails.name!,
             price: dish.data?.data.foodDetails.price!,
-            imageUrl: dish.data?.data.foodDetails.photo!,
+            imageUrl: dish.data?.data.foodDetails.photos[0]!,
             quantity: dishItem?.quantity || 0
         };
     }, [cart.data, dish.data])
