@@ -1,8 +1,7 @@
 import { useGetFoodsWithFiltersQuery } from "@/utils/api/hooks/useGetFoodsWithFiltersQuery";
 import { useMemo } from "react";
 
-const ITEMS_PER_PAGE = 8;
-export const useAddDishDialog = (setIsAddDish: (isAddDish: boolean) => void) => {
+export const useAddDishDialog = (setIsAddDish: (isAddDish: boolean) => void, orderDish:  Meal[]) => {
     const dishes = useGetFoodsWithFiltersQuery({
         search: undefined,
         minPrice: undefined,
@@ -13,19 +12,20 @@ export const useAddDishDialog = (setIsAddDish: (isAddDish: boolean) => void) => 
         includeIngredients: undefined
     })
 
-    const reloadDishes = () => {
-        dishes.refetch;
+    const reloadDishes = async () => {
+        await dishes.refetch();
         setIsAddDish(false);
     }
 
-    const totalPage = useMemo(() => {
-        if (!dishes.data) return 0
-
-        return Math.ceil(dishes.data.data.length / ITEMS_PER_PAGE);
-    }, [dishes.data]);
+    const filteredDishes = useMemo(() => {
+        const orderDishIdsSet = new Set(orderDish.map(dish => dish.id));
+        return dishes.data?.data.filter(dish =>
+            !orderDishIdsSet.has(dish.id)
+        ) || [];
+    }, [dishes.data?.data, orderDish]);
 
     return {
-        state: { dishes, totalPage },
+        state: { filteredDishes },
         functions: { reloadDishes }
     }
 }

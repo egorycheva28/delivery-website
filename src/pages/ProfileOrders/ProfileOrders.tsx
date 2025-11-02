@@ -10,7 +10,7 @@ const ProfileOrders = () => {
             {state.userOrders.data?.data && state.userOrders.data?.data.length > 0 ? (
                 <div className="flex flex-col gap-10">
                     {state.userOrders.data?.data.map(order => (
-                        <ProfileOrderItem {...order}/>
+                        <ProfileOrderItem {...order.reservation}/>
                     ))}
                 </div>
             ) : (

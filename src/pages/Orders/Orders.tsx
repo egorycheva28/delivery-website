@@ -1,4 +1,3 @@
-import CustomPagination from "@/components/Pagination/CustomPagination";
 import { useOrders } from "./hooks/useOrders";
 import OrderItem from "./components/OrderItem/OrderItem.tsx";
 import {SearchIcon} from "lucide-react";
@@ -52,19 +51,12 @@ const Orders = () => {
                             onCheckedChange={(checked: boolean) => functions.handleSetIsMyOrder(checked)}/>
                 </div>
             )}
-            {state.activeQuery.data && state.activeQuery.data?.data.content.length > 0 ? (
-                <>
-                    <div
-                        className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black'>
-                        {state.activeQuery.data.data.content.map(order => (
-                            <OrderItem order={order} reloadOrder={state.activeQuery.refetch}/>
-                        ))}
-                    </div>
-                    <div className='mb-6'>
-                        <CustomPagination totalPages={state.activeQuery.data.data.totalPages}
-                                          setPage={functions.setCurrentPage} isGoToStart={state.isGoToStart}/>
-                    </div>
-                </>
+            {state.activeQuery.data && state.activeQuery.data?.data.length > 0 ? (
+                <div className='flex flex-col items-center w-[90%] border border-black rounded-lg divide-y divide-black mb-4'>
+                    {state.activeQuery.data.data.map(order => (
+                        <OrderItem order={order} reloadOrder={state.activeQuery.refetch}/>
+                    ))}
+                </div>
             ) : (
                 <p className="text-center text-xl font-bold">{"Заказов нет"}</p>
             )}

@@ -20,9 +20,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
         <div className="flex flex-col w-[100%] p-10 gap-6">
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-4 ">
-                    <NavLink to={`/order/${order.id}`} className="cursor-pointer">
+                    <NavLink to={`/order/${order.reservation.id}`} className="cursor-pointer">
                         <span className="text-2xl font-medium underline">
-                            {`Заказ ${order.orderNumber ? order.orderNumber : ""}`}
+                            {`Заказ ${order.reservation.orderNumber ? order.reservation.orderNumber : ""}`}
                         </span>
                     </NavLink>
                     {state.authenticated && state.roles.includes('OPERATOR') ? (
@@ -33,10 +33,10 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="flex flex-row items-center">
-                        <span className="text-3xl font-medium">{order.price}</span>
+                        <span className="text-3xl font-medium">{order.reservation.price}</span>
                         <RussianRuble className="w-[22px] h-[22px]" />
                     </div>
-                    <span className="font-medium">{getPaymentMethod(order.payWay)}</span>
+                    <span className="font-medium">{getPaymentMethod(order.reservation.payWay)}</span>
                 </div>
             </div>
             <div className="flex flex-col sm:flex-row  gap-8 justify-between items-start sm:items-center">
@@ -45,21 +45,21 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                         <Calendar className="w-[32px] h-[32px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Дата заказа:</span>
-                            <span>{order.date}</span>
+                            <span>{order.reservation.date}</span>
                         </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
                         <MapPin className="w-[32px] h-[32px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Адрес доставки:</span>
-                            <span>{order.address}</span>
+                            <span>{order.reservation.address}</span>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col gap-4">
                     {state.authenticated && state.roles.includes('ADMIN') ? (
                         <SelectStatus
-                            selected={{ id: order.status, name: order.status }}
+                            selected={{ id: order.reservation.status, name: order.reservation.status }}
                             statuses={[
                                 { id: "NEW", name: "Новый" },
                                 { id: "CONFIRMED", name: "Подвтержден" },
@@ -70,22 +70,24 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                                 { id: "CANCELED", name: "Отменен" }
                             ]}
                             onChange={functions.changeStatus}
-                            orderId={order.id}
+                            orderId={order.reservation.id}
                         />
                     ) : (
                         <div className="flex items-center gap-2">
-                            <Button onClick={() => functions.changeStatus("CONFIRMED", order.id)} disabled={order.status === "CONFIRMED"}>
+                            <Button onClick={() => functions.changeStatus("CONFIRMED", order.reservation.id)}
+                                    disabled={order.reservation.status === "CONFIRMED"}>
                                 {"Подтвердить"}
                             </Button>
-                            <Button onClick={() => functions.changeStatus("CANCELED", order.id)} disabled={order.status === "CANCELED"}>
+                            <Button onClick={() => functions.changeStatus("CANCELED", order.reservation.id)}
+                                    disabled={order.reservation.status === "CANCELED"}>
                                 {"Отменить"}
                             </Button>
                         </div>
                     )}
                     <ReasonDialog isReason={state.isReason} setIsReason={functions.setIsReason} order={order}
                         reloadOrder={reloadOrder} />
-                    {state.authenticated && state.roles.includes('OPERATOR') && (order.operatorId !== state.userId) ? (
-                        <Button className="cursor-pointer" onClick={() => functions.appointOperator(order.id)}>
+                    {state.authenticated && state.roles.includes('OPERATOR') && (order.reservation.operatorId !== state.userId) ? (
+                        <Button className="cursor-pointer" onClick={() => functions.appointOperator(order.reservation.id)}>
                             Назначить себя оператором
                         </Button>
                     ) : null}

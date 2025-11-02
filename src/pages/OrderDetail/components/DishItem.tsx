@@ -18,7 +18,7 @@ const DishItem: React.FC<DishItemProps> = ({ meal, handleDeleteDishFromOrder, ro
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full p-8 gap-8">
             <div className="flex flex-row items-center gap-4">
                 <img
-                    src={meal.imageUrl.length > 0 ? meal.imageUrl[0] : "https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
+                    src={meal.imageUrl?.length > 0 ? meal.imageUrl[0] : "https://cdn1.ozone.ru/s3/multimedia-d/6319443853.jpg"}
                     alt="dish photo"
                     className="w-[80px] h-[80px] object-cover object-center border-b"
                 />

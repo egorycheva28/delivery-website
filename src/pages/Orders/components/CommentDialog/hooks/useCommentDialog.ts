@@ -16,7 +16,7 @@ export const useCommentDialog = (isComment: boolean,
     const onSubmit = newCommentForm.handleSubmit(async (value) => {
         await addComment.mutateAsync({
             params: {
-                orderId: order.id, comment: value.comment
+                orderId: order.reservation.id, comment: value.comment
             }
         })
 

@@ -15,9 +15,9 @@ const OrderDetail = () => {
 
     return (
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
-            {state.authenticated && state.roles.includes('OPERATOR') && (state.order.data?.data.operatorId !== state.userId) ? (
+            {state.authenticated && state.roles.includes('OPERATOR') && (state.order.data?.data.reservation.operatorId !== state.userId) ? (
                 <div className="flex justify-end w-[90%]">
-                    <Button className="cursor-pointer" onClick={() => functions.makeOperator(state.order.data?.data.id!)}>
+                    <Button className="cursor-pointer" onClick={() => functions.makeOperator(state.order.data?.data.reservation.id!)}>
                         Назначить себя оператором
                     </Button>
                 </div>
@@ -26,7 +26,7 @@ const OrderDetail = () => {
                 <div className="flex flex-row justify-between p-8 items-center">
                     <div className="flex flex-row gap-4">
                         <span className="text-2xl font-medium underline">
-                            {`Заказ ${state.order.data?.data.orderNumber ? state.order.data?.data.orderNumber : ""}`}
+                            {`Заказ ${state.order.data?.data.reservation.orderNumber ? state.order.data?.data.reservation.orderNumber : ""}`}
                         </span>
                         {state.authenticated && state.roles.includes('OPERATOR') ? (
                             <MessageSquare className=" flex items-end h-[60%] cursor-pointer"
@@ -39,10 +39,10 @@ const OrderDetail = () => {
                     </div>
                     <div className="flex flex-col items-center">
                         <div className="flex flex-row items-center">
-                            <span className="text-3xl font-medium">{state.order.data?.data.price}</span>
+                            <span className="text-3xl font-medium">{state.order.data?.data.reservation.price}</span>
                             <RussianRuble className="w-[22px] h-[22px]" />
                         </div>
-                        <span className="font-medium">{getPaymentMethod(state.order.data?.data.payWay)}</span>
+                        <span className="font-medium">{getPaymentMethod(state.order.data?.data.reservation.payWay)}</span>
                     </div>
                 </div>
                 <div className="flex flex-row justify-between items-center p-8">
@@ -50,12 +50,12 @@ const OrderDetail = () => {
                         <User className="w-[36px] h-[36px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Клиент:</span>
-                            <span>{state.order.data?.data.phoneNumber}</span>
+                            <span>{state.order.data?.data.reservation.phoneNumber}</span>
                         </div>
                     </div>
                     <div>
                         <Button className="cursor-pointer" onClick={() => functions.setIsHistory(true)}>
-                            {TranslateStatus[state.order.data?.data.status || '']}
+                            {TranslateStatus[state.order.data?.data.reservation.status || '']}
                         </Button>
                         {state.order.data?.data && (
                             <HistoryDialog isHistory={state.isHistory} setIsHistory={functions.setIsHistory}
@@ -68,8 +68,8 @@ const OrderDetail = () => {
                         <Headphones className="w-[36px] h-[36px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Ответсвенный оператор:</span>
-                            {state.order.data?.data.operatorId ? (
-                                <span>{state.order.data.data.operatorName}</span>
+                            {state.order.data?.data.reservation.operatorId ? (
+                                <span>{state.order.data.data.reservation.operatorName}</span>
                             ) : (
                                 <span>Оператор не назначен</span>
                             )}
@@ -95,16 +95,17 @@ const OrderDetail = () => {
                                     Добавить блюдо
                                 </Button>
                                 <AddDishDialog isAddDish={state.isAddDish} setIsAddDish={functions.setIsAddDish}
-                                               orderId={state.order.data.data.id} reload={state.order.refetch} />
+                                               orderId={state.order.data.data.reservation.id} reload={state.order.refetch}
+                                               orderDish={state.order.data?.data.meal} />
                             </div>
                         ) : null}
                     </div>
                     <div className="flex flex-col w-full border border-black  divide-y divide-black">
-                        {state.order.data?.data.meals.map(meal => (
+                        {state.order.data?.data.meal.map(meal => (
                             <DishItem key={meal.id} meal={meal} handleDeleteDishFromOrder={functions.handleDeleteDishFromOrder}
                                       roles={state.roles} authenticated={state.authenticated}
-                                      orderId={state.order.data?.data.id!} reload={state.order.refetch}
-                                      isDeleteBtnLock={(state.order.data && state.order.data.data.meals.length < 2) || false} />
+                                      orderId={state.order.data?.data.reservation.id!} reload={state.order.refetch}
+                                      isDeleteBtnLock={(state.order.data && state.order.data.data.meal.length < 2) || false} />
                         ))}
                     </div>
                     <CustomPagination totalPages={state.totalPage} />

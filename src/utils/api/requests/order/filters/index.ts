@@ -11,7 +11,7 @@ export interface GetOrdersWithFiltersParams {
 export type GetOrdersWithFiltersConfig = RequestConfig<GetOrdersWithFiltersParams>;
 
 export const getOrdersWithFilters = ({ params, config }: GetOrdersWithFiltersConfig) =>
-    instance.get<OrderAnswer>(`http://localhost:8096/order/get-with-filters`, {
+    instance.get<Order[]>(`http://localhost:8096/order/get-with-filters`, {
         ...config,
         params: { ...config?.params, ...params }
     });

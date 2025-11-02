@@ -24,10 +24,10 @@ export const useOrderDetail = () => {
     );
 
     const totalPage = useMemo(() => {
-        if (!order.data?.data.meals) return 0
+        if (!order.data?.data.meal) return 0
 
-        return Math.ceil(order.data.data.meals.length / ITEMS_PER_PAGE);
-    }, [order.data?.data.meals]);
+        return Math.ceil(order.data.data.meal.length / ITEMS_PER_PAGE);
+    }, [order.data?.data.meal]);
 
     const makeOperator = (async (id: string) => {
         await changeOperator.mutateAsync({
@@ -40,7 +40,7 @@ export const useOrderDetail = () => {
     })
 
     const handleDeleteDishFromOrder = async (dishId: string) => {
-        await deleteDishFromOrder.mutateAsync({ params: { orderId: order.data?.data.id, dishId: dishId } },
+        await deleteDishFromOrder.mutateAsync({ params: { orderId: order.data?.data.reservation.id, dishId: dishId } },
             {
                 onSuccess: () => order.refetch()
             })

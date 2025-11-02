@@ -9,4 +9,4 @@ export interface GetOrdersWithoutOperatorParams {
 export type GetOrdersWithoutOperatorConfig = RequestConfig<GetOrdersWithoutOperatorParams>;
 
 export const getOrdersWithoutOperator = async ({ config, params }: GetOrdersWithoutOperatorConfig) =>
-    instance.get<OrderAnswer>(`http://localhost:8096/order/find-without-operator?page=${params.page}&size=${params.size}&sort=${params.sort}`, config);
+    instance.get<Order[]>(`http://localhost:8096/order/find-without-operator?page=${params.page}&size=${params.size}&sort=${params.sort}`, config);

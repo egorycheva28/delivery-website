@@ -91,7 +91,7 @@ interface Cart {
     items: ItemCart[]
 }
 
-interface Order {
+interface Reservation {
     id: string;
     orderNumber: number;
     clientId: string;
@@ -105,7 +105,11 @@ interface Order {
     date: string;
     status: OrderStatus;
     payWay?: OrderPayWay;
-    meals: Meal[];
+}
+
+interface Order {
+    reservation: Reservation;
+    meal: Meal[];
 }
 
 interface OrderAnswer {

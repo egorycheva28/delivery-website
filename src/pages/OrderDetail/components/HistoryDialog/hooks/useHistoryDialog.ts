@@ -1,7 +1,7 @@
 import { useGetStatusHistoryQuery } from "@/utils/api/hooks/useGetStatusHistoryQuery";
 
 export const useHistoryDialog = (order: Order) => {
-    const statusHistory = useGetStatusHistoryQuery({ orderId: order.id })
+    const statusHistory = useGetStatusHistoryQuery({ orderId: order.reservation.id })
 
     const formatDateTime = (dateTime: string) => {
         const date = new Date(dateTime);

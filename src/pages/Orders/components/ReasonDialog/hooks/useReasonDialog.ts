@@ -17,7 +17,7 @@ export const useReasonDialog = (isReason: boolean,
     const onSubmit = newReasonForm.handleSubmit(async (value) => {
         await declineOrder.mutateAsync({
             params: {
-                orderId: order.id, declineReason: value.reason
+                orderId: order.reservation.id, declineReason: value.reason
             }
         })
 
