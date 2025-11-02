@@ -5,6 +5,9 @@ import {SearchIcon} from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {Input} from "@/components/ui/input.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {ROUTES} from "@/utils/constants/routes.ts";
+import {NavLink} from "react-router-dom";
+import {Button} from "@/components/ui/button.tsx";
 
 const Orders = () => {
     const { state, functions } = useOrders();
@@ -13,27 +16,34 @@ const Orders = () => {
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
             <span className='text-4xl font-medium'>Управление заказами</span>
             {state.authenticated && state.roles.includes('ADMIN') ? (
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-[90%]">
-                    <Input
-                        defaultValue={state.filters.operators}
-                        leftIcon={<SearchIcon className='h-5 w-5'/>}
-                        placeholder="Поиск..."
-                        onChange={(e) => functions.debouncedSearchByName(e.target.value)}
-                        className='h-10 sm:max-w-64 w-full'
-                    />
-                    <Select value={state.filters.statuses || "all"} onValueChange={functions.handleSelectStatus}>
-                        <SelectTrigger className="!h-10 sm:max-w-64 w-full">
-                            <SelectValue placeholder="Категория блюда"/>
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectItem value="all">Все категории</SelectItem>
-                                {state.statuses.map(status => (
-                                    <SelectItem value={status.id}>{status.label}</SelectItem>
-                                ))}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
+                <div className="flex gap-4 flex-col md:flex-row md:items-center md:justify-between w-[90%]">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <Input
+                            defaultValue={state.filters.operators}
+                            leftIcon={<SearchIcon className='h-5 w-5'/>}
+                            placeholder="Поиск..."
+                            onChange={(e) => functions.debouncedSearchByName(e.target.value)}
+                            className='h-10 sm:max-w-64 w-full'
+                        />
+                        <Select value={state.filters.statuses || "all"} onValueChange={functions.handleSelectStatus}>
+                            <SelectTrigger className="!h-10 sm:max-w-64 w-full">
+                                <SelectValue placeholder="Категория блюда"/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value="all">Все категории</SelectItem>
+                                    {state.statuses.map(status => (
+                                        <SelectItem value={status.id}>{status.label}</SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <NavLink to={ROUTES.STATISTICS}>
+                        <Button className="cursor-pointer h-10 md:max-w-64 w-full">
+                            {"Статистика заказов"}
+                        </Button>
+                    </NavLink>
                 </div>
             ) : (
                 <div className="flex justify-items-start w-[90%] items-center gap-4">

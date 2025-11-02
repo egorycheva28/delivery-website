@@ -21,7 +21,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-4 ">
                     <NavLink to={`/order/${order.id}`} className="cursor-pointer">
-                        <span className="text-2xl font-medium underline">Заказ № {order.orderNumber}</span>
+                        <span className="text-2xl font-medium underline">
+                            {`Заказ ${order.orderNumber ? order.orderNumber : ""}`}
+                        </span>
                     </NavLink>
                     {state.authenticated && state.roles.includes('OPERATOR') ? (
                         <MessageSquare className=" flex items-end h-[60%] cursor-pointer"

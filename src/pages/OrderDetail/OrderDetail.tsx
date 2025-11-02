@@ -25,14 +25,16 @@ const OrderDetail = () => {
             <div className="flex flex-col w-[90%] border border-black rounded-lg divide-y divide-black mb-8">
                 <div className="flex flex-row justify-between p-8 items-center">
                     <div className="flex flex-row gap-4">
-                        <span className="text-2xl font-medium underline">Заказ № {state.order.data?.data.orderNumber}</span>
+                        <span className="text-2xl font-medium underline">
+                            {`Заказ ${state.order.data?.data.orderNumber ? state.order.data?.data.orderNumber : ""}`}
+                        </span>
                         {state.authenticated && state.roles.includes('OPERATOR') ? (
                             <MessageSquare className=" flex items-end h-[60%] cursor-pointer"
-                                           onClick={() => functions.setIsComment(true)} />
+                                           onClick={() => functions.setIsComment(true)}/>
                         ) : null}
                         {state.order.data?.data && (
                             <CommentDialog isComment={state.isComment} setIsComment={functions.setIsComment}
-                                order={state.order.data?.data} />
+                                           order={state.order.data?.data}/>
                         )}
                     </div>
                     <div className="flex flex-col items-center">

@@ -15,7 +15,7 @@ const ProfileOrderItem = ({ id, orderNumber, date, price, status }: ProfileOrder
     <Card className="w-full">
         <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
-                <p className="text-2xl font-medium underline">Заказ №{orderNumber}</p>
+                <p className="text-2xl font-medium underline">{`Заказ ${orderNumber ? orderNumber : ""}`}</p>
                 <p className="text-2xl font-medium">{`${price} ₽`}</p>
             </div>
             <div className="flex items-center justify-between">
