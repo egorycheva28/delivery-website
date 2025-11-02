@@ -1,18 +1,18 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
-    loginSchema,
-    type LoginSchema
-} from "@/pages/Root/components/Header/components/LoginDialog/constants/LoginSchema.ts";
+    loginUserSchema,
+    type LoginUserSchema
+} from "@/pages/Root/components/Header/components/LoginDialog/components/LoginUserForm/constants/LoginUserSchema.ts";
 import {usePostLoginMutation} from "@/utils/api/hooks/usePostLoginMutation.ts";
 import {useAuth} from "@/utils/contexts/auth";
 
-export const useLoginDialog = (setIsOpen: (isOpen: boolean) => void) => {
+export const useLoginUserForm = (setIsOpen: (isOpen: boolean) => void) => {
     const login = usePostLoginMutation()
     const { login: handleLogin } = useAuth()
 
-    const loginForm = useForm<LoginSchema>({
-        resolver: zodResolver(loginSchema),
+    const loginForm = useForm<LoginUserSchema>({
+        resolver: zodResolver(loginUserSchema),
         defaultValues: {
             phone: '',
             password: ''

@@ -3,6 +3,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useEditAboutDialog } from "./hooks/useEditAboutDialog";
+import {PhoneInput} from "@/components/ui/input-phone.tsx";
 
 interface NewOperatorDialogProps {
     abouts?: About;
@@ -83,7 +84,10 @@ const EditAboutDialog = ({ abouts, setIsOpen, isOpen, reloadAbout }: NewOperator
                                             {"Телефон менеджера"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Телефон менеджера" {...field} />
+                                            <PhoneInput
+                                                {...field}
+                                                placeholder="Телефон менеджера"
+                                            />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
@@ -100,7 +104,10 @@ const EditAboutDialog = ({ abouts, setIsOpen, isOpen, reloadAbout }: NewOperator
                                             {"Телефон оператора"}
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Телефон оператора" {...field} />
+                                            <PhoneInput
+                                                {...field}
+                                                placeholder="Телефон оператора"
+                                            />
                                         </FormControl>
                                         {fieldState.error && (
                                             <p className="text-red-600 text-xs mt-1">{fieldState.error.message}</p>
