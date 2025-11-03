@@ -12,7 +12,7 @@ export interface OrderListFilters {
 }
 
 const SEARCH_TIMEOUT = 500;
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 1000;
 export const useOrders = () => {
     const { authenticated, roles, userId } = useAuth()
     const [searchParams, setSearchParams] = useSearchParams();
