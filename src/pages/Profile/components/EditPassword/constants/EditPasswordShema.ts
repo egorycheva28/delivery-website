@@ -30,6 +30,12 @@ export const editPasswordShema = z.object({
     }),
 }).refine(
     (data) => data.newPassword1 == data.newPassword2,{message: "Пароли не совпадают", path: ["newPassword2"],}
+).refine(
+    (data) => data.oldPassword1 !== data.newPassword1,
+    {
+        message: "Новый пароль не должен совпадать со старым",
+        path: ["newPassword1"],
+    }
 );
 
 export type editPasswordShema = z.infer<typeof editPasswordShema>;
