@@ -2,7 +2,7 @@ import { useDeleteDishByIdFromOrderMutation } from "@/utils/api/hooks/useDeleteD
 import { useGetOrderByIdQuery } from "@/utils/api/hooks/useGetOrderByIdQuery";
 import { usePutChangeOperatorMutation } from "@/utils/api/hooks/usePutChangeOperatorForOrderMutation";
 import { useAuth } from "@/utils/contexts/auth/useAuth";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 8;
@@ -36,7 +36,7 @@ export const useOrderDetail = () => {
             }
         })
 
-        order.refetch;
+        await order.refetch();
     })
 
     const handleDeleteDishFromOrder = async (dishId: string) => {
@@ -45,10 +45,6 @@ export const useOrderDetail = () => {
                 onSuccess: () => order.refetch()
             })
     }
-
-    useEffect(() => {
-        //логика получения новой инфы о заказе
-    }, [isChangeOperator, isAddDish]);
 
     return {
         state: { order, isComment, comment, isChangeOperator, isAddDish, isHistory, authenticated, roles, totalPage, id, userId },

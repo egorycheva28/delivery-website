@@ -7,7 +7,7 @@ import {useGetStateOrderQuery} from "@/utils/api/hooks/useGetStateOrderQuery.ts"
 const SEARCH_TIMEOUT = 500;
 const ITEMS_PER_PAGE = 20;
 export const useStatistics = () => {
-const state = useGetStateOrderQuery()
+    const state = useGetStateOrderQuery()
     const [searchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
     const [goToStart, setGoToStart] = useState(false);
@@ -23,7 +23,7 @@ const state = useGetStateOrderQuery()
 
         if (searchTerm) {
             filtered = state.data.data.filter(operator =>
-                operator.operatorName.toLowerCase().includes(searchTerm.toLowerCase())
+                operator.fullName.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
@@ -91,7 +91,7 @@ const state = useGetStateOrderQuery()
     };
 
     const chartData = {
-        labels: displayedData.map(operator => operator.operatorName),
+        labels: displayedData.map(operator => operator.fullName),
         datasets: [
             {
                 label: 'Заказы',

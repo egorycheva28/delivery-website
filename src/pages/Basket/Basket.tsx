@@ -30,11 +30,11 @@ const Basket = () => {
                         <p>{`${state.cart.data?.data.total} ₽`}</p>
                     </div>
                     <BasketForm openSuccessBasketDesign={functions.handleSuccessBasketDesign}/>
-                    <SuccessBasketDesign isOpen={state.isOpen} setIsOpen={functions.setIsOpen}/>
                 </>
             ) : (
                 <p className="text-center text-xl font-bold">{"Корзина пуста"}</p>
             )}
+            <SuccessBasketDesign isOpen={state.isOpen} setIsOpen={functions.setIsOpen}/>
         </div>
     )
 }

@@ -32,7 +32,7 @@ const Statistics = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div>
                             <span className="font-semibold">Лидер: </span>
-                            {state.displayedData[0].operatorName} ({state.displayedData[0].orderAmount} заказов)
+                            {state.displayedData[0].fullName} ({state.displayedData[0].orderAmount} заказов)
                         </div>
                         <div>
                             <span className="font-semibold">Среднее: </span>

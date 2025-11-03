@@ -16,9 +16,10 @@ export const useBasket = () => {
         })
     }
 
-    const handleSuccessBasketDesign = async () => {
-        await cart.refetch()
-        setIsOpen(true);
+    const handleSuccessBasketDesign = () => {
+        cart.refetch().then(() => {
+            setIsOpen(true);
+        });
     }
 
     return {

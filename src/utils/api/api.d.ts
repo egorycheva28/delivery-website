@@ -74,7 +74,7 @@ interface Categories {
 
 interface Stat {
     id: string,
-    operatorName: string,
+    fullName: string,
     orderAmount: number
 }
 

@@ -86,7 +86,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                     )}
                     <ReasonDialog isReason={state.isReason} setIsReason={functions.setIsReason} order={order}
                         reloadOrder={reloadOrder} />
-                    {state.authenticated && state.roles.includes('OPERATOR') && (order.reservation.operatorId !== state.userId) ? (
+                    {state.authenticated && state.roles.includes('OPERATOR')
+                    && (order.reservation.operatorId !== state.userId)
+                    && (order.reservation.status === "NEW") ? (
                         <Button className="cursor-pointer" onClick={() => functions.appointOperator(order.reservation.id)}>
                             Назначить себя оператором
                         </Button>

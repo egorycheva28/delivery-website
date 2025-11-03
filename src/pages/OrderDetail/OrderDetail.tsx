@@ -15,7 +15,9 @@ const OrderDetail = () => {
 
     return (
         <div className="flex flex-col items-center mt-8 gap-8 w-full">
-            {state.authenticated && state.roles.includes('OPERATOR') && (state.order.data?.data.reservation.operatorId !== state.userId) ? (
+            {state.authenticated && state.roles.includes('OPERATOR')
+            && (state.order.data?.data.reservation.operatorId !== state.userId)
+            && (state.order.data?.data.reservation.status === "NEW") ? (
                 <div className="flex justify-end w-[90%]">
                     <Button className="cursor-pointer" onClick={() => functions.makeOperator(state.order.data?.data.reservation.id!)}>
                         Назначить себя оператором
