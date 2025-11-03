@@ -19,16 +19,23 @@ export const useNewOperatorDialog = (newOperator: NewOperatorDTO, reloadOperator
     })
 
     const onSubmit = newOperatorForm.handleSubmit(async (value) => {
-        await createOperator.mutateAsync({
-            params: {
-                fullName: value.fullName, password: value.password,
-                phone: value.phone, username: value.username
-            }
-        })
+        try {
+            await createOperator.mutateAsync({
+                params: {
+                    fullName: value.fullName, password: value.password,
+                    phone: value.phone, username: value.username
+                }
+            })
 
-        reloadOperators()
-        newOperatorForm.reset()
-        setIsOpen(false)
+            reloadOperators()
+            newOperatorForm.reset()
+            setIsOpen(false)
+        } catch (e) {
+            newOperatorForm.setError('root', {
+                type: 'manual',
+                message: 'Неверные данные'
+            });
+        }
     })
 
     useEffect(() => {

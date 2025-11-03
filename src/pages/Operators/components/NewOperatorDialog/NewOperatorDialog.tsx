@@ -92,6 +92,11 @@ const NewOperatorDialog = ({ newOperator, reloadOperators, setIsOpen, isOpen }: 
                                 )}
                             />
                         </div>
+                        {form.formState?.errors?.root && (
+                            <p className="text-red-600 text-xs text-center mt-1">
+                                {form.formState.errors.root.message}
+                            </p>
+                        )}
                         <Button type='submit' className='h-10 w-full'>
                             {"Создать"}
                         </Button>
