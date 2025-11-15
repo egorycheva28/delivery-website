@@ -1,7 +1,7 @@
-import {Card, CardContent} from "@/components/ui/card.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {NavLink} from "react-router-dom";
-import {getOrderStatus} from "@/utils/helpers/getOrderStatus.ts";
+import { Card, CardContent } from "@/components/ui/card.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { NavLink } from "react-router-dom";
+import { getOrderStatus } from "@/utils/helpers/getOrderStatus.ts";
 
 interface ProfileOrderItemProps {
     id: string,
@@ -9,9 +9,10 @@ interface ProfileOrderItemProps {
     price: number;
     date: string;
     status: OrderStatus;
+    formatDateTime: (date: string) => void;
 }
 
-const ProfileOrderItem = ({ id, orderNumber, date, price, status }: ProfileOrderItemProps) => (
+const ProfileOrderItem = ({ id, orderNumber, date, price, status, formatDateTime }: ProfileOrderItemProps) => (
     <Card className="w-full">
         <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
@@ -19,7 +20,7 @@ const ProfileOrderItem = ({ id, orderNumber, date, price, status }: ProfileOrder
                 <p className="text-2xl font-medium">{`${price} ₽`}</p>
             </div>
             <div className="flex items-center justify-between">
-                <p className="font-bold">{`Дата заказа: ${date}`}</p>
+                <p className="font-bold">{`Дата заказа: ${formatDateTime(date)}`}</p>
                 <p className="font-bold">{`Статус заказа: ${getOrderStatus(status)}`}</p>
             </div>
             <NavLink to={`/orderDishes/${id}`} className="w-full">
