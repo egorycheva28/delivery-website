@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import ReasonDialog from "../ReasonDialog/ReasonDialog.tsx";
 import React from "react";
 import { useOrderItem } from "@/pages/Orders/components/OrderItem/hooks/useOrderItem.ts";
-import {getPaymentMethod} from "@/utils/helpers/getPaymentMethod.ts";
+import { getPaymentMethod } from "@/utils/helpers/getPaymentMethod.ts";
 
 interface OrderItemProps {
     order: Order;
@@ -45,7 +45,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                         <Calendar className="w-[32px] h-[32px]" />
                         <div className="flex flex-col gap-1.5">
                             <span className="font-medium">Дата заказа:</span>
-                            <span>{order.reservation.date}</span>
+                            <span>{functions.formatDateTime(order.reservation.date)}</span>
                         </div>
                     </div>
                     <div className="flex flex-row items-center gap-4">
@@ -75,11 +75,11 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                     ) : (
                         <div className="flex items-center gap-2">
                             <Button onClick={() => functions.changeStatus("CONFIRMED", order.reservation.id)}
-                                    disabled={order.reservation.status === "CONFIRMED"}>
+                                disabled={order.reservation.status === "CONFIRMED"}>
                                 {"Подтвердить"}
                             </Button>
                             <Button onClick={() => functions.changeStatus("CANCELED", order.reservation.id)}
-                                    disabled={order.reservation.status === "CANCELED"}>
+                                disabled={order.reservation.status === "CANCELED"}>
                                 {"Отменить"}
                             </Button>
                         </div>
@@ -87,8 +87,8 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, reloadOrder }) => {
                     <ReasonDialog isReason={state.isReason} setIsReason={functions.setIsReason} order={order}
                         reloadOrder={reloadOrder} />
                     {state.authenticated && state.roles.includes('OPERATOR')
-                    && (order.reservation.operatorId !== state.userId)
-                    && (order.reservation.status === "NEW") ? (
+                        && (order.reservation.operatorId !== state.userId)
+                        && (order.reservation.status === "NEW") ? (
                         <Button className="cursor-pointer" onClick={() => functions.appointOperator(order.reservation.id)}>
                             Назначить себя оператором
                         </Button>
