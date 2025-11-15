@@ -3,7 +3,6 @@ import {Button} from "@/components/ui/button.tsx";
 import {ROUTES} from "@/utils/constants/routes.ts";
 import {useHeader} from "@/pages/Root/components/Header/hooks/useHeader.ts";
 import LoginDialog from "@/pages/Root/components/Header/components/LoginDialog/LoginDialog.tsx";
-import RegisterDialog from "@/pages/Root/components/Header/components/RegisterDialog/RegisterDialog.tsx";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet.tsx";
 import {Menu} from "lucide-react";
 
@@ -12,22 +11,23 @@ const Header = () => {
 
     const NavigationContent = ({ isMobile = false }: { isMobile?: boolean }) => (
         <div className={`flex ${isMobile ? "flex-col gap-4 p-4" : "items-center gap-8"}`}>
-            <NavLink to={ROUTES.ROOT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                className={({ isActive }) =>
-                    isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                }
-            >
-                {"Меню"}
-            </NavLink>
-            <NavLink to={ROUTES.BASKET} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                className={({ isActive }) =>
-                    isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                }
-            >
-                {"Корзина"}
-            </NavLink>
+            
             {state.authenticated && state.roles.includes('ADMIN') && (
                 <>
+                    <NavLink to={ROUTES.ROOT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
+                        className={({ isActive }) =>
+                            isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
+                        }
+                    >
+                        {"Меню"}
+                    </NavLink>
+                    <NavLink to={ROUTES.BASKET} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
+                        className={({ isActive }) =>
+                            isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
+                        }
+                    >
+                        {"Корзина"}
+                    </NavLink>
                     <NavLink to={ROUTES.OPERATORS} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
                         className={({ isActive }) =>
                             isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
@@ -56,6 +56,13 @@ const Header = () => {
                     >
                         {"Заказы"}
                     </NavLink>
+                    <NavLink to={ROUTES.DELIVERY_AND_PAYMENT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
+                            className={({ isActive }) =>
+                                isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
+                            }
+                    >
+                        {"Доставка и оплата"}
+                    </NavLink>
                 </>
             )}
             {state.authenticated && state.roles.includes('OPERATOR') && (
@@ -67,13 +74,6 @@ const Header = () => {
                     {"Заказы"}
                 </NavLink>
             )}
-            <NavLink to={ROUTES.DELIVERY_AND_PAYMENT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                     className={({ isActive }) =>
-                         isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                     }
-            >
-                {"Доставка и оплата"}
-            </NavLink>
             <NavLink to={ROUTES.ABOUT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
                 className={({ isActive }) =>
                     isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
@@ -133,9 +133,7 @@ const Header = () => {
                 </Sheet>
             </div>
             <LoginDialog isOpen={state.isOpenLogin} setIsOpen={functions.setIsOpenLogin}
-                         register={functions.handleRegister}/>
-            <RegisterDialog isOpen={state.isOpenRegister} setIsOpen={functions.setIsOpenRegister}
-                            login={functions.handleLogin}/>
+                         register={functions.handleRegister}/>            
         </div>
     )
 }

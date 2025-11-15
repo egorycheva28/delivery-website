@@ -8,7 +8,7 @@ interface LoginOperatorFormProps {
     register: () => void;
 }
 
-const LoginOperatorForm = ({setIsOpen, register}: LoginOperatorFormProps) => {
+const LoginOperatorForm = ({setIsOpen}: LoginOperatorFormProps) => {
     const { form, functions } = useLoginOperatorForm(setIsOpen)
 
     return (
@@ -68,10 +68,6 @@ const LoginOperatorForm = ({setIsOpen, register}: LoginOperatorFormProps) => {
                         {form.formState.errors.root.message}
                     </p>
                 )}
-                <Button type='button' variant="secondary" className='h-10 w-full cursor-pointer'
-                        onClick={register}>
-                    {"Зарегистрироваться"}
-                </Button>
                 <Button type='submit' className='h-10 w-full cursor-pointer'>
                     {"Войти"}
                 </Button>
