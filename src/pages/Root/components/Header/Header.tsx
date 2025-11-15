@@ -26,47 +26,6 @@ const Header = () => {
             >
                 {"Корзина"}
             </NavLink>
-            {state.authenticated && state.roles.includes('ADMIN') && (
-                <>
-                    <NavLink to={ROUTES.OPERATORS} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                        className={({ isActive }) =>
-                            isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                        }
-                    >
-                        {"Операторы"}
-                    </NavLink>
-                    <NavLink to={ROUTES.DISH_CATEGORY} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                        className={({ isActive }) =>
-                            isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                        }
-                    >
-                        {"Категории блюд"}
-                    </NavLink>
-                    <NavLink to={ROUTES.DISH_MANAGEMENT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                        className={({ isActive }) =>
-                            isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                        }
-                    >
-                        {"Блюда"}
-                    </NavLink>
-                    <NavLink to={ROUTES.ORDERS} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                        className={({ isActive }) =>
-                            isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                        }
-                    >
-                        {"Заказы"}
-                    </NavLink>
-                </>
-            )}
-            {state.authenticated && state.roles.includes('OPERATOR') && (
-                <NavLink to={ROUTES.ORDERS} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
-                    className={({ isActive }) =>
-                        isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
-                    }
-                >
-                    {"Заказы"}
-                </NavLink>
-            )}
             <NavLink to={ROUTES.DELIVERY_AND_PAYMENT} onClick={isMobile ? () => functions.setIsMenuOpen(false) : undefined}
                      className={({ isActive }) =>
                          isActive ? "text-blue-600 font-medium" : "hover:text-blue-500"
