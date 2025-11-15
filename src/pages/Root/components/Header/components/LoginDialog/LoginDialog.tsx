@@ -16,7 +16,7 @@ const LoginDialog = ({isOpen, setIsOpen, register}: LoginDialogProps) => (
                     {"Авторизация"}
                 </DialogTitle>
             </DialogHeader>
-                <LoginUserForm setIsOpen={setIsOpen} register={register}/>
+            <LoginUserForm setIsOpen={setIsOpen} register={register}/>
         </DialogContent>
     </Dialog>
 )

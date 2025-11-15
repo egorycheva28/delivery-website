@@ -1,23 +1,14 @@
 import AboutItem from "./components/AboutItem";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useAbout } from "./hooks/useAbout";
-import EditAboutDialog from "./components/EditAboutDialog/EditAboutDialog";
 
 const About = () => {
-    const { state, functions } = useAbout();
+    const { state } = useAbout();
 
     return (
         <div className="flex flex-col mt-8 mb-8 gap-12 w-full px-16">
             <div className='flex flex-row justify-between items-center'>
                 <span className='text-4xl font-medium text-center flex-1'>О нас</span>
-                {state.authenticated && state.roles.includes('ADMIN') && (
-                    <div>
-                        <Button className="cursor-pointer" onClick={() => functions.setIsOpen(true)}>{"Редактировать"}</Button>
-                        <EditAboutDialog isOpen={state.isOpen} setIsOpen={functions.setIsOpen} abouts={state.getAboutInfo}
-                            reloadAbout={state.abouts.refetch} />
-                    </div>
-                )}
             </div>
             <span className="text-4xl font-medium text-left">{state.abouts.data?.data.companyName}</span>
             <span className="flex text-left text-3xl font-normal">Доставим быстро и качественно!</span>
