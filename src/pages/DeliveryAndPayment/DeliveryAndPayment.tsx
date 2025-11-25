@@ -17,7 +17,7 @@ const DeliveryAndPayment = () => {
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h1 className="text-4xl font-medium text-center mb-10">Доставка и оплата</h1>
             <section className="mb-12">
-                <h2 className="text-2xl font-bold mb-6">Информация о доставке</h2>
+                <h2 className="text-2xl font-bold mb-6">ИНФОРМАЦИЯ О ДОСТАВКЕ</h2>
                 <div className="mb-6">
                     <DeliveryMap
                         center={mapCenter}
