@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import {createHashRouter} from "react-router-dom";
 import { ROUTES } from "./utils/constants/routes";
 import Root from "./pages/Root/Root";
 import About from "./pages/About/About";
@@ -10,7 +10,7 @@ import DeliveryAndPayment from "@/pages/DeliveryAndPayment/DeliveryAndPayment.ts
 import ProfileOrders from "@/pages/ProfileOrders/ProfileOrders.tsx";
 import OrderDishes from "@/pages/OrderDishes/OrderDishes.tsx";
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
     {
         path: ROUTES.ROOT,
         element: <Root />,
