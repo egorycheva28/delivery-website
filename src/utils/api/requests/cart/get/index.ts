@@ -7,7 +7,7 @@ export interface GetCartParams {
 export type GetCartConfig = RequestConfig<GetCartParams>;
 
 export const getCart = async ({ config, params }: GetCartConfig) =>
-    instance.get<Cart>(`https://localhost:44348/api/Cart`, {
+    instance.get<Cart>(`https://localhost:5261/api/Cart`, {
         ...config,
         params: { ...config?.params, ...params }
     });
