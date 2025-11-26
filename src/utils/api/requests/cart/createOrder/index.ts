@@ -10,4 +10,4 @@ export type PostCreateOrderParams = {
 export type PostCreateOrderConfig = RequestConfig<PostCreateOrderParams>;
 
 export const postCreateOrder = async ({ config, params }: PostCreateOrderConfig) =>
-    instance.post(`https://localhost:5261/api/Cart/create-order`, params, config);
+    instance.post(`http://localhost:5261/api/Cart/create-order`, params, config);
