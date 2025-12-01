@@ -7,8 +7,8 @@ interface SuccessBasketDesignProps {
 }
 
 const SuccessBasketDesign = ({ isOpen, setIsOpen }: SuccessBasketDesignProps) => (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md">
+    <Dialog open={isOpen} onOpenChange={setIsOpen} >
+        <DialogContent id="succest-making-order-dialog" className="sm:max-w-md">
             <DialogHeader>
                 <DialogTitle className="text-[#48A540] text-center">
                     {"Заказ оформлен"}
