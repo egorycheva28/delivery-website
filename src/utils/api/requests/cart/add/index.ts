@@ -11,4 +11,4 @@ export type PostAddDishIntoCartParams = {
 export type PostAddDishIntoCartConfig = RequestConfig<PostAddDishIntoCartParams>;
 
 export const postAddDishIntoCart = async ({ config, params }: PostAddDishIntoCartConfig) =>
-    instance.post(`http://localhost:5261/api/Cart/add`, params, config);
+    instance.post(`http://localhost:5621/api/Cart/add`, params, config);

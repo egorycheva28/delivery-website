@@ -8,4 +8,4 @@ export type DeleteOneDishParams = {
 export type DeleteOneDishConfig = RequestConfig<DeleteOneDishParams>;
 
 export const deleteOneDish = async ({ config, params }: DeleteOneDishConfig) =>
-    instance.put(`http://localhost:5261/api/Cart/update`, params, config);
+    instance.put(`http://localhost:5621/api/Cart/update`, params, config);
