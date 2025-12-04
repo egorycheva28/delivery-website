@@ -1,4 +1,5 @@
 import { instance } from '../../../instance';
+import {MENU_API_URL} from "@/utils/constants/apiUrl.ts";
 
 export type PutUpdateRatingParams = {
     id: string;
@@ -8,4 +9,4 @@ export type PutUpdateRatingParams = {
 export type PutUpdateRatingConfig = RequestConfig<PutUpdateRatingParams>;
 
 export const putUpdateRating = async ({ config, params }: PutUpdateRatingConfig) =>
-    instance.put(`http://localhost:8080/api/rate/${params.id}`, params, config);
+    instance.put(`${MENU_API_URL}/rate/${params.id}`, params, config);

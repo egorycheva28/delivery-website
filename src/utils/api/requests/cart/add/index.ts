@@ -1,4 +1,5 @@
 import { instance } from '@/utils/api/instance';
+import {CART_API_URL} from "@/utils/constants/apiUrl.ts";
 
 export type PostAddDishIntoCartParams = {
     dishId: string,
@@ -11,4 +12,4 @@ export type PostAddDishIntoCartParams = {
 export type PostAddDishIntoCartConfig = RequestConfig<PostAddDishIntoCartParams>;
 
 export const postAddDishIntoCart = async ({ config, params }: PostAddDishIntoCartConfig) =>
-    instance.post(`http://localhost:5621/api/Cart/add`, params, config);
+    instance.post(`${CART_API_URL}/Cart/add`, params, config);

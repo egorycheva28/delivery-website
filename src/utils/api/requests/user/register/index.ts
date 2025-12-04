@@ -1,4 +1,5 @@
 import { instance } from '@/utils/api/instance';
+import {USER_API_URL} from "@/utils/constants/apiUrl.ts";
 
 export type PostRegisterParams = {
     fullName: string,
@@ -9,4 +10,4 @@ export type PostRegisterParams = {
 export type PostRegisterConfig = RequestConfig<PostRegisterParams>;
 
 export const postRegister = async ({ config, params }: PostRegisterConfig) =>
-    instance.post<Token>(`http://localhost:8910/api/users/registration/client`, params, config);
+    instance.post<Token>(`${USER_API_URL}/users/registration/client`, params, config);
