@@ -27,12 +27,12 @@ const Basket = () => {
                     </Card>
                     <div className="flex items-center justify-between border-b-2 border-black font-bold text-xl">
                         <p>{"Итоговая сумма:"}</p>
-                        <p>{`${state.cart.data?.data.total} ₽`}</p>
+                        <p className="total-price">{`${state.cart.data?.data.total} ₽`}</p>
                     </div>
                     <BasketForm openSuccessBasketDesign={functions.handleSuccessBasketDesign}/>
                 </>
             ) : (
-                <p className="text-center text-xl font-bold">{"Корзина пуста"}</p>
+                <p className="text-center text-xl font-bold empty-text-message">{"Корзина пуста"}</p>
             )}
             <SuccessBasketDesign isOpen={state.isOpen} setIsOpen={functions.setIsOpen}/>
         </div>

@@ -1,4 +1,5 @@
 import { instance } from '../../../instance';
+import {MENU_API_URL} from "@/utils/constants/apiUrl.ts";
 
 export type PostAddRatingParams = {
     id: string;
@@ -8,4 +9,4 @@ export type PostAddRatingParams = {
 export type PostAddRatingConfig = RequestConfig<PostAddRatingParams>;
 
 export const postAddRating = async ({ config, params }: PostAddRatingConfig) =>
-    instance.post(`http://localhost:8080/api/rate/${params.id}`, params, config);
+    instance.post(`${MENU_API_URL}/rate/${params.id}`, params, config);

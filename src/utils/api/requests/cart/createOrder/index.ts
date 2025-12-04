@@ -1,4 +1,5 @@
 import { instance } from '@/utils/api/instance';
+import {CART_API_URL} from "@/utils/constants/apiUrl.ts";
 
 export type PostCreateOrderParams = {
     phoneNumber: string,
@@ -10,4 +11,4 @@ export type PostCreateOrderParams = {
 export type PostCreateOrderConfig = RequestConfig<PostCreateOrderParams>;
 
 export const postCreateOrder = async ({ config, params }: PostCreateOrderConfig) =>
-    instance.post(`http://localhost:5261/api/Cart/create-order`, params, config);
+    instance.post(`${CART_API_URL}/Cart/create-order`, params, config);

@@ -22,7 +22,7 @@ const AddBasketBtn = ({ dishId, name, price, imageUrl, quantity, reload, classNa
                     <Button className="h-10" onClick={functions.handleRemoveBasket}>
                         {"-"}
                     </Button>
-                    <p className="text-xl">{state.dishNumber}</p>
+                    <p className="text-xl dish-counter">{state.dishNumber}</p>
                     <Button className="h-10" onClick={functions.handleAddBasket}>
                         {"+"}
                     </Button>
