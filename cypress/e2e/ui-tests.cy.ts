@@ -1,6 +1,6 @@
 describe('UI-tests', () => {
     beforeEach(() => {
-        cy.visit('https://egorycheva28.github.io/delivery-website/#/');
+        cy.visit('http://localhost:4173/#/');
         cy.viewport(1280, 768);
     });
     //Проверка входа при пустых полях
