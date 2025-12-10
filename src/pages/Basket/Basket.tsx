@@ -14,7 +14,7 @@ const Basket = () => {
                 <>
                     <div className="flex items-center justify-between">
                         <p className="text-4xl font-medium">{"Корзина"}</p>
-                        <Button className="h-10" onClick={functions.handleDeleteAll}>
+                        <Button className="h-10 cursor-pointer" onClick={functions.handleDeleteAll}>
                             {"Удалить все"}
                         </Button>
                     </div>

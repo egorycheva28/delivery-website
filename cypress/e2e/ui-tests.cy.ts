@@ -6,16 +6,34 @@ describe('UI-tests', () => {
     //Проверка входа при пустых полях
     //phone - номер телефона
     //password - пароль
-    const testWrongData = [
+    describe(`Проверка входа при пустых полях`, () => {
+        it('Выдает предупреждение', () => {
+            cy.get('.cursor-pointer').contains('Войти').click();
+
+            // Авторизация
+            cy.get('[role="dialog"]').contains('Войти').click();
+
+            // Проверка на наличие предупреждения
+            cy.get('[data-slot="form-message"]')
+                .should('be.visible')
+                .and('contain.text', 'Поле должно быть заполнено');
+        });
+    });
+
+    const testLoginData = [
         {
-            phone: '',
-            password: ''
+            phone: '88005553538',
+            password: 'password123'
         }
     ];
-    testWrongData.forEach(({ phone, password }) => {
-        describe(`Проверка входа при пустых полях`, () => {
-            it('Выдает предупреждение', () => {
-                cy.get('.cursor-pointer').contains('Войти').click();
+    describe(`Проверка входа`, () => {
+        testLoginData.forEach(({ phone, password }) => {
+            it('Проверка данных пользователя при авторизации', () => {
+                cy.get('button.cursor-pointer').contains('Войти').click();
+
+                // Проверяем, что модальное окно открылось
+                cy.get('[role="dialog"]').should('be.visible');
+
                 // Ввод данных в форму
                 if (phone !== "") cy.get('input[placeholder="Введите номер телефона"]').type(phone);
                 if (password !== "") cy.get('input[placeholder="Введите пароль"]').type(password);
@@ -23,35 +41,33 @@ describe('UI-tests', () => {
                 // Авторизация
                 cy.get('[role="dialog"]').contains('Войти').click();
 
-                // Проверка на наличие предупреждения
-                cy.get('[data-slot="form-message"]')
-                    .should('be.visible')
-                    .and('contain.text', 'Поле должно быть заполнено');
-            });
-        });
-    });
+                // Проверяем, что модальное окно исчезло
+                cy.get('[role="dialog"]').should('not.exist');
+            })
+        })
+    })
 
     describe('Взаимодействие с корзиной', () => {
         it('Добавление товаров в корзину', () => {
-            // 2. Берем первое блюдо
+            // Берем первое блюдо
             cy.get('[data-slot="card"].product-card', { timeout: 3000 })
                 .should('have.length.greaterThan', 0)
                 .first()
                 .as('firstProduct');
 
-            // 3. Добавляем первое блюдо в корзину
+            // Добавляем первое блюдо в корзину
             cy.get('@firstProduct').within(() => {
                 cy.get('button')
                     .contains('Добавить в корзину')
                     .click();
 
-                // 4. Проверяем что товар добавился (счетчик блюда должен увеличиться)
+                // Проверяем что товар добавился (счетчик блюда должен увеличиться)
                 cy.get('p.dish-counter', { timeout: 3000 })
                     .should('be.visible')
                     .and('contain.text', '1');
             });
 
-            // 5. Добавляем еще один товар (например, второй в списке)
+            // Добавляем еще один товар (например, второй в списке)
             cy.get('[data-slot="card"].product-card')
                 .eq(1)
                 .within(() => {
@@ -59,20 +75,20 @@ describe('UI-tests', () => {
                         .contains('Добавить в корзину')
                         .click();
 
-                    // 6. Проверяем что товар добавился (счетчик корзины блюда увеличиться)
+                    // Проверяем что товар добавился (счетчик корзины блюда увеличиться)
                     cy.get('p.dish-counter', { timeout: 3000 })
                         .should('be.visible')
                         .and('contain.text', '1');
                 });
 
-            // 7. Переходим в корзину
+            // Переходим в корзину
             cy.get('a[href="#/basket"]').click();
 
-            // 8. Проверяем содержимое корзины
+            // Проверяем содержимое корзины
             cy.url().should('include', '/basket');
             cy.get('div.dish-into-basket', { timeout: 3000 }).should('have.length', 2);
 
-            // 9. Проверяем общую сумму
+            // Проверяем общую сумму
             cy.get('p.total-price')
                 .should('be.visible')
                 .and('contain.text', '₽');
@@ -115,6 +131,49 @@ describe('UI-tests', () => {
                 .should('be.visible')
                 .and('contain.text', 'Корзина пуста');
         });
+
+        it('Удаление всех товаров из корзины', () => {
+            cy.get('[data-slot="card"].product-card', { timeout: 3000 })
+                .should('have.length.greaterThan', 0)
+                .first()
+                .as('firstProduct');
+
+            // Добавляем первое блюдо в корзину
+            cy.get('@firstProduct').within(() => {
+                cy.get('button')
+                    .contains('Добавить в корзину')
+                    .click();
+
+                // Проверяем что товар добавился (счетчик блюда должен увеличиться)
+                cy.get('p.dish-counter', { timeout: 3000 })
+                    .should('be.visible')
+                    .and('contain.text', '1');
+            });
+
+            // Добавляем еще один товар (например, второй в списке)
+            cy.get('[data-slot="card"].product-card')
+                .eq(1)
+                .within(() => {
+                    cy.get('button')
+                        .contains('Добавить в корзину')
+                        .click();
+
+                    // 6. Проверяем что товар добавился (счетчик корзины блюда увеличиться)
+                    cy.get('p.dish-counter', { timeout: 3000 })
+                        .should('be.visible')
+                        .and('contain.text', '1');
+                });
+
+            // Переходим в корзину
+            cy.get('a[href="#/basket"]').click();
+
+            cy.get('button.cursor-pointer').contains('Удалить все').click();
+
+            // Проверяем что корзина пуста
+            cy.get('p.empty-text-message')
+                .should('be.visible')
+                .and('contain.text', 'Корзина пуста');
+        })
     });
 
     const testMakingOrder = [
