@@ -6,7 +6,6 @@ import LoginDialog from "@/pages/Root/components/Header/components/LoginDialog/L
 import RegisterDialog from "@/pages/Root/components/Header/components/RegisterDialog/RegisterDialog.tsx";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet.tsx";
 import {Menu} from "lucide-react";
-import {AUTH_BUG} from "@/utils/constants/envBugs.ts";
 
 const Header = () => {
     const { state, functions } = useHeader()
@@ -62,7 +61,6 @@ const Header = () => {
             ) : (
                 <Button className="cursor-pointer" variant={isMobile ? "outline" : "default"}
                     onClick={() => {
-                        if (AUTH_BUG) return
                         functions.setIsOpenLogin(true);
                         if (isMobile) functions.setIsMenuOpen(false);
                     }}

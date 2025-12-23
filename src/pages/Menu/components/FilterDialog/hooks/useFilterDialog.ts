@@ -1,6 +1,7 @@
 import type {GetFilterSchema} from "@/pages/Menu/components/FilterDialog/constants/FilterSchema.ts";
 import {useForm} from "react-hook-form";
 import type {GetFoodsWithFilterParams} from "@/utils/api/requests/foods/filter";
+import {RESETTING_SORTS} from "@/utils/constants/envBugs.ts";
 
 export const useFilterDialog = (filters: GetFoodsWithFilterParams,
     setFilters: (filters: GetFoodsWithFilterParams) => void,
@@ -58,11 +59,20 @@ export const useFilterDialog = (filters: GetFoodsWithFilterParams,
 
     const onSubmit = filterForm.handleSubmit(
         (data) => {
-            setFilters({ ...filters,
-                includeIngredients: data.ingredients,
-                minPrice: data.min_price,
-                maxPrice: data.max_price
-            })
+            if (!RESETTING_SORTS) {
+                setFilters({ ...filters,
+                    includeIngredients: data.ingredients,
+                    minPrice: data.min_price,
+                    maxPrice: data.max_price
+                })
+            } else {
+                setFilters({
+                    includeIngredients: data.ingredients,
+                    minPrice: data.min_price,
+                    maxPrice: data.max_price
+                })
+            }
+
             setIsOpen(false)
         }
     )

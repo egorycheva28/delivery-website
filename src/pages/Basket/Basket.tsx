@@ -27,7 +27,7 @@ const Basket = () => {
                     </Card>
                     <div className="flex items-center justify-between border-b-2 border-black font-bold text-xl">
                         <p>{"Итоговая сумма:"}</p>
-                        <p className="total-price">{`${state.cart.data?.data.total} ₽`}</p>
+                        <p className="total-price">{`${state.totalPrice} ₽`}</p>
                     </div>
                     <BasketForm openSuccessBasketDesign={functions.handleSuccessBasketDesign}/>
                 </>

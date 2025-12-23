@@ -7,6 +7,7 @@ import {getSortingForRequest} from "@/pages/Menu/helpers/getSortingForRequest.ts
 import {getSortingForUrl} from "@/pages/Menu/helpers/getSortingForUrl.ts";
 import {useGetCategoriesQuery} from "@/utils/api/hooks/useGetCategoriesQuery.ts";
 import {useGetCartQuery} from "@/utils/api/hooks/useGetCartQuery.ts";
+import {RESETTING_SORTS} from "@/utils/constants/envBugs.ts";
 
 const SEARCH_TIMEOUT = 500;
 const ITEMS_PER_PAGE = 8;
@@ -85,22 +86,40 @@ export const useMenu = () => {
 
     const handleSelectSorting = (sorting: string) => {
         const [sortBy, sortDirection] = getSortingForRequest(sorting)
-        setFilters((prev: GetFoodsWithFilterParams) => ({
-            ...prev,
-            sortBy: sorting === "without" ? undefined : sortBy,
-            sortDirection: sorting === "without" ? undefined : sortDirection,
-        }));
+
+        if (!RESETTING_SORTS) {
+            setFilters((prev: GetFoodsWithFilterParams) => ({
+                ...prev,
+                sortBy: sorting === "without" ? undefined : sortBy,
+                sortDirection: sorting === "without" ? undefined : sortDirection,
+            }));
+        } else {
+            setFilters({
+                sortBy: sorting === "without" ? undefined : sortBy,
+                sortDirection: sorting === "without" ? undefined : sortDirection,
+            });
+        }
     }
 
     const handleSelectCategory = (dish_category: string) => {
-        setFilters((prev: GetFoodsWithFilterParams) => ({
-            ...prev,
-            categoryId: dish_category === "all" ? undefined : dish_category
-        }));
+        if (!RESETTING_SORTS) {
+            setFilters((prev: GetFoodsWithFilterParams) => ({
+                ...prev,
+                categoryId: dish_category === "all" ? undefined : dish_category
+            }));
+        } else {
+            setFilters({
+                categoryId: dish_category === "all" ? undefined : dish_category
+            });
+        }
     }
 
     const debouncedSearchByName = useDebounceCallback((name: string) => {
-        setFilters({ ...filters, search: name });
+        if (!RESETTING_SORTS) {
+            setFilters({ ...filters, search: name });
+        } else {
+            setFilters({ search: name });
+        }
     }, SEARCH_TIMEOUT);
 
     const categories = useGetCategoriesQuery();
