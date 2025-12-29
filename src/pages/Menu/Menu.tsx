@@ -8,6 +8,7 @@ import DishCard from "@/components/DishCard/DishCard.tsx";
 import CustomPagination from "@/components/Pagination/CustomPagination.tsx";
 import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBasketBtn.tsx";
 import {getSortingForUrl} from "@/pages/Menu/helpers/getSortingForUrl.ts";
+import {ADD_INACCESSIBLE_DISH, ONLY_ONE_DISH} from "@/utils/constants/envBugs.ts";
 
 const Menu = () => {
     const { state, functions } = useMenu()
@@ -80,17 +81,28 @@ const Menu = () => {
             {state.displayedData && state.displayedData.length > 0 && (
                 <>
                     <div className="flex items-center justify-around flex-wrap gap-10">
-                        {state.displayedData.map(dish => (
-                            <DishCard key={dish.dishId} id={dish.dishId} {...dish}>
-                                {dish.isAvailable ? (
-                                    <AddBasketBtn className="w-full" {...dish} imageUrl={dish.photos[0]}/>
+                        {state.displayedData.map(dish =>
+                            ONLY_ONE_DISH ? (
+                                <DishCard key={dish.dishId} id={dish.dishId} {...state.displayedData[0]}>
+                                    {ADD_INACCESSIBLE_DISH || dish.isAvailable ? (
+                                        <AddBasketBtn className="w-full" {...dish} imageUrl={dish.photos[0]}/>
+                                    ) : (
+                                        <Button disabled={true} className="h-10 w-full">
+                                            {"Блюдо не доступно"}
+                                        </Button>
+                                    )}
+                                </DishCard>
                                 ) : (
-                                    <Button disabled={true} className="h-10 w-full">
-                                        {"Блюдо не доступно"}
-                                    </Button>
-                                )}
-                            </DishCard>
-                        ))}
+                                <DishCard key={dish.dishId} id={dish.dishId} {...dish}>
+                                    {ADD_INACCESSIBLE_DISH || dish.isAvailable ? (
+                                        <AddBasketBtn className="w-full" {...dish} imageUrl={dish.photos[0]}/>
+                                    ) : (
+                                        <Button disabled={true} className="h-10 w-full">
+                                            {"Блюдо не доступно"}
+                                        </Button>
+                                    )}
+                                </DishCard>
+                            ))}
                     </div>
                     <CustomPagination totalPages={state.totalPage} isGoToStart={state.goToStart}/>
                 </>

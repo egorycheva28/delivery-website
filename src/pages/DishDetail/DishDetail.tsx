@@ -6,6 +6,7 @@ import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBaske
 import {getIngredientRus} from "@/pages/DishDetail/helpers/GetIngredientRus.ts";
 import {Button} from "@/components/ui/button.tsx";
 import RateDialog from "@/pages/DishDetail/components/RateDialog/RateDialog.tsx";
+import {ADD_INACCESSIBLE_DISH, CAN_ALWAYS_ADD_RATING} from "@/utils/constants/envBugs.ts";
 
 const DishDetail = () => {
     const { state, functions } = useDishDetail()
@@ -65,7 +66,7 @@ const DishDetail = () => {
                                         </div>
                                     );
                                 })}
-                                {state.dish.data?.data.couldRate && !state.dish.data?.data.hasRate && (
+                                {(CAN_ALWAYS_ADD_RATING || state.dish.data?.data.couldRate) && !state.dish.data?.data.hasRate && (
                                     <Button className="cursor-pointer ml-3" onClick={functions.openAddRate}>
                                         {"Поставить оценку блюду"}
                                     </Button>
@@ -100,7 +101,7 @@ const DishDetail = () => {
                         ))}
                     </div>
                     {state.dish.data?.data.foodDetails.id && (
-                        state.dish.data?.data.foodDetails.isAvailable ? (
+                        ADD_INACCESSIBLE_DISH || state.dish.data?.data.foodDetails.isAvailable ? (
                             <AddBasketBtn className="w-[calc(100%-24px)] mx-3" {...state.dishIntoCart} reload={state.cart.refetch} />
                         ) : (
                             <Button disabled={true} className="w-[calc(100%-24px)] mx-3">
