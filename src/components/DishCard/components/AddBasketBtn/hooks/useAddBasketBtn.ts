@@ -1,8 +1,8 @@
-import {useState} from "react";
-import {usePostAddDishIntoCartMutation} from "@/utils/api/hooks/usePostAddDishIntoCart.ts";
-import {useDeleteOneDishMutation} from "@/utils/api/hooks/useDeleteOneDishMutation.ts";
-import {useDeleteDishIntoCartMutation} from "@/utils/api/hooks/useDeleteDishIntoCartMutation.ts";
-import {DISH_COUNT_NOT_UPDATE} from "@/utils/constants/envBugs.ts";
+import { useState } from "react";
+import { usePostAddDishIntoCartMutation } from "@/utils/api/hooks/usePostAddDishIntoCart.ts";
+import { useDeleteOneDishMutation } from "@/utils/api/hooks/useDeleteOneDishMutation.ts";
+import { useDeleteDishIntoCartMutation } from "@/utils/api/hooks/useDeleteDishIntoCartMutation.ts";
+import { DISH_COUNT_NOT_UPDATE, MIXED_BUTTONS_ADDING_REMOVING_DISHES } from "@/utils/constants/envBugs.ts";
 
 export const useAddBasketBtn = (dishId: string, name: string, price: number, quantity: number, reload?: () => void, imageUrl?: string) => {
     const addDishIntoCart = usePostAddDishIntoCartMutation()
@@ -12,6 +12,11 @@ export const useAddBasketBtn = (dishId: string, name: string, price: number, qua
     const [dishNumber, setDishNumber] = useState(quantity);
 
     const handleAddBasket = async () => {
+        if (MIXED_BUTTONS_ADDING_REMOVING_DISHES) {
+            handleRemoveBasket;
+            return;
+        }
+
         if (!DISH_COUNT_NOT_UPDATE) {
             await addDishIntoCart.mutateAsync({ params: { dishId, name, price, quantity: 1, imageUrl } }, {
                 onSuccess: () => {
@@ -25,6 +30,11 @@ export const useAddBasketBtn = (dishId: string, name: string, price: number, qua
     }
 
     const handleRemoveBasket = async () => {
+        if (MIXED_BUTTONS_ADDING_REMOVING_DISHES) {
+            handleAddBasket;
+            return;
+        }
+
         if (dishNumber > 1) {
             if (!DISH_COUNT_NOT_UPDATE) {
                 await deleteOneDish.mutateAsync({ params: { dishId, quantity: dishNumber - 1 } }, {

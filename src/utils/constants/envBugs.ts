@@ -5,3 +5,5 @@ export const DISH_COUNT_NOT_UPDATE = import.meta.env.VITE_DISH_COUNT_NOT_UPDATE 
 export const ADD_INACCESSIBLE_DISH = import.meta.env.VITE_ADD_INACCESSIBLE_DISH === "true";
 export const CAN_ALWAYS_ADD_RATING = import.meta.env.VITE_CAN_ALWAYS_ADD_RATING === "true";
 export const ONLY_ONE_DISH = import.meta.env.VITE_ONLY_ONE_DISH === "true";
+export const MODAL_IS_ALWAYS_OPEN = import.meta.env.MODAL_IS_ALWAYS_OPEN === "true";
+export const MIXED_BUTTONS_ADDING_REMOVING_DISHES = import.meta.env.MIXED_BUTTONS_ADDING_REMOVING_DISHES === "true";
