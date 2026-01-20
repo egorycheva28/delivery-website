@@ -5,6 +5,7 @@ import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVal
 import {Button} from "@/components/ui/button.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {PhoneInput} from "@/components/ui/input-phone.tsx";
+import {NO_VALIDATION_ORDER} from "@/utils/constants/envBugs.ts";
 
 interface BasketFormProps {
     openSuccessBasketDesign: () => void
@@ -29,13 +30,15 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
                                     placeholder="Введите адрес доставки"
                                 />
                             </FormControl>
-                            <FormMessage>
-                                {form.formState?.errors?.address && (
-                                    <p className="text-red-600 text-xs mt-1">
-                                        {form.formState.errors.address.message}
-                                    </p>
-                                )}
-                            </FormMessage>
+                            {!NO_VALIDATION_ORDER && (
+                                <FormMessage>
+                                    {form.formState?.errors?.address && (
+                                        <p className="text-red-600 text-xs mt-1">
+                                            {form.formState.errors.address.message}
+                                        </p>
+                                    )}
+                                </FormMessage>
+                            )}
                         </FormItem>
                     )}
                 />
@@ -50,13 +53,15 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
                                     placeholder="Введите номер телефона"
                                 />
                             </FormControl>
-                            <FormMessage>
-                                {form.formState?.errors?.phoneNumber && (
-                                    <p className="text-red-600 text-xs mt-1">
-                                        {form.formState.errors.phoneNumber.message}
-                                    </p>
-                                )}
-                            </FormMessage>
+                            {!NO_VALIDATION_ORDER && (
+                                <FormMessage>
+                                    {form.formState?.errors?.phoneNumber && (
+                                        <p className="text-red-600 text-xs mt-1">
+                                            {form.formState.errors.phoneNumber.message}
+                                        </p>
+                                    )}
+                                </FormMessage>
+                            )}
                         </FormItem>
                     )}
                 />
@@ -73,13 +78,15 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
                                         placeholder="Введите пароль"
                                     />
                                 </FormControl>
-                                <FormMessage>
-                                    {form.formState?.errors?.password && (
-                                        <p className="text-red-600 text-xs mt-1">
-                                            {form.formState.errors.password.message}
-                                        </p>
-                                    )}
-                                </FormMessage>
+                                {!NO_VALIDATION_ORDER && (
+                                    <FormMessage>
+                                        {form.formState?.errors?.password && (
+                                            <p className="text-red-600 text-xs mt-1">
+                                                {form.formState.errors.password.message}
+                                            </p>
+                                        )}
+                                    </FormMessage>
+                                )}
                             </FormItem>
                         )}
                     />
@@ -112,7 +119,7 @@ const BasketForm = ({ openSuccessBasketDesign }: BasketFormProps) => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    {form.formState?.errors?.paymentMethod && (
+                    {!NO_VALIDATION_ORDER && form.formState?.errors?.paymentMethod && (
                         <p className="text-red-600 text-sm mt-1">
                             {form.formState.errors.paymentMethod.message}
                         </p>

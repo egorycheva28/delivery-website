@@ -7,3 +7,5 @@ export const CAN_ALWAYS_ADD_RATING = import.meta.env.VITE_CAN_ALWAYS_ADD_RATING 
 export const ONLY_ONE_DISH = import.meta.env.VITE_ONLY_ONE_DISH === "true";
 export const MODAL_IS_ALWAYS_OPEN = import.meta.env.MODAL_IS_ALWAYS_OPEN === "true";
 export const MIXED_BUTTONS_ADDING_REMOVING_DISHES = import.meta.env.MIXED_BUTTONS_ADDING_REMOVING_DISHES === "true";
+export const NO_NORMALIZATION_PHONE = import.meta.env.VITE_NO_NORMALIZATION_PHONE === "true";
+export const NO_VALIDATION_ORDER = import.meta.env.VITE_NO_VALIDATION_ORDER === "true";
