@@ -88,7 +88,7 @@ const Menu = () => {
                                         <AddBasketBtn className="w-full" {...dish} imageUrl={dish.photos[0]}/>
                                     ) : (
                                         <Button disabled={true} className="h-10 w-full">
-                                            {"Блюдо не доступно"}
+                                            {"Блюдо недоступно"}
                                         </Button>
                                     )}
                                 </DishCard>
@@ -98,7 +98,7 @@ const Menu = () => {
                                         <AddBasketBtn className="w-full" {...dish} imageUrl={dish.photos[0]}/>
                                     ) : (
                                         <Button disabled={true} className="h-10 w-full">
-                                            {"Блюдо не доступно"}
+                                            {"Блюдо недоступно"}
                                         </Button>
                                     )}
                                 </DishCard>
