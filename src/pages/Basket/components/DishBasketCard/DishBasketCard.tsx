@@ -15,7 +15,7 @@ const DishBasketCard = ({ dishId, name, price, imageUrl, quantity, reload }: Dis
     const { functions } = useDishBasketCard(dishId, reload)
 
     return (
-        <div className="w-full flex items-center justify-between border p-5 dish-into-basket">
+        <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between border p-5 dish-into-basket gap-2">
             <div className="flex items-center gap-2">
                 <div className="h-[100px] w-[100px] overflow-hidden bg-gray-100">
                     <img
@@ -30,7 +30,7 @@ const DishBasketCard = ({ dishId, name, price, imageUrl, quantity, reload }: Dis
                 </div>
             </div>
             <div className="flex flex-col gap-2">
-                <AddBasketBtn className="w-[200px]" dishId={dishId} name={name} price={price} quantity={quantity}
+                <AddBasketBtn className="w-full sm:w-[200px]" dishId={dishId} name={name} price={price} quantity={quantity}
                               imageUrl={imageUrl} reload={reload}/>
                 <Button onClick={functions.handleDeleteDishIntoCart}>
                     {"Удалить блюдо"}

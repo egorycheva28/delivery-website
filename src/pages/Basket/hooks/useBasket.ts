@@ -43,8 +43,14 @@ export const useBasket = () => {
         return currentPrice;
     }, [cart.data]);
 
+    const sortedItem = useMemo(() => {
+        return cart.data?.data.items
+            ? [...cart.data.data.items].sort((a, b) => a.name.localeCompare(b.name))
+            : [];
+    }, [cart.data]);
+
     return {
-        state: { cart, isOpen, totalPrice },
-        functions: { handleDeleteAll, setIsOpen, handleSuccessBasketDesign }
+        state: { sortedItem, isOpen, totalPrice },
+        functions: { handleDeleteAll, setIsOpen, handleSuccessBasketDesign, refetch: cart.refetch }
     }
 }

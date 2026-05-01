@@ -1,5 +1,5 @@
 import {useDishDetail} from "@/pages/DishDetail/hooks/useDishDetail.ts";
-import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel.tsx";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel.tsx";
 import {Card, CardContent, CardTitle} from "@/components/ui/card.tsx";
 import {Star} from "lucide-react";
 import AddBasketBtn from "@/components/DishCard/components/AddBasketBtn/AddBasketBtn.tsx";
@@ -34,6 +34,8 @@ const DishDetail = () => {
                             </CarouselItem>
                         )}
                 </CarouselContent>
+                <CarouselPrevious disabled={state.dish.data && state.dish.data?.data.foodDetails.photos.length <= 1} />
+                <CarouselNext disabled={state.dish.data && state.dish.data?.data.foodDetails.photos.length <= 1} />
             </Carousel>
             <Card className="pb-3">
                 <CardContent className="p-0">

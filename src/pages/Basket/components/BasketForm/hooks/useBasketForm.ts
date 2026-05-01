@@ -34,20 +34,22 @@ export const useBasketForm = (openSuccessBasketDesign: () => void) => {
 
     const onSubmit = basketSubmitForm.handleSubmit(async (values) => {
         try {
-            let userExists = false;
+            if (!authenticated) {
+                if (!values.password) return
 
-            try {
-                await getUserByPhone.mutateAsync({
-                    params: { phone: values.phoneNumber }
-                });
-                userExists = true;
-            } catch (error: any) {
-                if (error.response?.status !== 404) {
-                    throw error;
+                let userExists = false;
+
+                try {
+                    await getUserByPhone.mutateAsync({
+                        params: { phone: values.phoneNumber }
+                    });
+                    userExists = true;
+                } catch (error: any) {
+                    if (error.response?.status !== 404) {
+                        throw error;
+                    }
                 }
-            }
 
-            if (!authenticated && values.password) {
                 let token: string[];
 
                 if (userExists) {
