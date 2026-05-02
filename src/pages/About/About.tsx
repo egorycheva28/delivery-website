@@ -11,7 +11,12 @@ const About = () => {
                 <span className='text-4xl font-medium text-center flex-1'>О нас</span>
             </div>
             <span className="text-4xl font-medium text-left">{state.abouts.data?.data.companyName}</span>
-            <span className="flex text-left text-3xl font-normal">Доставим быстро и качественно!</span>
+            <span className="flex text-left text-3xl font-normal">
+                Доставим быстро и качественно!<br/>
+                Мы предлагаем быстрый и удобный сервис доставки, ориентированный на комфорт клиентов.<br/>
+                Обрабатываем заказы оперативно и следим за качеством на каждом этапе.<br/>
+                Наша цель — сделать процесс заказа простым, понятным и надёжным.
+            </span>
             <div className="flex flex-col border border-black rounded-lg py-6 px-10 gap-6 w-full">
                 <span className="text-2xl font-medium">Доступные средства связи:</span>
                 <div className="flex flex-col lg:flex-row justify-between w-full gap-4">

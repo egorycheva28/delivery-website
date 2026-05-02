@@ -9,6 +9,7 @@ import Profile from "@/pages/Profile/Profile.tsx";
 import DeliveryAndPayment from "@/pages/DeliveryAndPayment/DeliveryAndPayment.tsx";
 import ProfileOrders from "@/pages/ProfileOrders/ProfileOrders.tsx";
 import OrderDishes from "@/pages/OrderDishes/OrderDishes.tsx";
+import {RoleRoute} from "@/components/RoleRoute/RoleRoute.tsx";
 
 export const router = createHashRouter([
     {
@@ -32,20 +33,25 @@ export const router = createHashRouter([
                 element: <About/>
             },
             {
-                path: ROUTES.PROFILE,
-                element: <Profile/>
-            },
-            {
                 path: ROUTES.DELIVERY_AND_PAYMENT,
                 element: <DeliveryAndPayment />
             },
             {
-                path: ROUTES.PROFILE_ORDERS,
-                element: <ProfileOrders />
-            },
-            {
-                path: ROUTES.ORDER_DISHES,
-                element: <OrderDishes />
+                element: <RoleRoute role="CLIENT" />,
+                children: [
+                    {
+                        path: ROUTES.PROFILE,
+                        element: <Profile/>
+                    },
+                    {
+                        path: ROUTES.PROFILE_ORDERS,
+                        element: <ProfileOrders />
+                    },
+                    {
+                        path: ROUTES.ORDER_DISHES,
+                        element: <OrderDishes />
+                    }
+                ]
             }
         ]
     }
